@@ -1,52 +1,55 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
-[ext_resource type="PackedScene" path="res://assets/instruments/butt_plug.glb" id="2_2dtbt"]
+[ext_resource type="AudioStream" path="res://assets/sounds/items/butt_plug.wav" id="2_p3ujs"]
+[ext_resource type="PackedScene" path="res://assets/instruments/butt_plug.glb" id="3_4o5ig"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_p3ujs"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_mbhsb"]
 height = 0.0064
 radius = 0.017
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4o5ig"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oxrer"]
 radius = 0.0166
 height = 0.055
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_mbhsb"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ynsdx"]
 height = 0.0184
 radius = 0.023
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oxrer"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1wr23"]
 radius = 0.022599999
 height = 0.067
 
 [node name="ButtPlug" instance=ExtResource("base_tool")]
 mass = 0.15
+gravity_scale = 0.3
 continuous_cd = true
 id = &"butt_plug"
 display_name = "Butt Plug"
 description = "Polished steel with a pink jewel. Not a surgical instrument."
 specialities = Array[int]([3])
+drop_sound = ExtResource("2_p3ujs")
 
-[node name="Model" type="Node3D" parent="." unique_id=955033451 instance=ExtResource("2_2dtbt")]
+[node name="Model" type="Node3D" parent="." unique_id=1810228143 instance=ExtResource("3_4o5ig")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1389209396]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1897814072]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.027)
-shape = SubResource("CylinderShape3D_p3ujs")
+shape = SubResource("CylinderShape3D_mbhsb")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=453959984]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=372773195]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.0032)
-shape = SubResource("CapsuleShape3D_4o5ig")
+shape = SubResource("CapsuleShape3D_oxrer")
 
-[node name="Pick" type="Area3D" parent="." unique_id=567140134]
+[node name="Pick" type="Area3D" parent="." unique_id=1831504541]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=22671759]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=404589634]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.027)
-shape = SubResource("CylinderShape3D_mbhsb")
+shape = SubResource("CylinderShape3D_ynsdx")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=260923663]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1896357878]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.0032)
-shape = SubResource("CapsuleShape3D_oxrer")
+shape = SubResource("CapsuleShape3D_1wr23")

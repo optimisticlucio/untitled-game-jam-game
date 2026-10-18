@@ -1,6 +1,15 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://tools/surgical_tool.gd" id="1_tool"]
+[ext_resource type="AudioStream" path="res://assets/sounds/gameplay/tool_drop_1.wav" id="2_drop1"]
+[ext_resource type="AudioStream" path="res://assets/sounds/gameplay/tool_drop_2.wav" id="3_drop2"]
+[ext_resource type="AudioStream" path="res://assets/sounds/gameplay/tool_drop_3.wav" id="4_drop3"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_drop"]
+streams_count = 3
+stream_0/stream = ExtResource("2_drop1")
+stream_1/stream = ExtResource("3_drop2")
+stream_2/stream = ExtResource("4_drop3")
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tool"]
 friction = 0.12
@@ -10,3 +19,4 @@ bounce = 0.2
 gravity_scale = 0.3
 physics_material_override = SubResource("PhysicsMaterial_tool")
 script = ExtResource("1_tool")
+drop_sound = SubResource("AudioStreamRandomizer_drop")

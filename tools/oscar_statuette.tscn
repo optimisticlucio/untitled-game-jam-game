@@ -1,52 +1,55 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
-[ext_resource type="PackedScene" path="res://assets/instruments/oscar_statuette.glb" id="2_ae8tf"]
+[ext_resource type="AudioStream" path="res://assets/sounds/items/oscar_statuette.wav" id="2_ojqxw"]
+[ext_resource type="PackedScene" path="res://assets/instruments/oscar_statuette.glb" id="3_du8kp"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_ojqxw"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5e5et"]
 height = 0.038
 radius = 0.023
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_du8kp"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fxfch"]
 radius = 0.0136
 height = 0.114
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_5e5et"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_16c3p"]
 height = 0.049999997
 radius = 0.029
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fxfch"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_b6dx3"]
 radius = 0.0196
 height = 0.126
 
 [node name="OscarStatuette" instance=ExtResource("base_tool")]
 mass = 0.08
+gravity_scale = 0.3
 continuous_cd = true
 id = &"oscar_statuette"
 display_name = "Oscar Statuette"
 description = "A silver award statuette. Best Supporting Instrument, maybe."
 specialities = Array[int]([3])
+drop_sound = ExtResource("2_ojqxw")
 
-[node name="Model" type="Node3D" parent="." unique_id=1541546723 instance=ExtResource("2_ae8tf")]
+[node name="Model" type="Node3D" parent="." unique_id=279590502 instance=ExtResource("3_du8kp")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1212860902]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=778914595]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.056)
-shape = SubResource("CylinderShape3D_ojqxw")
+shape = SubResource("CylinderShape3D_5e5et")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=123277035]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1795684383]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.019)
-shape = SubResource("CapsuleShape3D_du8kp")
+shape = SubResource("CapsuleShape3D_fxfch")
 
-[node name="Pick" type="Area3D" parent="." unique_id=95041601]
+[node name="Pick" type="Area3D" parent="." unique_id=68649535]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1895147766]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=577364269]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.056)
-shape = SubResource("CylinderShape3D_5e5et")
+shape = SubResource("CylinderShape3D_16c3p")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1900363801]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1648643993]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.019)
-shape = SubResource("CapsuleShape3D_fxfch")
+shape = SubResource("CapsuleShape3D_b6dx3")

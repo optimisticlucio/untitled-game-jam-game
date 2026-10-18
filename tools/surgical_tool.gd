@@ -20,6 +20,10 @@ const FOLDER := "res://tools/"
 @export_multiline var description: String
 @export var specialities: Array[Speciality]
 @export var category: Category = Category.OTHER
+## Played when the tool lands after being let go (dropped on the tray, or
+## flown back to it). The base scene plays one of the metal drop sounds at
+## random; give a tool its own to override that.
+@export var drop_sound: AudioStream
 
 static var _scenes_by_id: Dictionary[StringName, PackedScene] = {}
 

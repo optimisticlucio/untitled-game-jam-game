@@ -6,7 +6,7 @@ Placeholder sounds for every event we know of, so the game isn't silent at the d
 - **Format:** effects are mono 16-bit WAV (Godot's choice for short sounds), trimmed and levelled to about the same loudness. Music and ambience are the original Ogg Vorbis previews.
 - **Buses:** play effects on `SFX` and music/ambience on `Music` (see CLAUDE.md).
 - **Loops:** after Godot imports the files, select `music/*.ogg` and tick **Loop** in the Import dock, then Reimport.
-- **Nothing plays yet.** None of these are wired into the code. `SurgicalTool` has no sound hook; adding one (e.g. an exported `grab_sound`, played by `ToolGrabber` on `tool_grabbed`) changes the base scene, so it's a team decision.
+- **Wired so far:** `SurgicalTool.drop_sound` plays when a tool lands after being let go (`ToolGrabber`, on the `SFX` bus). The base scene `tools/surgical_tool.tscn` sets it to a random pick of `gameplay/tool_drop_1–3.wav`; tools with an `items/<id>.wav` get that instead (see below). Everything else here isn't wired yet.
 
 ## Gameplay (`gameplay/`)
 
@@ -37,7 +37,7 @@ Placeholder sounds for every event we know of, so the game isn't silent at the d
 
 ## Silly items (`items/`)
 
-Played when the item is grabbed, instead of `tool_grab`. Each item sounds like its real material when handled (no gag sounds). Each file is named after the tool `id`, so code can look for `items/<id>.wav` and fall back to `gameplay/tool_grab.wav`. Metal lookalikes (`eyebrow_tweezers`, `dental_explorer`) use the default metal sound. Ids of items not built yet are guesses; rename the file if the id ends up different.
+Played when the item lands after being dropped (its `drop_sound`), instead of the metal `gameplay/tool_drop_*.wav`. Not on grab. Each item sounds like its real material (no gag sounds). Each file is named after the tool `id`: the instrument build script (`dev/instruments/build_instruments.gd`) gives a tool `items/<id>.wav` as its `drop_sound` when that file exists. Metal lookalikes (`eyebrow_tweezers`, `dental_explorer`) use the default metal sound. Ids of items not built yet are guesses; rename the file if the id ends up different.
 
 | File | Sound | Source |
 |---|---|---|

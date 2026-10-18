@@ -1,52 +1,55 @@
 [gd_scene format=3]
 
 [ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
-[ext_resource type="PackedScene" path="res://assets/instruments/lipstick.glb" id="2_338jf"]
+[ext_resource type="AudioStream" path="res://assets/sounds/items/lipstick.wav" id="2_aackt"]
+[ext_resource type="PackedScene" path="res://assets/instruments/lipstick.glb" id="3_r6rx1"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_aackt"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_sv14n"]
 height = 0.056
 radius = 0.0095
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_r6rx1"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0ldde"]
 height = 0.017
 radius = 0.0066
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_sv14n"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_b6feq"]
 height = 0.068
 radius = 0.0155
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_0ldde"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_042h1"]
 height = 0.029000001
 radius = 0.0126
 
 [node name="Lipstick" instance=ExtResource("base_tool")]
 mass = 0.03
+gravity_scale = 0.3
 continuous_cd = true
 id = &"lipstick"
 display_name = "Lipstick"
 description = "Red lipstick in a gold case, cap off. Round and knurl-free: not a blade handle."
 specialities = Array[int]([3])
+drop_sound = ExtResource("2_aackt")
 
-[node name="Model" type="Node3D" parent="." unique_id=1505543316 instance=ExtResource("2_338jf")]
+[node name="Model" type="Node3D" parent="." unique_id=300299846 instance=ExtResource("3_r6rx1")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=144921714]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1788750949]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.007878)
-shape = SubResource("CylinderShape3D_aackt")
+shape = SubResource("CylinderShape3D_sv14n")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1479233718]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=624838787]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.027622)
-shape = SubResource("CylinderShape3D_r6rx1")
+shape = SubResource("CylinderShape3D_0ldde")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1018069245]
+[node name="Pick" type="Area3D" parent="." unique_id=2016959171]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=389201042]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1683708262]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.007878)
-shape = SubResource("CylinderShape3D_sv14n")
+shape = SubResource("CylinderShape3D_b6feq")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1881257526]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1809869493]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.027622)
-shape = SubResource("CylinderShape3D_0ldde")
+shape = SubResource("CylinderShape3D_042h1")

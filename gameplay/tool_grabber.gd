@@ -216,7 +216,7 @@ func return_to_tray(tool: SurgicalTool) -> void:
 	tween.chain().tween_callback(func() -> void:
 		_flying.erase(tool)
 		_drop(tool)
-		_jumble_on_landing(tool))
+		_on_landing(tool))
 
 
 func _grab(tool: SurgicalTool) -> void:
@@ -242,7 +242,7 @@ func _release() -> void:
 		_released_over.erase(tool)
 		_set_glow(tool, false)
 		_drop(tool)
-		_jumble_on_landing(tool)
+		_on_landing(tool)
 	else:
 		return_to_tray(tool)
 
@@ -266,13 +266,27 @@ func _drop(tool: SurgicalTool) -> void:
 	tool.angular_velocity = Vector3.ZERO
 
 
-## Nudges the pile the moment the falling tool first touches something.
-func _jumble_on_landing(falling: SurgicalTool) -> void:
+## The moment the falling tool first touches something: its drop sound plays
+## and the pile is nudged.
+func _on_landing(falling: SurgicalTool) -> void:
 	falling.contact_monitor = true
 	falling.max_contacts_reported = 1
 	falling.body_entered.connect(func(_body: Node) -> void:
 		falling.set_deferred("contact_monitor", false)
+		_play(falling.drop_sound)
 		_jumble(falling), CONNECT_ONE_SHOT)
+
+
+## Plays a one-off sound effect on the SFX bus.
+func _play(sound: AudioStream) -> void:
+	if sound == null:
+		return
+	var player := AudioStreamPlayer.new()
+	player.stream = sound
+	player.bus = &"SFX"
+	add_child(player)
+	player.finished.connect(player.queue_free)
+	player.play()
 
 
 ## Nudges every resting tool except the one that caused it.

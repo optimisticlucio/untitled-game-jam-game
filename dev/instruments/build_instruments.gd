@@ -8,6 +8,8 @@ extends SceneTree
 ## Inputs: assets/instruments/<slug>.glb (model) and dev/instruments/data/ (<slug>.json colliders
 ## in Godot space, spec.json: mass, display_name, description, specialities, category).
 ## Tools get their physics material from tools/surgical_tool.tscn; only the tray and props get one here.
+## A tool whose id has a sound in assets/sounds/items/ (<id>.wav) gets it as its drop_sound; the rest
+## keep the base scene's metal drop sounds.
 ## Run: Godot --headless --path <repo> --script res://dev/instruments/build_instruments.gd
 ##
 ## Every tool also gets a "pick" Area3D: the same shapes, inflated (PICK_PAD per side, at least
@@ -20,6 +22,7 @@ const BASE := "res://tools/surgical_tool.tscn"
 const PICK_LAYER := 8
 const PICK_PAD := 0.006
 const PICK_MIN := 0.02
+const ITEM_SOUNDS := "res://assets/sounds/items/"
 
 
 func _init() -> void:
@@ -58,6 +61,9 @@ func _init() -> void:
 			for v in it["specialities"]:
 				sp.append(int(v))
 			tool.set("category", int(it.get("category", 5)))
+			var item_sound := ITEM_SOUNDS + slug + ".wav"
+			# Unset (null) means the scene inherits the base scene's drop sounds.
+			tool.set("drop_sound", load(item_sound) if ResourceLoader.exists(item_sound) else null)
 			tool.mass = float(it["mass_g"]) / 1000.0
 			tool.continuous_cd = true
 			body = tool
