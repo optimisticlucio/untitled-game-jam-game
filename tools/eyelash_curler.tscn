@@ -1,0 +1,76 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="PackedScene" path="res://assets/instruments/eyelash_curler.glb" id="2_tbk5h"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xp8l5"]
+size = Vector3(0.0368, 0.004, 0.0168)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cgaj7"]
+size = Vector3(0.007797, 0.004, 0.078191)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_a8w7j"]
+size = Vector3(0.007797, 0.004, 0.078191)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yofnl"]
+size = Vector3(0.038915, 0.006, 0.012477)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fsuly"]
+size = Vector3(0.0488, 0.02, 0.0288)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_span7"]
+size = Vector3(0.02, 0.02, 0.090191)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vbp8g"]
+size = Vector3(0.02, 0.02, 0.090191)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vrq4p"]
+size = Vector3(0.050915003, 0.02, 0.024477001)
+
+[node name="EyelashCurler" instance=ExtResource("base_tool")]
+mass = 0.025
+continuous_cd = true
+id = &"eyelash_curler"
+display_name = "Eyelash Curler"
+description = "Beauty tool: finger rings and a hinge like a clamp, but the jaws are a wide curved frame with a rubber pad."
+specialities = Array[int]([3])
+
+[node name="Model" type="Node3D" parent="." unique_id=112030350 instance=ExtResource("2_tbk5h")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=107144720]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.040405)
+shape = SubResource("BoxShape3D_xp8l5")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=867475704]
+transform = Transform3D(0.936329, 0, 0.351123, 0, 1, 0, -0.351123, 0, 0.936329, -0.001716, 0.0004, -0.002765)
+shape = SubResource("BoxShape3D_cgaj7")
+
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=1333543061]
+transform = Transform3D(0.936329, 0, -0.351123, 0, 1, 0, 0.351123, 0, 0.936329, 0.001716, -0.0004, -0.002765)
+shape = SubResource("BoxShape3D_a8w7j")
+
+[node name="Collision03" type="CollisionShape3D" parent="." unique_id=1063535824]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.042157)
+shape = SubResource("BoxShape3D_yofnl")
+
+[node name="Pick" type="Area3D" parent="." unique_id=1602673456]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=80534272]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.040405)
+shape = SubResource("BoxShape3D_fsuly")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1782333695]
+transform = Transform3D(0.936329, 0, 0.351123, 0, 1, 0, -0.351123, 0, 0.936329, -0.001716, 0.0004, -0.002765)
+shape = SubResource("BoxShape3D_span7")
+
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1576205283]
+transform = Transform3D(0.936329, 0, -0.351123, 0, 1, 0, 0.351123, 0, 0.936329, 0.001716, -0.0004, -0.002765)
+shape = SubResource("BoxShape3D_vbp8g")
+
+[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=499551127]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.042157)
+shape = SubResource("BoxShape3D_vrq4p")

@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="PackedScene" path="res://assets/instruments/lipstick.glb" id="2_338jf"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_aackt"]
+height = 0.056
+radius = 0.0095
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_r6rx1"]
+height = 0.017
+radius = 0.0066
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_sv14n"]
+height = 0.068
+radius = 0.0155
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0ldde"]
+height = 0.029000001
+radius = 0.0126
+
+[node name="Lipstick" instance=ExtResource("base_tool")]
+mass = 0.03
+continuous_cd = true
+id = &"lipstick"
+display_name = "Lipstick"
+description = "Red lipstick in a gold case, cap off. Round and knurl-free: not a blade handle."
+specialities = Array[int]([3])
+
+[node name="Model" type="Node3D" parent="." unique_id=1505543316 instance=ExtResource("2_338jf")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=144921714]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.007878)
+shape = SubResource("CylinderShape3D_aackt")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1479233718]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.027622)
+shape = SubResource("CylinderShape3D_r6rx1")
+
+[node name="Pick" type="Area3D" parent="." unique_id=1018069245]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=389201042]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.007878)
+shape = SubResource("CylinderShape3D_sv14n")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1881257526]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.027622)
+shape = SubResource("CylinderShape3D_0ldde")
