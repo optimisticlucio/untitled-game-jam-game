@@ -21,6 +21,9 @@ uniform vec3 room_floor : source_color = vec3(0.102, 0.271, 0.286);
 uniform vec3 room_drape : source_color = vec3(0.220, 0.522, 0.541);
 uniform vec3 room_ceiling : source_color = vec3(0.749, 0.800, 0.839);
 uniform float lamp_strength : hint_range(0.0, 4.0) = 1.2;
+// Where the ceiling lamp sits in the reflection (cosine from straight up). High = a small lamp
+// that only tilted tools catch; tools lying flat then keep their colour instead of going white.
+uniform float lamp_size : hint_range(0.8, 1.0) = 0.985;
 uniform float env_strength : hint_range(0.0, 2.0) = 0.9;
 uniform float env_in_shadow : hint_range(0.0, 1.0) = 0.39;
 uniform float mirror_dark : hint_range(0.0, 1.0) = 1.0;
@@ -51,7 +54,7 @@ vec3 room_reflection(vec3 r, vec3 base) {
 	float s = mix(0.03, 0.4, v_rough);
 	vec3 env = mix(room_floor, room_drape, smoothstep(-0.25 - s, -0.25 + s, r.y));
 	env = mix(env, room_ceiling * mix(mirror_dark, 1.0, v_rough), smoothstep(0.35 - s, 0.35 + s, r.y));
-	env += vec3(lamp_strength) * smoothstep(0.95 - s, 0.95 + s, r.y) * (1.0 - 0.7 * v_rough);
+	env += vec3(lamp_strength) * smoothstep(lamp_size - s * 0.3, lamp_size + s * 0.3, r.y) * (1.0 - 0.7 * v_rough);
 	return env * mix(vec3(1.0), base, v_metal) * v_metal * v_ao * env_strength;
 }
 

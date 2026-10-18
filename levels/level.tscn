@@ -75,6 +75,7 @@ light_color = Color(1, 0.97, 0.9, 1)
 shadow_enabled = true
 shadow_bias = 0.01
 shadow_normal_bias = 1.0
+shadow_blur = 2.8
 directional_shadow_mode = 0
 directional_shadow_max_distance = 1.5
 
