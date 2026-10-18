@@ -24,11 +24,11 @@ uniform float stain_amount = 0.0;
 group_uniforms wear;
 uniform float scratch_scale = 22.0;
 uniform float stain_scale = 30.5;
-uniform vec3 stain_color : source_color = vec3(0.710, 0.584, 0.412);
-uniform float patch_strength = 0.12;
-uniform float patch_scale = 8.0;
-uniform vec3 patch_a : source_color = vec3(1.000, 0.890, 0.933);
-uniform vec3 patch_b : source_color = vec3(0.875, 0.910, 1.000);
+uniform vec3 stain_color : source_color = vec3(0.635, 0.588, 0.525);
+uniform float patch_strength = 0.24;
+uniform float patch_scale = 10.5;
+uniform vec3 patch_a : source_color = vec3(1.000, 0.824, 0.780);
+uniform vec3 patch_b : source_color = vec3(0.722, 0.800, 1.000);
 
 group_uniforms glint;
 // A small lamp reflection that slides over a tool as it moves or tilts (world direction to the lamp).

@@ -5,14 +5,14 @@
 // light_scale, measured against the page on 2026-10-18.
 
 group_uniforms light;
-uniform float light_scale : hint_range(0.0, 1.0) = 0.3;
-uniform float dark_level : hint_range(0.0, 1.0) = 0.57;
+uniform float light_scale : hint_range(0.0, 1.0) = 0.21;
+uniform float dark_level : hint_range(0.0, 1.0) = 0.09;
 uniform vec3 shadow_tint : source_color = vec3(0.514, 0.584, 0.627);
-uniform float band_softness : hint_range(0.001, 0.5) = 0.429;
-uniform float metal_diffuse : hint_range(0.0, 1.0) = 0.18;
+uniform float band_softness : hint_range(0.001, 0.5) = 0.355;
+uniform float metal_diffuse : hint_range(0.0, 1.0) = 1.0;
 uniform vec3 ambient_color : source_color = vec3(0.361, 0.690, 1.000);
-uniform float ambient_energy : hint_range(0.0, 2.0) = 0.4;
-uniform float spec_strength : hint_range(0.0, 6.0) = 0.65;
+uniform float ambient_energy : hint_range(0.0, 2.0) = 0.47;
+uniform float spec_strength : hint_range(0.0, 6.0) = 0.15;
 uniform float edge_strength : hint_range(0.0, 4.0) = 0.95;
 uniform float edge_width : hint_range(0.0, 1.0) = 0.34;
 
@@ -20,15 +20,15 @@ group_uniforms room;
 uniform vec3 room_floor : source_color = vec3(0.102, 0.271, 0.286);
 uniform vec3 room_drape : source_color = vec3(0.220, 0.522, 0.541);
 uniform vec3 room_ceiling : source_color = vec3(0.749, 0.800, 0.839);
-uniform float lamp_strength : hint_range(0.0, 4.0) = 3.0;
-uniform float env_strength : hint_range(0.0, 2.0) = 1.57;
+uniform float lamp_strength : hint_range(0.0, 4.0) = 1.2;
+uniform float env_strength : hint_range(0.0, 2.0) = 0.9;
 uniform float env_in_shadow : hint_range(0.0, 1.0) = 0.39;
 uniform float mirror_dark : hint_range(0.0, 1.0) = 1.0;
 
 group_uniforms rim;
 uniform vec3 rim_color : source_color = vec3(0.188, 0.651, 0.651);
-uniform float rim_strength : hint_range(0.0, 2.0) = 0.66;
-uniform float rim_width : hint_range(0.0, 1.0) = 0.35;
+uniform float rim_strength : hint_range(0.0, 2.0) = 1.14;
+uniform float rim_width : hint_range(0.0, 1.0) = 0.97;
 group_uniforms;
 
 varying vec3 v_env;     // room reflection, before shadow

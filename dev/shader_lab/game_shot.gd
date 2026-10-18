@@ -29,7 +29,7 @@ func _ready() -> void:
 	_save("bubble")
 	if level.has_method("_finish_tray"):
 		level.call("_finish_tray")
-		await get_tree().create_timer(8.0).timeout
+		await get_tree().create_timer(12.0).timeout
 		_report(level)
 		_save("tray_2")
 	get_tree().quit()

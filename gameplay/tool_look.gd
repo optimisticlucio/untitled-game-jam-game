@@ -12,12 +12,12 @@ const WEAR := preload("res://assets/shaders/wear.png")
 const BLOOD := preload("res://assets/shaders/blood.png")
 
 ## How far a tool's hue can drift from plain steel (0 = all the same).
-const TINT_STRENGTH := 0.22
+const TINT_STRENGTH := 0.3
 ## Share of tools that get scratches / stains, and how strong they can be.
-const SCRATCH_CHANCE := 0.6
+const SCRATCH_CHANCE := 0.63
 const SCRATCH_STRENGTH := 0.45
-const STAIN_CHANCE := 0.5
-const STAIN_STRENGTH := 0.35
+const STAIN_CHANCE := 0.59
+const STAIN_STRENGTH := 0.24
 
 
 ## Gives the tool's meshes the tool shader with a new random look. Meshes without an albedo
