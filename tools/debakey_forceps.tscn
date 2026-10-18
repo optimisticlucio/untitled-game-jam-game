@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="PackedScene" path="res://assets/instruments/debakey_forceps.glb" id="2_07mll"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hmowl"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nfw1o"]
+size = Vector3(0.009, 0.004, 0.161133)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bdrs4"]
+size = Vector3(0.009, 0.004, 0.161133)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_reg1h"]
+size = Vector3(0.021, 0.02, 0.173133)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e6b3q"]
+size = Vector3(0.021, 0.02, 0.173133)
+
+[node name="DebakeyForceps" instance=ExtResource("base_tool")]
+mass = 0.03
+physics_material_override = SubResource("PhysicsMaterial_hmowl")
+continuous_cd = true
+id = &"debakey_forceps"
+display_name = "DeBakey Forceps"
+description = "Long, even forceps with narrow atraumatic tips: fine grooves, no teeth. For vessels and delicate tissue."
+specialities = Array[int]([0])
+
+[node name="Model" type="Node3D" parent="." unique_id=355727417 instance=ExtResource("2_07mll")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=2120539235]
+transform = Transform3D(1, 0, 0, 0, 0.999395, -0.034789, 0, 0.034789, 0.999395, 0, 0.003609, -0.000244)
+shape = SubResource("BoxShape3D_nfw1o")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1664650534]
+transform = Transform3D(1, 0, 0, 0, 0.999395, 0.034789, 0, -0.034789, 0.999395, 0, -0.003609, -0.000244)
+shape = SubResource("BoxShape3D_bdrs4")
+
+[node name="Pick" type="Area3D" parent="." unique_id=434859022]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=660475653]
+transform = Transform3D(1, 0, 0, 0, 0.999395, -0.034789, 0, 0.034789, 0.999395, 0, 0.003609, -0.000244)
+shape = SubResource("BoxShape3D_reg1h")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=875830507]
+transform = Transform3D(1, 0, 0, 0, 0.999395, 0.034789, 0, -0.034789, 0.999395, 0, -0.003609, -0.000244)
+shape = SubResource("BoxShape3D_e6b3q")

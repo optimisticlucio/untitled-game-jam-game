@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="PackedScene" path="res://assets/instruments/scalpel_15.glb" id="2_bqbcq"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_v7wko"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_avwbm"]
+size = Vector3(0.0095, 0.004, 0.1265)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_vgarr"]
+size = Vector3(0.0081, 0.004, 0.0265)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bs6c5"]
+size = Vector3(0.021499999, 0.02, 0.13849999)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_apnbi"]
+size = Vector3(0.020100001, 0.02, 0.0385)
+
+[node name="Scalpel15" instance=ExtResource("base_tool")]
+mass = 0.02
+physics_material_override = SubResource("PhysicsMaterial_v7wko")
+continuous_cd = true
+id = &"scalpel_15"
+display_name = "Scalpel #15"
+description = "#3 handle with a #15 blade: like a #10 but much smaller, with a short curved belly for small, precise incisions."
+specialities = Array[int]([0, 1, 2])
+
+[node name="Model" type="Node3D" parent="." unique_id=1078410535 instance=ExtResource("2_bqbcq")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1680458439]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01225)
+shape = SubResource("BoxShape3D_avwbm")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1108694084]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00055, 0, -0.06225)
+shape = SubResource("BoxShape3D_vgarr")
+
+[node name="Pick" type="Area3D" parent="." unique_id=1470341245]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=597404292]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01225)
+shape = SubResource("BoxShape3D_bs6c5")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=232296957]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00055, 0, -0.06225)
+shape = SubResource("BoxShape3D_apnbi")

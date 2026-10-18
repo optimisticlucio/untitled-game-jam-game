@@ -1,0 +1,53 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="PackedScene" path="res://assets/instruments/adson_forceps.glb" id="2_a26cf"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_kgmll"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hlvur"]
+size = Vector3(0.0105, 0.004, 0.121108)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7lnd2"]
+size = Vector3(0.0105, 0.004, 0.121108)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i58i8"]
+size = Vector3(0.0225, 0.02, 0.133108)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lhhxh"]
+size = Vector3(0.0225, 0.02, 0.133108)
+
+[node name="AdsonForceps" instance=ExtResource("base_tool")]
+mass = 0.015
+physics_material_override = SubResource("PhysicsMaterial_kgmll")
+continuous_cd = true
+id = &"adson_forceps"
+display_name = "Adson Forceps"
+description = "Short (12 cm) forceps with a wide thumb grip that narrows sharply to a fine tip with small teeth. For skin."
+specialities = Array[int]([0, 1, 2])
+
+[node name="Model" type="Node3D" parent="." unique_id=1130150452 instance=ExtResource("2_a26cf")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=999207897]
+transform = Transform3D(1, 0, 0, 0, 0.999397, -0.034725, 0, 0.034725, 0.999397, 0, 0.00276, -0.000246)
+shape = SubResource("BoxShape3D_hlvur")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1207618483]
+transform = Transform3D(1, 0, 0, 0, 0.999397, 0.034725, 0, -0.034725, 0.999397, 0, -0.00276, -0.000246)
+shape = SubResource("BoxShape3D_7lnd2")
+
+[node name="Pick" type="Area3D" parent="." unique_id=2101566277]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1716433267]
+transform = Transform3D(1, 0, 0, 0, 0.999397, -0.034725, 0, 0.034725, 0.999397, 0, 0.00276, -0.000246)
+shape = SubResource("BoxShape3D_i58i8")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1259299418]
+transform = Transform3D(1, 0, 0, 0, 0.999397, 0.034725, 0, -0.034725, 0.999397, 0, -0.00276, -0.000246)
+shape = SubResource("BoxShape3D_lhhxh")

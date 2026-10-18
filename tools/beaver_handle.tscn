@@ -1,0 +1,55 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="PackedScene" path="res://assets/instruments/beaver_handle.glb" id="2_xtys8"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3ieuj"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_4y6w5"]
+radius = 0.0041
+height = 0.1165
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f6u6g"]
+size = Vector3(0.004, 0.004, 0.019)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g1ren"]
+radius = 0.0101
+height = 0.1285
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fhe6r"]
+size = Vector3(0.02, 0.02, 0.031)
+
+[node name="BeaverHandle" instance=ExtResource("base_tool")]
+mass = 0.02
+physics_material_override = SubResource("PhysicsMaterial_3ieuj")
+continuous_cd = true
+id = &"beaver_handle"
+display_name = "Beaver Blade Handle"
+description = "Round, knurled handle with a collet holding a tiny Beaver blade, for very fine incisions."
+specialities = Array[int]([1, 2])
+
+[node name="Model" type="Node3D" parent="." unique_id=318933048 instance=ExtResource("2_xtys8")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=238342240]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.00725)
+shape = SubResource("CapsuleShape3D_4y6w5")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1731942176]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0004, 0, -0.056)
+shape = SubResource("BoxShape3D_f6u6g")
+
+[node name="Pick" type="Area3D" parent="." unique_id=469477608]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1047737683]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.00725)
+shape = SubResource("CapsuleShape3D_g1ren")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1838083681]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0004, 0, -0.056)
+shape = SubResource("BoxShape3D_fhe6r")

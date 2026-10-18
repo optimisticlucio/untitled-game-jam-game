@@ -7,7 +7,7 @@ Game jam project in Godot 4.7 (GDScript). Several people work on it with Claude.
 
 ## Decisions
 - Renderer: Compatibility, so a web build stays possible. Physics: Jolt.
-- Export presets: add `addons/godot_ai/*` to "Filters to exclude files". The plugin already strips its autoload from exports, but its files still ship otherwise.
+- Export presets: add `addons/godot_ai/*` and `dev/*` to "Filters to exclude files". The plugin already strips its autoload from exports, but its files still ship otherwise.
 - Lookalike pairs will live in one central list, not on each tool (avoids out-of-sync data). Not built yet.
 - Instrument naming language: undecided. Refer to tools by `id` in code, and pass display names through `tr()`.
 - Tool pictures in dialogs: render the model at runtime (`ui/tool_preview.tscn`, slow spin). No PNGs from the artists.
@@ -17,3 +17,6 @@ Game jam project in Godot 4.7 (GDScript). Several people work on it with Claude.
 - Collision: boxes or convex shapes only. Never concave/trimesh: tools are dynamic bodies.
 - `SurgicalTool.Speciality` is append-only, because scenes store it as numbers.
 - Models lie flat as they would on a tray (Y up), at real size in meters.
+- The instrument scenes (`tools/<slug>.tscn`, `assets/instruments/`) are generated from Julia's Blender export by `dev/instruments/build_instruments.gd`, so don't hand-edit them. See `dev/instruments/README.md`.
+- Grabbing: each tool has a `Pick` Area3D on collision layer 8 only (inflated shapes). Raycast that layer with `collide_with_areas`.
+- `project.godot` sets Jolt penetration slop 0.001 and speculative distance 0.004; the defaults (0.02) sink millimetre-thin tools.

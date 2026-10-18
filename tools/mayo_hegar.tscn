@@ -1,0 +1,81 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="PackedScene" path="res://assets/instruments/mayo_hegar.glb" id="2_4t882"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_50rst"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l2upp"]
+size = Vector3(0.009, 0.0074, 0.0475)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dbhbr"]
+size = Vector3(0.0049, 0.004, 0.104266)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e6am7"]
+size = Vector3(0.0049, 0.004, 0.104266)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h5his"]
+size = Vector3(0.0488, 0.0048, 0.0324)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hdygw"]
+size = Vector3(0.021, 0.02, 0.0595)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f01d1"]
+size = Vector3(0.02, 0.02, 0.116266005)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cilr8"]
+size = Vector3(0.02, 0.02, 0.116266005)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_drigv"]
+size = Vector3(0.0608, 0.02, 0.0444)
+
+[node name="MayoHegar" instance=ExtResource("base_tool")]
+mass = 0.06
+physics_material_override = SubResource("PhysicsMaterial_50rst")
+continuous_cd = true
+id = &"mayo_hegar"
+display_name = "Mayo-Hegar Needle Holder"
+description = "Needle holder: gold rings (tungsten-carbide inserts), long shanks and short, heavy jaws. Looks like a clamp, but the jaw is much shorter and wider."
+specialities = Array[int]([0])
+
+[node name="Model" type="Node3D" parent="." unique_id=175180179 instance=ExtResource("2_4t882")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1354008594]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.05627)
+shape = SubResource("BoxShape3D_l2upp")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1175998729]
+transform = Transform3D(0.997346, 0, 0.072806, 0, 1, 0, -0.072806, 0, 0.997346, 0.00585, 0, 0.01448)
+shape = SubResource("BoxShape3D_dbhbr")
+
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=1813210814]
+transform = Transform3D(0.997346, 0, -0.072806, 0, 1, 0, 0.072806, 0, 0.997346, -0.00585, 0, 0.01448)
+shape = SubResource("BoxShape3D_e6am7")
+
+[node name="Collision03" type="CollisionShape3D" parent="." unique_id=750073751]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.064681)
+shape = SubResource("BoxShape3D_h5his")
+
+[node name="Pick" type="Area3D" parent="." unique_id=1254253141]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=714656897]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.05627)
+shape = SubResource("BoxShape3D_hdygw")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=169316799]
+transform = Transform3D(0.997346, 0, 0.072806, 0, 1, 0, -0.072806, 0, 0.997346, 0.00585, 0, 0.01448)
+shape = SubResource("BoxShape3D_f01d1")
+
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=806853567]
+transform = Transform3D(0.997346, 0, -0.072806, 0, 1, 0, 0.072806, 0, 0.997346, -0.00585, 0, 0.01448)
+shape = SubResource("BoxShape3D_cilr8")
+
+[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=349145616]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.064681)
+shape = SubResource("BoxShape3D_drigv")
