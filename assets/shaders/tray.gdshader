@@ -1,14 +1,15 @@
 shader_type spatial;
 render_mode ambient_light_disabled;
-// The tray look test (the tray model is Julia's): a silver tray whose floor is covered with a
-// turquoise surgical cloth, or (tray_cloth off) dark cartoon wood; plastic-looking blood on top.
-// The blood texture is a soft, tileable field (splats spread evenly, made in the browser lab);
-// blood_amount sets where it is cut, so blobs grow smoothly. Blood stays on the tray floor.
-// blood_offset is random per round; the texture repeats, so any offset works.
+// The tray (the model is Julia's): a silver tray whose floor is covered with a turquoise
+// surgical cloth, or (tray_cloth off) dark cartoon wood; plastic-looking blood on top.
+// The blood texture (made in the browser lab) covers exactly the floor, as a 2 x 2 atlas of four
+// layouts with nothing near the edges, so no splat is cut off by a wall. Each tray picks a cell
+// (blood_cell) and may mirror it (blood_flip). blood_amount sets where the soft field is cut, so
+// blobs grow smoothly.
 
 #include "res://assets/shaders/toon_common.gdshaderinc"
 
-uniform sampler2D blood_tex : hint_default_black, filter_linear, repeat_enable;
+uniform sampler2D blood_tex : hint_default_black, filter_linear, repeat_disable;
 
 group_uniforms cloth;
 uniform bool tray_cloth = true;
@@ -32,11 +33,14 @@ uniform vec3 blood_color : source_color = vec3(0.847, 0.071, 0.122);
 uniform vec3 blood_edge : source_color = vec3(0.549, 0.027, 0.071);
 uniform float blood_amount : hint_range(0.0, 1.0) = 0.62;
 uniform float blood_gloss = 0.1;
-uniform float blood_bump = 0.3;
-uniform vec2 blood_offset = vec2(0.0);
-// The tray mesh's local bounds (set from code), to map the blood over the floor.
+uniform float blood_bump = 0.25;
+uniform vec2 blood_cell = vec2(0.0);
+uniform vec2 blood_flip = vec2(0.0);
+// The tray mesh's bounds and its floor's bounds, in the mesh's space (set from code).
 uniform vec3 tray_min = vec3(-0.15, 0.0, -0.21);
 uniform vec3 tray_size = vec3(0.3, 0.03, 0.42);
+uniform vec3 floor_min = vec3(-0.135, 0.0, -0.195);
+uniform vec3 floor_size = vec3(0.27, 0.0, 0.39);
 group_uniforms;
 
 varying vec3 v_local;
@@ -99,17 +103,19 @@ void fragment() {
 		v_gloss = wood_gloss;
 	}
 
-	// One texture tile spans the tray's length.
-	vec2 buv = (v_local.xz - tray_min.xz) / tray_size.z + blood_offset;
-	float f = texture(blood_tex, buv).r;
+	vec2 fuv = (v_local.xz - floor_min.xz) / floor_size.xz;
+	float on_blood_floor = step(0.0, fuv.x) * step(fuv.x, 1.0) * step(0.0, fuv.y) * step(fuv.y, 1.0);
+	fuv = mix(fuv, 1.0 - fuv, blood_flip);
+	vec2 buv = (clamp(fuv, 0.0, 1.0) + blood_cell) * 0.5;
+	float f = texture(blood_tex, buv).r * on_blood_floor;
 	float th = 1.0 - blood_amount;
 	float aa = fwidth(f) * 1.5 + 0.002;
 	v_blood = smoothstep(th - aa, th + aa, f) * on_floor * step(0.001, blood_amount);
 	if (v_blood > 0.0) {
-		float e = 1.0 / 512.0;
+		float e = 1.0 / 1024.0;
 		vec2 g = vec2(texture(blood_tex, buv + vec2(e, 0.0)).r - texture(blood_tex, buv - vec2(e, 0.0)).r,
 				texture(blood_tex, buv + vec2(0.0, e)).r - texture(blood_tex, buv - vec2(0.0, e)).r);
-		g *= blood_bump * 25.0 * (1.0 - smoothstep(th, th + 0.3, f) * 0.7);
+		g *= mix(vec2(1.0), vec2(-1.0), blood_flip) * 0.5 * blood_bump * 25.0 * (1.0 - smoothstep(th, th + 0.3, f) * 0.7);
 		vec3 bumped = normalize(vec3(-g.x, 1.0, -g.y));
 		n_w = normalize(mix(n_w, bumped, v_blood));
 		base = mix(base, mix(blood_edge, blood_color, smoothstep(th, th + 0.12, f)), v_blood);

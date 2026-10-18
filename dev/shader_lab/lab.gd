@@ -147,8 +147,8 @@ func _build_room() -> void:
 	cam = Camera3D.new()
 	add_child(cam)
 	cam.current = true
-	# The game camera is the main scene's Camera3D, so the lab follows the team's framing.
-	var main_scene := load(ProjectSettings.get_setting("application/run/main_scene", "")) as PackedScene
+	# The game camera is the level's Camera3D, so the lab follows the team's framing.
+	var main_scene := load("res://levels/level.tscn") as PackedScene
 	var game: Node = main_scene.instantiate() if main_scene else Node.new()
 	var game_cam := game.get_node_or_null("Camera3D") as Camera3D
 	if game_cam:
@@ -190,12 +190,11 @@ func _collect_surfaces(node: Node) -> void:
 			var body := _body_of(mi)
 			var mat := ShaderMaterial.new()
 			if body is StaticBody3D and not settings.is_empty():
-				mat.shader = TRAY_SHADER
-				var aabb := mi.mesh.get_aabb()
-				mat.set_shader_parameter("tray_min", aabb.position)
-				mat.set_shader_parameter("tray_size", aabb.size)
+				mat = ToolLook.tray_material(mi.mesh)
 				mat.set_shader_parameter("blood_tex", blood_tex)
-				mat.set_shader_parameter("blood_offset", Vector2(rng.randf(), rng.randf()))
+				var cell := rng.randi() % 4
+				mat.set_shader_parameter("blood_cell", Vector2(cell % 2, floorf(cell / 2.0)))
+				mat.set_shader_parameter("blood_flip", Vector2(rng.randi() % 2, rng.randi() % 2))
 			else:
 				mat.shader = SHADER
 				mat.set_shader_parameter("albedo_tex", tex[0])

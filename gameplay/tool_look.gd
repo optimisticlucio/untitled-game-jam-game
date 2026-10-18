@@ -8,7 +8,7 @@ const TOOL_SHADER := preload("res://assets/shaders/tool_toon.gdshader")
 const TRAY_SHADER := preload("res://assets/shaders/tray.gdshader")
 ## R = scratches, G = stains, B = soft hue patches. Tiles.
 const WEAR := preload("res://assets/shaders/wear.png")
-## A soft field of blood splats, spread evenly. Tiles.
+## Blood splats over the tray floor: a 2 x 2 atlas of four layouts, nothing near the edges.
 const BLOOD := preload("res://assets/shaders/blood.png")
 
 ## How far a tool's hue can drift from plain steel (0 = all the same).
@@ -51,26 +51,58 @@ static func apply_to_tool(tool: Node3D) -> void:
 ## Gives the tray model the tray shader (silver with a turquoise cloth, plastic blood).
 static func apply_to_tray(tray_model: Node3D) -> void:
 	for mesh_instance in _meshes(tray_model):
-		var bounds := mesh_instance.mesh.get_aabb()
+		var material := tray_material(mesh_instance.mesh)
 		for surface in mesh_instance.mesh.get_surface_count():
-			var material := ShaderMaterial.new()
-			material.shader = TRAY_SHADER
-			material.set_shader_parameter("blood_tex", BLOOD)
-			# The blood is mapped over the floor from the mesh's own bounds.
-			material.set_shader_parameter("tray_min", bounds.position)
-			material.set_shader_parameter("tray_size", bounds.size)
 			mesh_instance.set_surface_override_material(surface, material)
 	reshuffle_tray(tray_model)
 
 
-## Moves the blood to new places (the texture tiles, so any offset works).
+## The tray shader for this mesh, with the blood mapped over its floor.
+static func tray_material(mesh: Mesh) -> ShaderMaterial:
+	var material := ShaderMaterial.new()
+	material.shader = TRAY_SHADER
+	material.set_shader_parameter("blood_tex", BLOOD)
+	var bounds := mesh.get_aabb()
+	var floor_bounds := _floor_bounds(mesh)
+	material.set_shader_parameter("tray_min", bounds.position)
+	material.set_shader_parameter("tray_size", bounds.size)
+	material.set_shader_parameter("floor_min", floor_bounds.position)
+	material.set_shader_parameter("floor_size", floor_bounds.size)
+	return material
+
+
+## New blood for a new tray: one of the four layouts, maybe mirrored (16 looks).
 static func reshuffle_tray(tray_model: Node3D) -> void:
-	var offset := Vector2(randf(), randf())
+	var cell := randi() % 4
+	var look := {
+		"blood_cell": Vector2(cell % 2, floorf(cell / 2.0)),
+		"blood_flip": Vector2(randi() % 2, randi() % 2),
+	}
 	for mesh_instance in _meshes(tray_model):
 		for surface in mesh_instance.mesh.get_surface_count():
 			var material := mesh_instance.get_surface_override_material(surface) as ShaderMaterial
 			if material and material.shader == TRAY_SHADER:
-				material.set_shader_parameter("blood_offset", offset)
+				for key in look:
+					material.set_shader_parameter(key, look[key])
+
+
+## The tray's floor: its upward faces near the bottom, in the mesh's space.
+static func _floor_bounds(mesh: Mesh) -> AABB:
+	var top := mesh.get_aabb().position.y + 0.012
+	var found := false
+	var bounds := AABB()
+	for surface in mesh.get_surface_count():
+		var arrays := mesh.surface_get_arrays(surface)
+		var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+		var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+		for i in vertices.size():
+			if normals[i].y > 0.8 and vertices[i].y < top:
+				if found:
+					bounds = bounds.expand(vertices[i])
+				else:
+					bounds = AABB(vertices[i], Vector3.ZERO)
+					found = true
+	return bounds if found else mesh.get_aabb()
 
 
 static func _meshes(root: Node) -> Array[MeshInstance3D]:
