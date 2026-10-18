@@ -13,7 +13,14 @@ height = 0.1135
 [sub_resource type="BoxShape3D" id="BoxShape3D_t4ka8"]
 size = Vector3(0.0086, 0.0086, 0.039117)
 
-[node name="m1_micro_needle_holder" type="RigidBody3D" unique_id=1482608602]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ronid"]
+radius = 0.011
+height = 0.1255
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lip77"]
+size = Vector3(0.0206, 0.0206, 0.051117003)
+
+[node name="m1_micro_needle_holder" type="RigidBody3D" unique_id=1151280054]
 mass = 0.035
 physics_material_override = SubResource("PhysicsMaterial_6jy01")
 continuous_cd = true
@@ -22,12 +29,26 @@ metadata/name_he = "מחזיק מחט זעיר"
 metadata/name_en = "Micro needle holder (round handle)"
 metadata/lookalike = "micro"
 
-[node name="visual" type="Node3D" parent="." unique_id=1740918066 instance=ExtResource("1_3vlkm")]
+[node name="visual" type="Node3D" parent="." unique_id=268861619 instance=ExtResource("1_3vlkm")]
 
-[node name="col_00_capsule" type="CollisionShape3D" parent="." unique_id=1164491515]
+[node name="col_00_capsule" type="CollisionShape3D" parent="." unique_id=1322357902]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.018797)
 shape = SubResource("CapsuleShape3D_7bxs7")
 
-[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1758077221]
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=891030019]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.055989)
 shape = SubResource("BoxShape3D_t4ka8")
+
+[node name="pick" type="Area3D" parent="." unique_id=1126381368]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="col_00_capsule" type="CollisionShape3D" parent="pick" unique_id=1221629985]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.018797)
+shape = SubResource("CapsuleShape3D_ronid")
+
+[node name="col_01_box" type="CollisionShape3D" parent="pick" unique_id=1069022777]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.055989)
+shape = SubResource("BoxShape3D_lip77")

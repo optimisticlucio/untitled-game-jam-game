@@ -22,7 +22,7 @@ func _init() -> void:
 				var mb: AABB = _xf(n, root) * (n as MeshInstance3D).get_aabb()
 				mesh_box = mesh_box.merge(mb) if have_mesh else mb
 				have_mesh = true
-			elif n is CollisionShape3D:
+			elif n is CollisionShape3D and n.get_parent() == root:  # physics shapes only, not the pick area
 				var cb: AABB = _xf(n, root) * (n as CollisionShape3D).shape.get_debug_mesh().get_aabb()
 				col_box = col_box.merge(cb) if have_col else cb
 				have_col = true

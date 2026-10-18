@@ -12,7 +12,13 @@ size = Vector3(0.0095, 0.004, 0.1265)
 [sub_resource type="BoxShape3D" id="BoxShape3D_vj3v7"]
 size = Vector3(0.0102, 0.004, 0.0365)
 
-[node name="s1_scalpel_10" type="RigidBody3D" unique_id=2104933846]
+[sub_resource type="BoxShape3D" id="BoxShape3D_sjcgf"]
+size = Vector3(0.021499999, 0.02, 0.13849999)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7d7es"]
+size = Vector3(0.0222, 0.02, 0.0485)
+
+[node name="s1_scalpel_10" type="RigidBody3D" unique_id=980942546]
 mass = 0.02
 physics_material_override = SubResource("PhysicsMaterial_5pluo")
 continuous_cd = true
@@ -21,12 +27,26 @@ metadata/name_he = "סכין מנתחים, להב 10"
 metadata/name_en = "Scalpel #3 handle + #10 blade"
 metadata/lookalike = "scalpel"
 
-[node name="visual" type="Node3D" parent="." unique_id=457885286 instance=ExtResource("1_5qd5m")]
+[node name="visual" type="Node3D" parent="." unique_id=457711327 instance=ExtResource("1_5qd5m")]
 
-[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=245809624]
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=29595951]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00085, 0, 0.01725)
 shape = SubResource("BoxShape3D_t185o")
 
-[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=2031234702]
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1480550493]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00075, 0, -0.06225)
 shape = SubResource("BoxShape3D_vj3v7")
+
+[node name="pick" type="Area3D" parent="." unique_id=1161964515]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="col_00_box" type="CollisionShape3D" parent="pick" unique_id=1855599343]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00085, 0, 0.01725)
+shape = SubResource("BoxShape3D_sjcgf")
+
+[node name="col_01_box" type="CollisionShape3D" parent="pick" unique_id=2102287536]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00075, 0, -0.06225)
+shape = SubResource("BoxShape3D_7d7es")
