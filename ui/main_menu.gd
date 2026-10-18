@@ -1,12 +1,13 @@
 class_name MainMenu
 extends Control
 ## Home screen: Play, Pocket Guide, Leaderboard, Settings. Placeholder art (ui/theme.tres,
-## ui/icons/). Level select and the leaderboard aren't built yet: Play emits play_pressed and opens
-## play_scene (set to levels/level.tscn for now); Leaderboard shows "coming soon".
+## ui/icons/). Level select isn't built yet: Play emits play_pressed and opens play_scene (set to
+## levels/level.tscn for now). Leaderboard opens ui/leaderboard.tscn.
 
 signal play_pressed
 
 const POCKET_GUIDE := "res://ui/pocket_guide.tscn"
+const LEADERBOARD := "res://ui/leaderboard.tscn"
 
 ## Scene Play opens, until level select exists. Empty: only play_pressed is emitted.
 @export_file("*.tscn") var play_scene := ""
@@ -21,7 +22,9 @@ func _ready() -> void:
 	SettingsPanel.apply_saved()
 	(%PlayButton as Button).pressed.connect(_on_play)
 	(%GuideButton as Button).pressed.connect(func() -> void: get_tree().change_scene_to_file(POCKET_GUIDE))
-	(%LeaderboardButton as Button).pressed.connect(_show_toast.bind("Leaderboard: coming soon"))
+	(%LeaderboardButton as Button).pressed.connect(func() -> void:
+		ScoreBoard.focus_level_key = ""
+		get_tree().change_scene_to_file(LEADERBOARD))
 	(%SettingsButton as Button).pressed.connect(_settings_sheet.toggle)
 	(%CloseSettingsButton as Button).pressed.connect(_settings_sheet.toggle)
 	for button in find_children("*", "BaseButton", true, false):

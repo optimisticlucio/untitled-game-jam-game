@@ -6,6 +6,7 @@ extends Node3D
 ## The screen shape the scene is laid out for. Wider screens get bars of
 ## extra table at the sides instead of losing the top and bottom.
 const DESIGN_ASPECT := 9.0 / 16.0
+const LEVEL_RESULT := preload("res://ui/level_result.tscn")
 
 @export var level: LevelData
 
@@ -25,6 +26,9 @@ var _hint_shown := false
 ## for a request comes at once).
 var _hinted_this_request := false
 var _hint_elapsed := 0.0
+## For the score (ScoreBoard); the tutorial tray doesn't count.
+var _wrong := 0
+var _hints_used := 0
 
 @onready var _camera: Camera3D = $Camera3D
 ## The camera's horizontal field of view at DESIGN_ASPECT, as set in the scene.
@@ -142,7 +146,7 @@ func _finish_tray() -> void:
 	_tray_index += 1
 	if _tray_index >= _trays.size():
 		$Sounds/Complete.play()
-		_show_message("Level complete!")
+		_show_result()
 		return
 	_request.hide()
 	_grabber.enabled = false
@@ -163,6 +167,8 @@ func _on_tool_handed(tool: SurgicalTool) -> void:
 		_request_next()
 	else:
 		$Sounds/Wrong.play()
+		if not _in_tutorial():
+			_wrong += 1
 		_grabber.reject(tool)
 
 
@@ -190,6 +196,8 @@ func _show_hint() -> void:
 	if best:
 		_grabber.hint(best)
 		$Sounds/Hint.play()
+		if not _in_tutorial():
+			_hints_used += 1
 		_hint_shown = true
 		_hinted_this_request = true
 		_hint_elapsed = 0.0
@@ -197,6 +205,17 @@ func _show_hint() -> void:
 
 func _on_play_again_pressed() -> void:
 	get_tree().reload_current_scene()
+
+
+## The end-of-level card: score, name, rank (ui/level_result.tscn, ScoreBoard).
+func _show_result() -> void:
+	_hud.stop_clock()
+	_grabber.enabled = false
+	_request.hide()
+	var result := LEVEL_RESULT.instantiate() as LevelResult
+	add_child(result)
+	result.show_run(level, _hud.elapsed, _wrong, _hints_used)
+	result.play_again_pressed.connect(_on_play_again_pressed)
 
 
 func _show_message(text: String) -> void:

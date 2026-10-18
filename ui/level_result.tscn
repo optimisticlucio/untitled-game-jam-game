@@ -1,0 +1,172 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/level_result.gd" id="1_26d0o"]
+[ext_resource type="Theme" path="res://ui/theme.tres" id="2_ox4fa"]
+[ext_resource type="Texture2D" path="res://ui/icons/trophy.svg" id="3_lkwg2"]
+[ext_resource type="Texture2D" path="res://ui/icons/play.svg" id="4_1fkqt"]
+[ext_resource type="Texture2D" path="res://ui/icons/back.svg" id="5_07atm"]
+
+[node name="LevelResult" type="CanvasLayer" unique_id=478122644]
+layer = 20
+script = ExtResource("1_26d0o")
+
+[node name="Root" type="Control" parent="." unique_id=1438834568]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("2_ox4fa")
+
+[node name="Dim" type="ColorRect" parent="Root" unique_id=1120250276]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.45)
+
+[node name="Card" type="PanelContainer" parent="Root" unique_id=1013440697]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -310.0
+offset_top = -420.0
+offset_right = 310.0
+offset_bottom = 420.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_type_variation = &"CardPanel"
+
+[node name="Margin" type="MarginContainer" parent="Root/Card" unique_id=673570605]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="Column" type="VBoxContainer" parent="Root/Card/Margin" unique_id=1367386512]
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="Root/Card/Margin/Column" unique_id=1588341787]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Level complete!"
+horizontal_alignment = 1
+
+[node name="Stats" type="GridContainer" parent="Root/Card/Margin/Column" unique_id=1408176085]
+layout_mode = 2
+theme_override_constants/h_separation = 30
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="TimeLabel" type="Label" parent="Root/Card/Margin/Column/Stats" unique_id=998827675]
+layout_mode = 2
+text = "Time"
+
+[node name="TimeValue" type="Label" parent="Root/Card/Margin/Column/Stats" unique_id=912513914]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "-"
+horizontal_alignment = 2
+
+[node name="WrongLabel" type="Label" parent="Root/Card/Margin/Column/Stats" unique_id=931979636]
+layout_mode = 2
+text = "Wrong"
+
+[node name="WrongValue" type="Label" parent="Root/Card/Margin/Column/Stats" unique_id=1413820893]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "-"
+horizontal_alignment = 2
+
+[node name="HintsLabel" type="Label" parent="Root/Card/Margin/Column/Stats" unique_id=767661917]
+layout_mode = 2
+text = "Hints"
+
+[node name="HintsValue" type="Label" parent="Root/Card/Margin/Column/Stats" unique_id=419800472]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "-"
+horizontal_alignment = 2
+
+[node name="ScoreLabel" type="Label" parent="Root/Card/Margin/Column/Stats" unique_id=122323752]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Score"
+
+[node name="ScoreValue" type="Label" parent="Root/Card/Margin/Column/Stats" unique_id=1401712419]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "-"
+horizontal_alignment = 2
+
+[node name="ScoreHint" type="Label" parent="Root/Card/Margin/Column" unique_id=5939660]
+layout_mode = 2
+theme_type_variation = &"SmallLabel"
+text = "Time, plus 15 s per wrong tool and 5 s per hint. Lower is better."
+autowrap_mode = 3
+
+[node name="NameRow" type="HBoxContainer" parent="Root/Card/Margin/Column" unique_id=13315904]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="NameLabel" type="Label" parent="Root/Card/Margin/Column/NameRow" unique_id=246859274]
+layout_mode = 2
+text = "Name"
+
+[node name="NameEdit" type="LineEdit" parent="Root/Card/Margin/Column/NameRow" unique_id=1189802358]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Your name"
+max_length = 16
+
+[node name="SaveButton" type="Button" parent="Root/Card/Margin/Column" unique_id=436029656]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Save score"
+icon = ExtResource("3_lkwg2")
+
+[node name="RankLabel" type="Label" parent="Root/Card/Margin/Column" unique_id=1007040238]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="LeaderboardButton" type="Button" parent="Root/Card/Margin/Column" unique_id=528081641]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Leaderboard"
+icon = ExtResource("3_lkwg2")
+
+[node name="Buttons" type="HBoxContainer" parent="Root/Card/Margin/Column" unique_id=1807603636]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="PlayAgainButton" type="Button" parent="Root/Card/Margin/Column/Buttons" unique_id=103762839]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Again"
+icon = ExtResource("4_1fkqt")
+
+[node name="MenuButton" type="Button" parent="Root/Card/Margin/Column/Buttons" unique_id=2024746317]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 110)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Menu"
+icon = ExtResource("5_07atm")
