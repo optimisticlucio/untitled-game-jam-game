@@ -28,6 +28,10 @@ uniform float env_strength : hint_range(0.0, 2.0) = 0.9;
 uniform float env_in_shadow : hint_range(0.0, 1.0) = 0.39;
 uniform float mirror_dark : hint_range(0.0, 1.0) = 1.0;
 
+// The room's light level, set by LightFlicker (1 = normal). The sun flickers by itself; this
+// dims the shaders' own room light and reflection along with it.
+global uniform float room_light;
+
 group_uniforms rim;
 uniform vec3 rim_color : source_color = vec3(0.188, 0.651, 0.651);
 uniform float rim_strength : hint_range(0.0, 2.0) = 1.14;
@@ -82,7 +86,7 @@ void light() {
 
 	if (LIGHT_IS_DIRECTIONAL) {
 		// Room light and room reflection are added once, with the sun's shadow and shade colour.
-		DIFFUSE_LIGHT += ambient_color * ambient_energy * v_ao * shade;
-		SPECULAR_LIGHT += (v_env * mix(env_in_shadow, 1.0, ATTENUATION) * shade + vec3(v_glint * ATTENUATION)) * PI * light_scale;
+		DIFFUSE_LIGHT += ambient_color * ambient_energy * v_ao * shade * room_light;
+		SPECULAR_LIGHT += (v_env * mix(env_in_shadow, 1.0, ATTENUATION) * shade + vec3(v_glint * ATTENUATION)) * PI * light_scale * room_light;
 	}
 }

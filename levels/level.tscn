@@ -16,6 +16,7 @@
 [ext_resource type="AudioStream" path="res://assets/sounds/gameplay/hint_sparkle.wav" id="12_hint"]
 [ext_resource type="AudioStream" path="res://assets/sounds/gameplay/tray_slide.wav" id="13_tray_slide"]
 [ext_resource type="AudioStream" path="res://assets/sounds/gameplay/level_complete.wav" id="14_complete"]
+[ext_resource type="Script" path="res://gameplay/light_flicker.gd" id="flicker_script"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_main"]
 
@@ -78,6 +79,9 @@ shadow_normal_bias = 1.0
 shadow_blur = 2.8
 directional_shadow_mode = 0
 directional_shadow_max_distance = 1.5
+
+[node name="Flicker" type="Node" parent="Sun"]
+script = ExtResource("flicker_script")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.374, 0.9274, 0, -0.9274, 0.374, 0, 0.6387, 0.17363)
