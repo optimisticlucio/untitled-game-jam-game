@@ -7,9 +7,10 @@ extends Node
 ## On release:
 ## (Where it's released is judged by the pointer, not the tool, since the tool
 ## floats above a finger.)
-## - over the tray's zone: lowered onto the pile and dropped with physics.
+## - over the tray's zone: dropped with physics from where it is; the pile
+##   gets a small nudge when it lands.
 ## - over hand_off_zone: tool_handed is emitted, and the listener decides.
-## - anywhere else: flown back to a random spot in the tray, and the pile
+## - anywhere else: flown back to the nearest spot on the tray, and the pile
 ##   gets a small nudge.
 ## Works with mouse and touch (Godot turns single touches into mouse events).
 ## It also owns every glow on the tools, including hint() glows, so they
@@ -50,17 +51,21 @@ const RAY_LENGTH := 100.0
 		hint_color = value
 		_hint_glow.set_shader_parameter("glow_color", value)
 ## Height above the tray's tools the held tool floats at. Higher is closer to the camera.
-@export var lift_height := 0.2
+@export var lift_height := 0.3
 ## On touch screens the held tool sits this far above the finger, so the finger
 ## doesn't hide it. Mice get no offset.
 @export var finger_offset_pixels := 90.0
 ## How quickly the held tool catches up with the finger.
-@export var follow_sharpness := 16.0
-## Height above the tray floor that dropped and returned tools are let go from.
-@export var drop_height := 0.06
+@export var follow_sharpness := 12.0
+## Height above the tray floor that returned tools are let go from.
+@export var drop_height := 0.16
 @export var return_seconds := 0.35
-## Speed (m/s) of the random nudge every tray tool gets when a tool is returned.
-@export var jumble_speed := 0.25
+## Returned tools land at least this far inside the tray's edge, so they
+## don't catch the rim.
+@export var return_margin := 0.03
+## Speed (m/s) of the random nudge the other tray tools get when a dropped
+## or returned tool lands.
+@export var jumble_speed := 0.1
 ## How long a consumed tool takes to drop onto the hand-off zone, then to shrink away.
 @export var consume_drop_seconds := 0.3
 @export var consume_shrink_seconds := 0.2
@@ -89,6 +94,10 @@ var _candidate: SurgicalTool
 var _held: SurgicalTool
 ## Tools mid-flight back to the tray. They can't be grabbed until they land.
 var _flying: Dictionary[SurgicalTool, bool] = {}
+## Where each released tool appeared to be let go: the point on the table
+## under the pointer. A held tool floats near the camera, so its own position
+## is far from where it looks to be. Returns aim for this point.
+var _released_over: Dictionary[SurgicalTool, Vector3] = {}
 ## Collision layer and mask of each tool made intangible, to restore on drop.
 var _saved_layers: Dictionary[SurgicalTool, Vector2i] = {}
 
@@ -138,6 +147,7 @@ func _process(delta: float) -> void:
 ## Drops a handed-over tool onto the middle of the hand-off zone, shrinks it
 ## away and frees it. Await the returned signal to act once it's gone.
 func consume(tool: SurgicalTool) -> Signal:
+	_released_over.erase(tool)
 	_make_intangible(tool)
 	_flying[tool] = true
 	var landing := hand_off_zone.global_transform * _first_shape(hand_off_zone).position
@@ -160,20 +170,25 @@ func consume(tool: SurgicalTool) -> Signal:
 	return tween.finished
 
 
-## Flies a tool back to a random spot in the tray, then nudges the pile.
+## Flies a tool to the nearest spot on the tray where it fits (turning it
+## only if that gets it closer), eases it to a stop drop_height above the
+## floor, and lets it fall. The rest of the pile is nudged when it lands.
 func return_to_tray(tool: SurgicalTool) -> void:
 	_make_intangible(tool)
 	_set_glow(tool, false)
 	_flying[tool] = true
-	var spot := tray.random_point() + Vector3.UP * drop_height
-	var flat_rotation := Vector3(0.0, randf() * TAU, 0.0)
-	var tween := create_tween().set_parallel().set_trans(Tween.TRANS_SINE)
+	var near: Vector3 = _released_over.get(tool, tool.global_position)
+	_released_over.erase(tool)
+	var placement := tray.nearest_placement(tool, near, tool.global_rotation.y, return_margin)
+	var spot := placement.origin + Vector3.UP * drop_height
+	var flat_rotation := Vector3(0.0, placement.basis.get_euler().y, 0.0)
+	var tween := create_tween().set_parallel().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	tween.tween_property(tool, "global_position", spot, return_seconds)
 	tween.tween_property(tool, "global_rotation", flat_rotation, return_seconds)
 	tween.chain().tween_callback(func() -> void:
 		_flying.erase(tool)
 		_drop(tool)
-		_jumble())
+		_jumble_on_landing(tool))
 
 
 func _grab(tool: SurgicalTool) -> void:
@@ -189,21 +204,17 @@ func _grab(tool: SurgicalTool) -> void:
 func _release() -> void:
 	var tool := _held
 	_held = null
+	_released_over[tool] = _table_point_under(_pointer)
 	tool_released.emit(tool)
 	var zone := _zone_under(_pointer)
 	if zone == hand_off_zone:
 		_set_glow(tool, false)
 		tool_handed.emit(tool)
 	elif zone == tray.zone:
+		_released_over.erase(tool)
 		_set_glow(tool, false)
-		var spot := tool.global_position
-		spot.y = tray.floor_height(spot) + drop_height
-		_flying[tool] = true
-		var tween := create_tween()
-		tween.tween_property(tool, "global_position", spot, 0.1)
-		tween.tween_callback(func() -> void:
-			_flying.erase(tool)
-			_drop(tool))
+		_drop(tool)
+		_jumble_on_landing(tool)
 	else:
 		return_to_tray(tool)
 
@@ -227,9 +238,19 @@ func _drop(tool: SurgicalTool) -> void:
 	tool.angular_velocity = Vector3.ZERO
 
 
-func _jumble() -> void:
+## Nudges the pile the moment the falling tool first touches something.
+func _jumble_on_landing(falling: SurgicalTool) -> void:
+	falling.contact_monitor = true
+	falling.max_contacts_reported = 1
+	falling.body_entered.connect(func(_body: Node) -> void:
+		falling.set_deferred("contact_monitor", false)
+		_jumble(falling), CONNECT_ONE_SHOT)
+
+
+## Nudges every resting tool except the one that caused it.
+func _jumble(except: SurgicalTool) -> void:
 	for tool in tray.tools():
-		if tool.freeze:
+		if tool.freeze or tool == except:
 			continue
 		var direction := Vector3.RIGHT.rotated(Vector3.UP, randf() * TAU)
 		tool.apply_central_impulse(direction * jumble_speed * tool.mass)
@@ -278,6 +299,13 @@ func _held_position() -> Vector3:
 	var plane := Plane(Vector3.UP, tray.tools_root.global_position.y + lift_height)
 	var hit: Variant = plane.intersects_ray(origin, direction)
 	return hit if hit != null else _held.global_position
+
+
+## The point at tray-floor height under a screen position.
+func _table_point_under(screen: Vector2) -> Vector3:
+	var plane := Plane(Vector3.UP, tray.tools_root.global_position.y)
+	var hit: Variant = plane.intersects_ray(camera.project_ray_origin(screen), camera.project_ray_normal(screen))
+	return hit if hit != null else tray.global_position
 
 
 ## The grabbable tool under a screen position, or null.

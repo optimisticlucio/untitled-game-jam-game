@@ -35,9 +35,10 @@ func clear() -> void:
 		tool.queue_free()
 
 
-## True if the point is over the tray floor (its height is ignored).
-func contains(point: Vector3) -> bool:
-	return _shape_at(point) != null
+## True if the point is over the tray floor (its height is ignored), and at
+## least margin inside its edge.
+func contains(point: Vector3, margin := 0.0) -> bool:
+	return _shape_at(point, margin) != null
 
 
 ## Height of the floor under the point, or of the lowest floor if it's off the tray.
@@ -61,6 +62,35 @@ func random_point() -> Vector3:
 			return point
 	push_warning("Tray: couldn't find a point inside the Zone shapes")
 	return _bounds().get_center()
+
+
+## Where to put the tool so it lies whole on the floor (both ends at least
+## margin inside the edge) as close as possible to point: a spot on the
+## floor, and a heading near yaw.
+## The heading turns in 15° steps, up to 90° either way, when that lets the
+## tool sit closer; the smallest turn wins a tie. The result's origin is the
+## spot (on the floor) and its basis the heading.
+func nearest_placement(tool: SurgicalTool, point: Vector3, yaw: float, margin := 0.0) -> Transform3D:
+	var bounds := tool.visual_bounds()
+	var middle := _bounds().get_center()
+	var start := _nearest_floor_point(point)
+	var best := Transform3D(Basis(Vector3.UP, yaw), start)
+	var best_distance := INF
+	for step in [0, 1, -1, 2, -2, 3, -3, 4, -4, 5, -5, 6]:
+		var turn: float = yaw + deg_to_rad(15.0 * step)
+		var spot := start
+		for i in 50:
+			var footprint := _Footprint.new(spot, turn, bounds)
+			if contains(footprint.a, margin) and contains(footprint.b, margin):
+				break
+			spot = spot.move_toward(Vector3(middle.x, spot.y, middle.z), 0.01)
+		var distance := Vector2(spot.x - point.x, spot.z - point.z).length()
+		# A turn must bring it at least 1 cm closer to be worth it.
+		if distance < best_distance - 0.01:
+			best = Transform3D(Basis(Vector3.UP, turn), spot)
+			best_distance = distance
+	best.origin.y = floor_height(best.origin)
+	return best
 
 
 ## The middle of the tray's far edge (the one furthest from the player), at
@@ -170,20 +200,43 @@ func _shapes() -> Array[CollisionShape3D]:
 	return shapes
 
 
-## The zone shape whose floor area holds the point, or null.
-func _shape_at(point: Vector3) -> CollisionShape3D:
+## The zone shape whose floor area holds the point (at least margin inside
+## its edge), or null.
+func _shape_at(point: Vector3, margin := 0.0) -> CollisionShape3D:
 	for shape in _shapes():
 		var local := shape.global_transform.affine_inverse() * point
 		if shape.shape is BoxShape3D:
 			var half := (shape.shape as BoxShape3D).size * 0.5
-			if absf(local.x) <= half.x and absf(local.z) <= half.z:
+			if absf(local.x) <= half.x - margin and absf(local.z) <= half.z - margin:
 				return shape
 		elif shape.shape is CylinderShape3D:
-			if Vector2(local.x, local.z).length() <= (shape.shape as CylinderShape3D).radius:
+			if Vector2(local.x, local.z).length() <= (shape.shape as CylinderShape3D).radius - margin:
 				return shape
 		else:
 			push_warning("Tray: Zone shapes must be boxes or cylinders, not %s" % shape.shape.get_class())
 	return null
+
+
+## The point on the floor (any zone shape) closest to point, ignoring height.
+func _nearest_floor_point(point: Vector3) -> Vector3:
+	var best := point
+	var best_distance := INF
+	for shape in _shapes():
+		var local := shape.global_transform.affine_inverse() * point
+		if shape.shape is BoxShape3D:
+			var half := (shape.shape as BoxShape3D).size * 0.5
+			local.x = clampf(local.x, -half.x, half.x)
+			local.z = clampf(local.z, -half.z, half.z)
+		elif shape.shape is CylinderShape3D:
+			var flat := Vector2(local.x, local.z).limit_length((shape.shape as CylinderShape3D).radius)
+			local.x = flat.x
+			local.z = flat.y
+		var candidate := shape.global_transform * local
+		var distance := Vector2(candidate.x - point.x, candidate.z - point.z).length()
+		if distance < best_distance:
+			best = candidate
+			best_distance = distance
+	return best
 
 
 func _bottom(shape: CollisionShape3D) -> float:
