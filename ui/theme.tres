@@ -179,6 +179,87 @@ corner_radius_top_right = 18
 corner_radius_bottom_right = 18
 corner_radius_bottom_left = 18
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
+content_margin_left = 36.0
+content_margin_top = 36.0
+content_margin_right = 36.0
+content_margin_bottom = 28.0
+bg_color = Color(0.3, 0.74, 0.8, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 200
+corner_radius_top_right = 200
+corner_detail = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_round"]
+content_margin_left = 18.0
+content_margin_top = 18.0
+content_margin_right = 18.0
+content_margin_bottom = 18.0
+bg_color = Color(0.96, 0.95, 0.93, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_round_pressed"]
+content_margin_left = 18.0
+content_margin_top = 18.0
+content_margin_right = 18.0
+content_margin_bottom = 18.0
+bg_color = Color(0.82, 0.8, 0.77, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 80
+corner_radius_top_right = 80
+corner_radius_bottom_right = 80
+corner_radius_bottom_left = 80
+corner_detail = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubble"]
+content_margin_left = 18.0
+content_margin_top = 18.0
+content_margin_right = 30.0
+content_margin_bottom = 18.0
+bg_color = Color(0.91, 0.38, 0.1, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 48
+corner_radius_top_right = 48
+corner_radius_bottom_right = 48
+corner_radius_bottom_left = 48
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_circle"]
+content_margin_left = 6.0
+content_margin_top = 6.0
+content_margin_right = 6.0
+content_margin_bottom = 6.0
+bg_color = Color(1, 0.96, 0.92, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 90
+corner_radius_top_right = 90
+corner_radius_bottom_right = 90
+corner_radius_bottom_left = 90
+corner_detail = 16
+
 [resource]
 default_font_size = 40
 Button/colors/font_color = Color(0.05, 0.05, 0.06, 1)
@@ -220,3 +301,16 @@ TealPanel/base_type = &"PanelContainer"
 TealPanel/styles/panel = SubResource("StyleBoxFlat_de4b7")
 TitleLabel/base_type = &"Label"
 TitleLabel/font_sizes/font_size = 84
+BottomBar/base_type = &"PanelContainer"
+BottomBar/styles/panel = SubResource("StyleBoxFlat_bar")
+BubbleCircle/base_type = &"PanelContainer"
+BubbleCircle/styles/panel = SubResource("StyleBoxFlat_circle")
+BubbleLabel/base_type = &"Label"
+BubbleLabel/font_sizes/font_size = 46
+BubblePanel/base_type = &"PanelContainer"
+BubblePanel/styles/panel = SubResource("StyleBoxFlat_bubble")
+RoundButton/base_type = &"Button"
+RoundButton/styles/focus = SubResource("StyleBoxEmpty_rqugq")
+RoundButton/styles/hover = SubResource("StyleBoxFlat_round")
+RoundButton/styles/normal = SubResource("StyleBoxFlat_round")
+RoundButton/styles/pressed = SubResource("StyleBoxFlat_round_pressed")
