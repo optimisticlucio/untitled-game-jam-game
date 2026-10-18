@@ -10,15 +10,15 @@ bounce = 0.05
 size = Vector3(0.009, 0.0064, 0.0535)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wxwx1"]
-size = Vector3(0.0045, 0.004, 0.0784)
+size = Vector3(0.0049, 0.004, 0.0784)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_vi5gv"]
-size = Vector3(0.0045, 0.004, 0.0784)
+size = Vector3(0.0049, 0.004, 0.0784)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cxdkt"]
 size = Vector3(0.0488, 0.0048, 0.0324)
 
-[node name="s6_kelly_clamp" type="RigidBody3D" unique_id=968922837]
+[node name="s6_kelly_clamp" type="RigidBody3D" unique_id=2119194333]
 mass = 0.045
 physics_material_override = SubResource("PhysicsMaterial_8jvw8")
 continuous_cd = true
@@ -27,20 +27,20 @@ metadata/name_he = "מלקחיים עוצרי דימום (קלי)"
 metadata/name_en = "Kelly hemostat"
 metadata/lookalike = "clamp"
 
-[node name="visual" type="Node3D" parent="." unique_id=618472729 instance=ExtResource("1_o8bn6")]
+[node name="visual" type="Node3D" parent="." unique_id=2101913737 instance=ExtResource("1_o8bn6")]
 
-[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=479189865]
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=862505589]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04327)
 shape = SubResource("BoxShape3D_mcadr")
 
-[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1304418579]
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=2050632137]
 transform = Transform3D(0.99463, 0, 0.103495, 0, 1, 0, -0.103495, 0, 0.99463, 0.00565, 0, 0.01748)
 shape = SubResource("BoxShape3D_wxwx1")
 
-[node name="col_02_box" type="CollisionShape3D" parent="." unique_id=431716086]
+[node name="col_02_box" type="CollisionShape3D" parent="." unique_id=1805087529]
 transform = Transform3D(0.99463, 0, -0.103495, 0, 1, 0, 0.103495, 0, 0.99463, -0.00565, 0, 0.01748)
 shape = SubResource("BoxShape3D_vi5gv")
 
-[node name="col_03_box" type="CollisionShape3D" parent="." unique_id=539481601]
+[node name="col_03_box" type="CollisionShape3D" parent="." unique_id=1943266221]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05468)
 shape = SubResource("BoxShape3D_cxdkt")

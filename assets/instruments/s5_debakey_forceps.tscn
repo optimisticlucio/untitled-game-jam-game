@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/s5_debakey_forceps.glb" id="1_fvjvn"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3ub4h"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_edm8c"]
+size = Vector3(0.009, 0.004, 0.161133)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_88rdq"]
+size = Vector3(0.009, 0.004, 0.161133)
+
+[node name="s5_debakey_forceps" type="RigidBody3D" unique_id=1307831449]
+mass = 0.03
+physics_material_override = SubResource("PhysicsMaterial_3ub4h")
+continuous_cd = true
+metadata/instrument_id = "s5"
+metadata/name_he = "פינצטה חלקה"
+metadata/name_en = "DeBakey forceps"
+metadata/lookalike = "forceps"
+
+[node name="visual" type="Node3D" parent="." unique_id=1169110257 instance=ExtResource("1_fvjvn")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=1051316436]
+transform = Transform3D(1, 0, 0, 0, 0.999395, -0.034789, 0, 0.034789, 0.999395, 0, 0.003609, -0.000244)
+shape = SubResource("BoxShape3D_edm8c")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1717878960]
+transform = Transform3D(1, 0, 0, 0, 0.999395, 0.034789, 0, -0.034789, 0.999395, 0, -0.003609, -0.000244)
+shape = SubResource("BoxShape3D_88rdq")

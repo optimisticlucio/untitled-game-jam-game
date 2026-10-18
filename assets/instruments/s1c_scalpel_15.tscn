@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/s1c_scalpel_15.glb" id="1_g0s08"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_lgudj"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7wfse"]
+size = Vector3(0.0095, 0.004, 0.1265)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0qtng"]
+size = Vector3(0.0081, 0.004, 0.0265)
+
+[node name="s1c_scalpel_15" type="RigidBody3D" unique_id=586246475]
+mass = 0.02
+physics_material_override = SubResource("PhysicsMaterial_lgudj")
+continuous_cd = true
+metadata/instrument_id = "s1c"
+metadata/name_he = "סכין מנתחים, להב 15"
+metadata/name_en = "Scalpel #3 handle + #15 blade"
+metadata/lookalike = "scalpel"
+
+[node name="visual" type="Node3D" parent="." unique_id=793295558 instance=ExtResource("1_g0s08")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=1199589868]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01225)
+shape = SubResource("BoxShape3D_7wfse")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=292503621]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00055, 0, -0.06225)
+shape = SubResource("BoxShape3D_0qtng")

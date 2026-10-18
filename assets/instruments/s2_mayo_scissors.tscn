@@ -1,0 +1,46 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/s2_mayo_scissors.glb" id="1_cq26c"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dvo80"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_khtfx"]
+size = Vector3(0.0102, 0.008, 0.071)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5hhnq"]
+size = Vector3(0.0049, 0.004, 0.080331)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k58ia"]
+size = Vector3(0.0049, 0.004, 0.080331)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wew1w"]
+size = Vector3(0.0488, 0.0048, 0.0228)
+
+[node name="s2_mayo_scissors" type="RigidBody3D" unique_id=36250336]
+mass = 0.06
+physics_material_override = SubResource("PhysicsMaterial_dvo80")
+continuous_cd = true
+metadata/instrument_id = "s2"
+metadata/name_he = "מספריים ישרות"
+metadata/name_en = "Mayo scissors"
+metadata/lookalike = "scissors"
+
+[node name="visual" type="Node3D" parent="." unique_id=323977759 instance=ExtResource("1_cq26c")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=112862236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04452)
+shape = SubResource("BoxShape3D_khtfx")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=732799062]
+transform = Transform3D(0.995665, 0, 0.093016, 0, 1, 0, -0.093016, 0, 0.995665, 0.00595, 0, 0.02648)
+shape = SubResource("BoxShape3D_5hhnq")
+
+[node name="col_02_box" type="CollisionShape3D" parent="." unique_id=946922036]
+transform = Transform3D(0.995665, 0, -0.093016, 0, 1, 0, 0.093016, 0, 0.995665, -0.00595, 0, 0.02648)
+shape = SubResource("BoxShape3D_k58ia")
+
+[node name="col_03_box" type="CollisionShape3D" parent="." unique_id=940514297]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.069481)
+shape = SubResource("BoxShape3D_wew1w")

@@ -1,0 +1,81 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/t2_kidney_dish.glb" id="1_je5kw"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2jojw"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i3o0d"]
+size = Vector3(0.097763, 0.0046, 0.1956)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ae3dw"]
+size = Vector3(0.008583, 0.03921, 0.092041)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bg1ap"]
+size = Vector3(0.010006, 0.043704, 0.068077)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fafuf"]
+size = Vector3(0.012563, 0.04417, 0.062091)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dx83s"]
+size = Vector3(0.004, 0.033562, 0.091047)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_800o7"]
+size = Vector3(0.004, 0.033562, 0.091047)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_eu6tg"]
+size = Vector3(0.012563, 0.04417, 0.062091)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lu4o0"]
+size = Vector3(0.010006, 0.043704, 0.068077)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_nlrqo"]
+size = Vector3(0.008583, 0.03921, 0.092041)
+
+[node name="t2_kidney_dish" type="RigidBody3D" unique_id=906664773]
+mass = 0.15
+physics_material_override = SubResource("PhysicsMaterial_2jojw")
+continuous_cd = true
+metadata/instrument_id = "t2"
+metadata/name_he = "קערת כליה"
+metadata/name_en = "Kidney dish"
+metadata/lookalike = ""
+
+[node name="visual" type="Node3D" parent="." unique_id=607694882 instance=ExtResource("1_je5kw")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=1087866555]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.003897, -0.0208, 0)
+shape = SubResource("BoxShape3D_i3o0d")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=411975556]
+transform = Transform3D(0.87804, 0.404207, 0.256246, -0.418169, 0.908369, 0, -0.232766, -0.107154, 0.966612, 0.045419, 0.004133, -0.042829)
+shape = SubResource("BoxShape3D_ae3dw")
+
+[node name="col_02_box" type="CollisionShape3D" parent="." unique_id=945934710]
+transform = Transform3D(0.46081, 0.287876, 0.839513, -0.529827, 0.848105, 0, -0.711995, -0.444797, 0.54334, 0.006934, 0.004214, -0.100992)
+shape = SubResource("BoxShape3D_bg1ap")
+
+[node name="col_03_box" type="CollisionShape3D" parent="." unique_id=974681264]
+transform = Transform3D(-0.545719, -0.324205, 0.772711, -0.510753, 0.859727, 0, -0.664321, -0.394665, -0.634758, -0.0384, 0.004326, -0.101742)
+shape = SubResource("BoxShape3D_fafuf")
+
+[node name="col_04_box" type="CollisionShape3D" parent="." unique_id=1174870321]
+transform = Transform3D(-0.975221, -0.170661, -0.140781, -0.172378, 0.985031, 0, 0.138673, 0.024267, -0.990041, -0.051914, 0.004, -0.044185)
+shape = SubResource("BoxShape3D_dx83s")
+
+[node name="col_05_box" type="CollisionShape3D" parent="." unique_id=1635172912]
+transform = Transform3D(-0.975221, -0.170661, 0.140781, -0.172378, 0.985031, 0, -0.138673, -0.024267, -0.990041, -0.051914, 0.004, 0.044185)
+shape = SubResource("BoxShape3D_800o7")
+
+[node name="col_06_box" type="CollisionShape3D" parent="." unique_id=888578582]
+transform = Transform3D(-0.545719, -0.324205, -0.772711, -0.510753, 0.859727, 0, 0.664321, 0.394665, -0.634758, -0.0384, 0.004326, 0.101742)
+shape = SubResource("BoxShape3D_eu6tg")
+
+[node name="col_07_box" type="CollisionShape3D" parent="." unique_id=1210334044]
+transform = Transform3D(0.46081, 0.287876, -0.839513, -0.529827, 0.848105, 0, 0.711995, 0.444797, 0.54334, 0.006934, 0.004214, 0.100992)
+shape = SubResource("BoxShape3D_lu4o0")
+
+[node name="col_08_box" type="CollisionShape3D" parent="." unique_id=855098377]
+transform = Transform3D(0.87804, 0.404207, -0.256246, -0.418169, 0.908369, 0, 0.232766, 0.107154, 0.966612, 0.045419, 0.004133, 0.042829)
+shape = SubResource("BoxShape3D_nlrqo")

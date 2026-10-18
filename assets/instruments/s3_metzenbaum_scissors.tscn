@@ -1,0 +1,46 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/s3_metzenbaum_scissors.glb" id="1_lwjg7"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_u32di"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m5pe7"]
+size = Vector3(0.0078, 0.008, 0.051)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u2jki"]
+size = Vector3(0.0049, 0.004, 0.120255)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0nbky"]
+size = Vector3(0.0049, 0.004, 0.120255)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mp8ie"]
+size = Vector3(0.0488, 0.0048, 0.0228)
+
+[node name="s3_metzenbaum_scissors" type="RigidBody3D" unique_id=1564816581]
+mass = 0.05
+physics_material_override = SubResource("PhysicsMaterial_u32di")
+continuous_cd = true
+metadata/instrument_id = "s3"
+metadata/name_he = "מספריים עדינות"
+metadata/name_en = "Metzenbaum scissors"
+metadata/lookalike = "scissors"
+
+[node name="visual" type="Node3D" parent="." unique_id=1073895148 instance=ExtResource("1_lwjg7")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=780295511]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.06452)
+shape = SubResource("BoxShape3D_m5pe7")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1181938850]
+transform = Transform3D(0.997804, 0, 0.066234, 0, 1, 0, -0.066234, 0, 0.997804, 0.00565, 0, 0.01648)
+shape = SubResource("BoxShape3D_u2jki")
+
+[node name="col_02_box" type="CollisionShape3D" parent="." unique_id=2071227584]
+transform = Transform3D(0.997804, 0, -0.066234, 0, 1, 0, 0.066234, 0, 0.997804, -0.00565, 0, 0.01648)
+shape = SubResource("BoxShape3D_0nbky")
+
+[node name="col_03_box" type="CollisionShape3D" parent="." unique_id=226627661]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.07948)
+shape = SubResource("BoxShape3D_mp8ie")

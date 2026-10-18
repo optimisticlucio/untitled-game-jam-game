@@ -1,0 +1,32 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/s4_adson_forceps.glb" id="1_t7q0a"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_amutk"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0xltl"]
+size = Vector3(0.0105, 0.004, 0.121108)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xl7ap"]
+size = Vector3(0.0105, 0.004, 0.121108)
+
+[node name="s4_adson_forceps" type="RigidBody3D" unique_id=1266780492]
+mass = 0.015
+physics_material_override = SubResource("PhysicsMaterial_amutk")
+continuous_cd = true
+metadata/instrument_id = "s4"
+metadata/name_he = "פינצטה עם שיניים"
+metadata/name_en = "Adson toothed forceps"
+metadata/lookalike = "forceps"
+
+[node name="visual" type="Node3D" parent="." unique_id=790575789 instance=ExtResource("1_t7q0a")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=983476440]
+transform = Transform3D(1, 0, 0, 0, 0.999397, -0.034725, 0, 0.034725, 0.999397, 0, 0.00276, -0.000246)
+shape = SubResource("BoxShape3D_0xltl")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1907981131]
+transform = Transform3D(1, 0, 0, 0, 0.999397, 0.034725, 0, -0.034725, 0.999397, 0, -0.00276, -0.000246)
+shape = SubResource("BoxShape3D_xl7ap")

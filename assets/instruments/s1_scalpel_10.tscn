@@ -12,7 +12,7 @@ size = Vector3(0.0095, 0.004, 0.1265)
 [sub_resource type="BoxShape3D" id="BoxShape3D_vj3v7"]
 size = Vector3(0.0102, 0.004, 0.0365)
 
-[node name="s1_scalpel_10" type="RigidBody3D" unique_id=209279155]
+[node name="s1_scalpel_10" type="RigidBody3D" unique_id=2104933846]
 mass = 0.02
 physics_material_override = SubResource("PhysicsMaterial_5pluo")
 continuous_cd = true
@@ -23,10 +23,10 @@ metadata/lookalike = "scalpel"
 
 [node name="visual" type="Node3D" parent="." unique_id=457885286 instance=ExtResource("1_5qd5m")]
 
-[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=2134764186]
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=245809624]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00085, 0, 0.01725)
 shape = SubResource("BoxShape3D_t185o")
 
-[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=365478840]
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=2031234702]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00075, 0, -0.06225)
 shape = SubResource("BoxShape3D_vj3v7")

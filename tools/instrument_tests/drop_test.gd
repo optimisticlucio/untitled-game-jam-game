@@ -28,6 +28,7 @@ func _ready() -> void:
 			continue
 		for copy in range(int(OS.get_environment("DROP_COPIES")) if OS.has_environment("DROP_COPIES") else 1):
 			var b := (load(path) as PackedScene).instantiate() as RigidBody3D
+			b.name = "%s_%d" % [b.name, copy]
 			b.position = Vector3(rng.randf_range(-0.6, 0.6) * tray_half.x, y, rng.randf_range(-0.6, 0.6) * tray_half.z)
 			b.rotation = Vector3(rng.randf_range(-0.4, 0.4), rng.randf_range(0.0, TAU), rng.randf_range(-0.4, 0.4))
 			add_child(b)

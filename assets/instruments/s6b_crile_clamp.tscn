@@ -1,0 +1,46 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/s6b_crile_clamp.glb" id="1_3al1p"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_v6g2t"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dchg7"]
+size = Vector3(0.009, 0.0064, 0.0535)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qrqex"]
+size = Vector3(0.0049, 0.004, 0.0784)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ughgg"]
+size = Vector3(0.0049, 0.004, 0.0784)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2pndg"]
+size = Vector3(0.0488, 0.0048, 0.0324)
+
+[node name="s6b_crile_clamp" type="RigidBody3D" unique_id=271256074]
+mass = 0.045
+physics_material_override = SubResource("PhysicsMaterial_v6g2t")
+continuous_cd = true
+metadata/instrument_id = "s6b"
+metadata/name_he = "מלקחיים עוצרי דימום (קריל)"
+metadata/name_en = "Crile hemostat"
+metadata/lookalike = "clamp"
+
+[node name="visual" type="Node3D" parent="." unique_id=620820792 instance=ExtResource("1_3al1p")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=136502110]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04327)
+shape = SubResource("BoxShape3D_dchg7")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=184285036]
+transform = Transform3D(0.99463, 0, 0.103495, 0, 1, 0, -0.103495, 0, 0.99463, 0.00565, 0, 0.01748)
+shape = SubResource("BoxShape3D_qrqex")
+
+[node name="col_02_box" type="CollisionShape3D" parent="." unique_id=919920600]
+transform = Transform3D(0.99463, 0, -0.103495, 0, 1, 0, 0.103495, 0, 0.99463, -0.00565, 0, 0.01748)
+shape = SubResource("BoxShape3D_ughgg")
+
+[node name="col_03_box" type="CollisionShape3D" parent="." unique_id=303783745]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05468)
+shape = SubResource("BoxShape3D_2pndg")

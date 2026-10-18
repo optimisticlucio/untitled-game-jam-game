@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/m1_micro_needle_holder.glb" id="1_3vlkm"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_6jy01"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7bxs7"]
+radius = 0.005
+height = 0.1135
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_t4ka8"]
+size = Vector3(0.0086, 0.0086, 0.039117)
+
+[node name="m1_micro_needle_holder" type="RigidBody3D" unique_id=1482608602]
+mass = 0.035
+physics_material_override = SubResource("PhysicsMaterial_6jy01")
+continuous_cd = true
+metadata/instrument_id = "m1"
+metadata/name_he = "מחזיק מחט זעיר"
+metadata/name_en = "Micro needle holder (round handle)"
+metadata/lookalike = "micro"
+
+[node name="visual" type="Node3D" parent="." unique_id=1740918066 instance=ExtResource("1_3vlkm")]
+
+[node name="col_00_capsule" type="CollisionShape3D" parent="." unique_id=1164491515]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.018797)
+shape = SubResource("CapsuleShape3D_7bxs7")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1758077221]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.055989)
+shape = SubResource("BoxShape3D_t4ka8")

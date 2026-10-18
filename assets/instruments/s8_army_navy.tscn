@@ -1,0 +1,39 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/s8_army_navy.glb" id="1_pxr4f"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_qnvsn"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5hs1b"]
+size = Vector3(0.004, 0.017, 0.2182)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l6jcx"]
+size = Vector3(0.0251, 0.014, 0.004)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jt7x1"]
+size = Vector3(0.0316, 0.017, 0.004)
+
+[node name="s8_army_navy" type="RigidBody3D" unique_id=1787618510]
+mass = 0.07
+physics_material_override = SubResource("PhysicsMaterial_qnvsn")
+continuous_cd = true
+metadata/instrument_id = "s8"
+metadata/name_he = "מפשק ידני"
+metadata/name_en = "Army-Navy retractor"
+metadata/lookalike = ""
+
+[node name="visual" type="Node3D" parent="." unique_id=338001057 instance=ExtResource("1_pxr4f")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=947609840]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0142, 0, 0)
+shape = SubResource("BoxShape3D_5hs1b")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1580660805]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00325, 0, 0.1075)
+shape = SubResource("BoxShape3D_l6jcx")
+
+[node name="col_02_box" type="CollisionShape3D" parent="." unique_id=535579094]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1075)
+shape = SubResource("BoxShape3D_jt7x1")

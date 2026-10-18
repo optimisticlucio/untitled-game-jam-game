@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/m4_acland_clamp.glb" id="1_ryijb"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ous2l"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_87cl8"]
+size = Vector3(0.004, 0.004, 0.0104)
+
+[node name="m4_acland_clamp" type="RigidBody3D" unique_id=512427539]
+mass = 0.002
+physics_material_override = SubResource("PhysicsMaterial_ous2l")
+continuous_cd = true
+metadata/instrument_id = "m4"
+metadata/name_he = "מהדק כלי דם זעיר"
+metadata/name_en = "Acland micro clamp"
+metadata/lookalike = ""
+
+[node name="visual" type="Node3D" parent="." unique_id=1413127608 instance=ExtResource("1_ryijb")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=1827611666]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000107)
+shape = SubResource("BoxShape3D_87cl8")

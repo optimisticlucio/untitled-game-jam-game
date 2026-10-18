@@ -1,0 +1,33 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/m6_beaver_handle.glb" id="1_u65un"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2ofie"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d0ncq"]
+radius = 0.0041
+height = 0.1165
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j67k5"]
+size = Vector3(0.004, 0.004, 0.019)
+
+[node name="m6_beaver_handle" type="RigidBody3D" unique_id=1234616212]
+mass = 0.02
+physics_material_override = SubResource("PhysicsMaterial_2ofie")
+continuous_cd = true
+metadata/instrument_id = "m6"
+metadata/name_he = "ידית סכין זעירה"
+metadata/name_en = "Beaver blade handle"
+metadata/lookalike = "micro"
+
+[node name="visual" type="Node3D" parent="." unique_id=943001589 instance=ExtResource("1_u65un")]
+
+[node name="col_00_capsule" type="CollisionShape3D" parent="." unique_id=913289160]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.00725)
+shape = SubResource("CapsuleShape3D_d0ncq")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=95740639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0004, 0, -0.056)
+shape = SubResource("BoxShape3D_j67k5")
