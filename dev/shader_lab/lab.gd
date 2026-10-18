@@ -114,8 +114,9 @@ func _build_room() -> void:
 	add_child(world_env)
 
 	sun = DirectionalLight3D.new()
-	# From the upper left and a little from the far side, so shadows fall where the camera sees them.
-	sun.look_at_from_position(Vector3(-0.5, 0.8, -0.3), Vector3.ZERO)
+	# Like the level's sun: low from the upper left and a little from the far side, so shadows
+	# are long and fall where the camera sees them.
+	sun.look_at_from_position(Vector3(-0.62, 0.5, -0.36), Vector3.ZERO)
 	sun.light_color = Color(1.0, 0.97, 0.9)
 	sun.shadow_enabled = true
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL

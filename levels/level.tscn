@@ -71,7 +71,7 @@ level = ExtResource("5_example")
 environment = SubResource("Environment_main")
 
 [node name="Sun" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.514496, 0.692959, -0.505076, 0, 0.589015, 0.808122, 0.857493, 0.415775, -0.303046, 0, 1, 0)
+transform = Transform3D(-0.502136, 0.49469, -0.709325, 0, 0.820229, 0.572036, 0.864789, 0.28724, -0.411866, 0, 1, 0)
 light_color = Color(1, 0.97, 0.9, 1)
 shadow_enabled = true
 shadow_bias = 0.01

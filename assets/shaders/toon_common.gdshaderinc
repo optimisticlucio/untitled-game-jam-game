@@ -34,7 +34,7 @@ global uniform float room_light;
 
 group_uniforms rim;
 uniform vec3 rim_color : source_color = vec3(0.188, 0.651, 0.651);
-uniform float rim_strength : hint_range(0.0, 2.0) = 1.14;
+uniform float rim_strength : hint_range(0.0, 2.0) = 0.57;
 uniform float rim_width : hint_range(0.0, 1.0) = 0.97;
 group_uniforms;
 

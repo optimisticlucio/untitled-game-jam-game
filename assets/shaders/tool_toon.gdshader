@@ -21,6 +21,10 @@ uniform vec2 patch_offset = vec2(0.0);
 uniform float scratch_amount = 0.0;
 uniform float stain_amount = 0.0;
 
+group_uniforms look;
+// Overall lightness of the tools (Julia's "בהירות הכלים"); the tray isn't affected.
+uniform float tool_value : hint_range(0.3, 1.3) = 0.75;
+
 group_uniforms wear;
 uniform float scratch_scale = 22.0;
 uniform float stain_scale = 30.5;
@@ -56,7 +60,7 @@ void fragment() {
 	float stain = clamp(texture(wear_tex, p * stain_scale + wear_offset * 1.7).g * stain_amount, 0.0, 1.0);
 	float patchv = texture(wear_tex, p * patch_scale / 8.0 + patch_offset).b;
 	base *= mix(vec3(1.0), mix(patch_a, patch_b, smoothstep(0.3, 0.7, patchv)), patch_strength);
-	base *= tint;
+	base *= tint * tool_value;
 	base = mix(base, base * stain_color, stain);
 	v_rough = clamp(v_rough + stain * 0.3 + scratch * 0.25, 0.0, 1.0);
 	v_ao *= 1.0 - 0.5 * scratch * v_metal;
