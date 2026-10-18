@@ -5,24 +5,23 @@
 [ext_resource type="PackedScene" path="res://assets/instruments/oscar_statuette.glb" id="3_du8kp"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_5e5et"]
-height = 0.038
-radius = 0.023
+height = 0.0247
+radius = 0.01495
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_fxfch"]
-radius = 0.0136
-height = 0.114
+radius = 0.00884
+height = 0.0741
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_16c3p"]
-height = 0.049999997
-radius = 0.029
+height = 0.0367
+radius = 0.020949999
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_b6dx3"]
-radius = 0.0196
-height = 0.126
+radius = 0.01484
+height = 0.086100005
 
 [node name="OscarStatuette" instance=ExtResource("base_tool")]
 mass = 0.08
-gravity_scale = 0.3
 continuous_cd = true
 id = &"oscar_statuette"
 display_name = "Oscar Statuette"
@@ -30,26 +29,26 @@ description = "A silver award statuette. Best Supporting Instrument, maybe."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_ojqxw")
 
-[node name="Model" type="Node3D" parent="." unique_id=279590502 instance=ExtResource("3_du8kp")]
+[node name="Model" type="Node3D" parent="." unique_id=2108490222 instance=ExtResource("3_du8kp")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=778914595]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.056)
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=687242248]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.036563)
 shape = SubResource("CylinderShape3D_5e5et")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1795684383]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.019)
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=80336237]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.012188)
 shape = SubResource("CapsuleShape3D_fxfch")
 
-[node name="Pick" type="Area3D" parent="." unique_id=68649535]
+[node name="Pick" type="Area3D" parent="." unique_id=1754172625]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=577364269]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.056)
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1948302942]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.036563)
 shape = SubResource("CylinderShape3D_16c3p")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1648643993]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.019)
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1183344001]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.012188)
 shape = SubResource("CapsuleShape3D_b6dx3")

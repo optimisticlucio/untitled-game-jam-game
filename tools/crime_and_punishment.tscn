@@ -1,0 +1,34 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="AudioStream" path="res://assets/sounds/items/crime_and_punishment.wav" id="2_jyiav"]
+[ext_resource type="PackedScene" path="res://assets/instruments/crime_and_punishment.glb" id="3_u7vt5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5h2hd"]
+size = Vector3(0.08385, 0.02275, 0.1287)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8syea"]
+size = Vector3(0.09585, 0.03475, 0.1407)
+
+[node name="CrimeAndPunishment" instance=ExtResource("base_tool")]
+mass = 0.25
+continuous_cd = true
+id = &"crime_and_punishment"
+display_name = "Crime and Punishment"
+description = "Dostoevsky's novel, miniature pocket edition. Light reading for a long surgery."
+specialities = Array[int]([3])
+drop_sound = ExtResource("2_jyiav")
+
+[node name="Model" type="Node3D" parent="." unique_id=410892336 instance=ExtResource("3_u7vt5")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1223011854]
+shape = SubResource("BoxShape3D_5h2hd")
+
+[node name="Pick" type="Area3D" parent="." unique_id=1606875476]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1837784540]
+shape = SubResource("BoxShape3D_8syea")

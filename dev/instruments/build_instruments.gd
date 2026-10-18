@@ -117,7 +117,24 @@ func _make_inherited(path: String) -> Error:
 	var root_done := false
 	var re_script := RegEx.create_from_string('^\\[ext_resource type="Script" path="res://tools/surgical_tool.gd" id="([^"]+)"\\]$')
 	var re_root := RegEx.create_from_string('^\\[node name="([^"]+)" type="RigidBody3D"[^\\]]*\\]$')
+	# Root properties the base already sets (e.g. gravity_scale) come out written again on the
+	# instance; drop identical lines so they stay inherited and later base changes reach every tool.
+	var base_props := {}
+	var in_base_root := false
+	for line in FileAccess.get_file_as_string(BASE).split("\n"):
+		if in_base_root:
+			if line.begins_with("[") or line.is_empty():
+				break
+			base_props[line] = true
+		elif re_root.search(line):
+			in_base_root = true
+	var in_root := false
 	for line in lines:
+		if in_root:
+			if line.begins_with("["):
+				in_root = false
+			elif base_props.has(line):
+				continue
 		var m := re_script.search(line)
 		if m:
 			script_id = m.get_string(1)
@@ -128,6 +145,7 @@ func _make_inherited(path: String) -> Error:
 			if r:
 				out_lines.append('[node name="%s" instance=ExtResource("base_tool")]' % r.get_string(1))
 				root_done = true
+				in_root = true
 				continue
 		if script_id != "" and line == 'script = ExtResource("%s")' % script_id:
 			continue

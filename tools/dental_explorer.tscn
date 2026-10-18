@@ -8,20 +8,20 @@ radius = 0.004
 height = 0.141
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_40u8a"]
-size = Vector3(0.009467, 0.004, 0.012486)
+size = Vector3(0.009403, 0.004, 0.012574)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_73r6m"]
-size = Vector3(0.006256, 0.004, 0.015106)
+size = Vector3(0.006135, 0.004, 0.015098)
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0p54q"]
 radius = 0.01
 height = 0.153
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_glg7d"]
-size = Vector3(0.021467, 0.02, 0.024486)
+size = Vector3(0.021403, 0.02, 0.024574)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ar25h"]
-size = Vector3(0.02, 0.02, 0.027106)
+size = Vector3(0.02, 0.02, 0.027098)
 
 [node name="DentalExplorer" instance=ExtResource("base_tool")]
 mass = 0.018
@@ -31,34 +31,34 @@ display_name = "Dental Explorer"
 description = "Dentist's probe: a ridged handle with a sharp curved hook at each end. It belongs in a dental clinic."
 specialities = Array[int]([3])
 
-[node name="Model" type="Node3D" parent="." unique_id=1543737713 instance=ExtResource("2_6k2mg")]
+[node name="Model" type="Node3D" parent="." unique_id=1412726668 instance=ExtResource("2_6k2mg")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=928780715]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.002108, 0, -0.00131)
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1526230229]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.002127, 0, -0.001262)
 shape = SubResource("CapsuleShape3D_bvrvu")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=95745303]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001375, 0, -0.076553)
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1037437]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001425, 0, -0.076549)
 shape = SubResource("BoxShape3D_40u8a")
 
-[node name="Collision02" type="CollisionShape3D" parent="." unique_id=1378630609]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00023, 0, 0.075243)
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=1668330962]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000209, 0, 0.075287)
 shape = SubResource("BoxShape3D_73r6m")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1200439257]
+[node name="Pick" type="Area3D" parent="." unique_id=533609683]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1025265678]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.002108, 0, -0.00131)
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1434522341]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, -0.002127, 0, -0.001262)
 shape = SubResource("CapsuleShape3D_0p54q")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=987081935]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001375, 0, -0.076553)
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1956735345]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.001425, 0, -0.076549)
 shape = SubResource("BoxShape3D_glg7d")
 
-[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1064465290]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00023, 0, 0.075243)
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1219657906]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000209, 0, 0.075287)
 shape = SubResource("BoxShape3D_ar25h")

@@ -1,0 +1,64 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="AudioStream" path="res://assets/sounds/items/wing_corkscrew.wav" id="2_kngjv"]
+[ext_resource type="PackedScene" path="res://assets/instruments/wing_corkscrew.glb" id="3_nc0ri"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bfygk"]
+size = Vector3(0.031434, 0.033, 0.17701)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_altfl"]
+size = Vector3(0.017, 0.006, 0.076652)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_e6kqp"]
+size = Vector3(0.017, 0.006, 0.076652)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4dwfb"]
+size = Vector3(0.043434, 0.045, 0.18901)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b6fsr"]
+size = Vector3(0.029000001, 0.02, 0.088652)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_di7yy"]
+size = Vector3(0.029000001, 0.02, 0.088652)
+
+[node name="WingCorkscrew" instance=ExtResource("base_tool")]
+mass = 0.09
+continuous_cd = true
+id = &"wing_corkscrew"
+display_name = "Wing Corkscrew"
+description = "Wine opener: two levers rise like wings as the worm screw turns into the cork. Wrong kind of extraction."
+specialities = Array[int]([3])
+drop_sound = ExtResource("2_kngjv")
+
+[node name="Model" type="Node3D" parent="." unique_id=1383238327 instance=ExtResource("3_nc0ri")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1648821368]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.003292)
+shape = SubResource("BoxShape3D_bfygk")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1969628009]
+transform = Transform3D(-0.856188, 0, -0.516665, 0, 1, 0, 0.516665, 0, -0.856188, 0.026457, 0, 0.056327)
+shape = SubResource("BoxShape3D_altfl")
+
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=573045375]
+transform = Transform3D(-0.856188, 0, 0.516665, 0, 1, 0, -0.516665, 0, -0.856188, -0.026457, 0, 0.056327)
+shape = SubResource("BoxShape3D_e6kqp")
+
+[node name="Pick" type="Area3D" parent="." unique_id=327334933]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=666379049]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.003292)
+shape = SubResource("BoxShape3D_4dwfb")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=725607557]
+transform = Transform3D(-0.856188, 0, -0.516665, 0, 1, 0, 0.516665, 0, -0.856188, 0.026457, 0, 0.056327)
+shape = SubResource("BoxShape3D_b6fsr")
+
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=150071719]
+transform = Transform3D(-0.856188, 0, 0.516665, 0, 1, 0, -0.516665, 0, -0.856188, -0.026457, 0, 0.056327)
+shape = SubResource("BoxShape3D_di7yy")

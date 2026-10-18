@@ -5,24 +5,23 @@
 [ext_resource type="PackedScene" path="res://assets/instruments/butt_plug.glb" id="3_4o5ig"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_mbhsb"]
-height = 0.0064
-radius = 0.017
+height = 0.00429
+radius = 0.01105
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_oxrer"]
-radius = 0.0166
-height = 0.055
+radius = 0.01079
+height = 0.035425
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_ynsdx"]
-height = 0.0184
-radius = 0.023
+height = 0.01629
+radius = 0.01705
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1wr23"]
-radius = 0.022599999
-height = 0.067
+radius = 0.016789999
+height = 0.047424998
 
 [node name="ButtPlug" instance=ExtResource("base_tool")]
-mass = 0.15
-gravity_scale = 0.3
+mass = 0.1
 continuous_cd = true
 id = &"butt_plug"
 display_name = "Butt Plug"
@@ -30,26 +29,26 @@ description = "Polished steel with a pink jewel. Not a surgical instrument."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_p3ujs")
 
-[node name="Model" type="Node3D" parent="." unique_id=1810228143 instance=ExtResource("3_4o5ig")]
+[node name="Model" type="Node3D" parent="." unique_id=673478033 instance=ExtResource("3_4o5ig")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1897814072]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.027)
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1438147626]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.017388)
 shape = SubResource("CylinderShape3D_mbhsb")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=372773195]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.0032)
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1404509391]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.002145)
 shape = SubResource("CapsuleShape3D_oxrer")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1831504541]
+[node name="Pick" type="Area3D" parent="." unique_id=961040375]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=404589634]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.027)
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1283647809]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.017388)
 shape = SubResource("CylinderShape3D_ynsdx")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1896357878]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.0032)
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=687742825]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.002145)
 shape = SubResource("CapsuleShape3D_1wr23")

@@ -22,7 +22,6 @@ radius = 0.0126
 
 [node name="Lipstick" instance=ExtResource("base_tool")]
 mass = 0.03
-gravity_scale = 0.3
 continuous_cd = true
 id = &"lipstick"
 display_name = "Lipstick"
@@ -30,26 +29,26 @@ description = "Red lipstick in a gold case, cap off. Round and knurl-free: not a
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_aackt")
 
-[node name="Model" type="Node3D" parent="." unique_id=300299846 instance=ExtResource("3_r6rx1")]
+[node name="Model" type="Node3D" parent="." unique_id=1562043346 instance=ExtResource("3_r6rx1")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1788750949]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.007878)
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=335835789]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.007937)
 shape = SubResource("CylinderShape3D_sv14n")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=624838787]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.027622)
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1851547768]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.027563)
 shape = SubResource("CylinderShape3D_0ldde")
 
-[node name="Pick" type="Area3D" parent="." unique_id=2016959171]
+[node name="Pick" type="Area3D" parent="." unique_id=1615195631]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1683708262]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.007878)
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1208278454]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.007937)
 shape = SubResource("CylinderShape3D_b6feq")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1809869493]
-transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.027622)
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=911015348]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.027563)
 shape = SubResource("CylinderShape3D_042h1")

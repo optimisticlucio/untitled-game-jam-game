@@ -4,16 +4,16 @@
 [ext_resource type="PackedScene" path="res://assets/instruments/eyebrow_tweezers.glb" id="2_37n7w"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_caopr"]
-size = Vector3(0.0105, 0.004, 0.096072)
+size = Vector3(0.0105, 0.004, 0.096061)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1ma04"]
-size = Vector3(0.0105, 0.004, 0.096072)
+size = Vector3(0.0105, 0.004, 0.096061)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lc4ry"]
-size = Vector3(0.0225, 0.02, 0.108072005)
+size = Vector3(0.0225, 0.02, 0.108061)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pf78n"]
-size = Vector3(0.0225, 0.02, 0.108072005)
+size = Vector3(0.0225, 0.02, 0.108061)
 
 [node name="EyebrowTweezers" instance=ExtResource("base_tool")]
 mass = 0.012
@@ -23,26 +23,26 @@ display_name = "Eyebrow Tweezers"
 description = "Beauty tweezers with a slanted tip and a painted grip. For eyebrows, not for tissue."
 specialities = Array[int]([3])
 
-[node name="Model" type="Node3D" parent="." unique_id=1719961165 instance=ExtResource("2_37n7w")]
+[node name="Model" type="Node3D" parent="." unique_id=1533369003 instance=ExtResource("2_37n7w")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=681053670]
-transform = Transform3D(1, 0, 0, 0, 0.999304, -0.037307, 0, 0.037307, 0.999304, 0, 0.002017, -0.000248)
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=801718629]
+transform = Transform3D(1, 0, 0, 0, 0.999304, -0.037307, 0, 0.037307, 0.999304, 0, 0.002045, -0.000241)
 shape = SubResource("BoxShape3D_caopr")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=113500795]
-transform = Transform3D(1, 0, 0, 0, 0.999304, 0.037307, 0, -0.037307, 0.999304, 0, -0.002017, -0.000248)
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1143888724]
+transform = Transform3D(1, 0, 0, 0, 0.999304, 0.037307, 0, -0.037307, 0.999304, 0, -0.002045, -0.000241)
 shape = SubResource("BoxShape3D_1ma04")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1336853022]
+[node name="Pick" type="Area3D" parent="." unique_id=2025224717]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=160045545]
-transform = Transform3D(1, 0, 0, 0, 0.999304, -0.037307, 0, 0.037307, 0.999304, 0, 0.002017, -0.000248)
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1172271731]
+transform = Transform3D(1, 0, 0, 0, 0.999304, -0.037307, 0, 0.037307, 0.999304, 0, 0.002045, -0.000241)
 shape = SubResource("BoxShape3D_lc4ry")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=921597912]
-transform = Transform3D(1, 0, 0, 0, 0.999304, 0.037307, 0, -0.037307, 0.999304, 0, -0.002017, -0.000248)
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=515997392]
+transform = Transform3D(1, 0, 0, 0, 0.999304, 0.037307, 0, -0.037307, 0.999304, 0, -0.002045, -0.000241)
 shape = SubResource("BoxShape3D_pf78n")
