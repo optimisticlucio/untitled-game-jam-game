@@ -180,17 +180,17 @@ corner_radius_bottom_right = 18
 corner_radius_bottom_left = 18
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
-content_margin_left = 36.0
-content_margin_top = 36.0
-content_margin_right = 36.0
-content_margin_bottom = 28.0
+content_margin_left = 30.0
+content_margin_top = 14.0
+content_margin_right = 30.0
+content_margin_bottom = 10.0
 bg_color = Color(0.3, 0.74, 0.8, 1)
 border_width_left = 6
 border_width_top = 6
 border_width_right = 6
 border_color = Color(0.05, 0.05, 0.06, 1)
-corner_radius_top_left = 200
-corner_radius_top_right = 200
+corner_radius_top_left = 120
+corner_radius_top_right = 120
 corner_detail = 24
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_round"]
@@ -228,31 +228,48 @@ corner_radius_bottom_left = 80
 corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubble"]
-content_margin_left = 18.0
-content_margin_top = 18.0
-content_margin_right = 30.0
-content_margin_bottom = 18.0
-bg_color = Color(0.91, 0.38, 0.1, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
+content_margin_left = 7.0
+content_margin_top = 7.0
+content_margin_right = 7.0
+content_margin_bottom = 19.0
+bg_color = Color(0.78, 0.78, 0.79, 1)
+border_width_left = 7
+border_width_top = 7
+border_width_right = 7
+border_width_bottom = 7
 border_color = Color(0.05, 0.05, 0.06, 1)
-corner_radius_top_left = 48
-corner_radius_top_right = 48
-corner_radius_bottom_right = 48
-corner_radius_bottom_left = 48
+corner_radius_top_left = 46
+corner_radius_top_right = 46
+corner_radius_bottom_right = 46
+corner_radius_bottom_left = 46
+corner_detail = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bubble_inner"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 26.0
+content_margin_bottom = 14.0
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 39
+corner_radius_top_right = 39
+corner_radius_bottom_right = 39
+corner_radius_bottom_left = 39
+corner_detail = 12
+
+[sub_resource type="FontVariation" id="FontVariation_bold"]
+variation_embolden = 0.9
+
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_circle"]
 content_margin_left = 6.0
 content_margin_top = 6.0
 content_margin_right = 6.0
 content_margin_bottom = 6.0
-bg_color = Color(1, 0.96, 0.92, 1)
-border_width_left = 5
-border_width_top = 5
-border_width_right = 5
-border_width_bottom = 5
+bg_color = Color(0.29, 0.56, 0.89, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
 border_color = Color(0.05, 0.05, 0.06, 1)
 corner_radius_top_left = 90
 corner_radius_top_right = 90
@@ -305,8 +322,11 @@ BottomBar/base_type = &"PanelContainer"
 BottomBar/styles/panel = SubResource("StyleBoxFlat_bar")
 BubbleCircle/base_type = &"PanelContainer"
 BubbleCircle/styles/panel = SubResource("StyleBoxFlat_circle")
+BubbleInner/base_type = &"PanelContainer"
+BubbleInner/styles/panel = SubResource("StyleBoxFlat_bubble_inner")
 BubbleLabel/base_type = &"Label"
-BubbleLabel/font_sizes/font_size = 46
+BubbleLabel/fonts/font = SubResource("FontVariation_bold")
+BubbleLabel/font_sizes/font_size = 50
 BubblePanel/base_type = &"PanelContainer"
 BubblePanel/styles/panel = SubResource("StyleBoxFlat_bubble")
 RoundButton/base_type = &"Button"

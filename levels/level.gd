@@ -34,6 +34,7 @@ var _hint_elapsed := 0.0
 @onready var _request: Control = %Request
 @onready var _preview: ToolPreview = %ToolPreview
 @onready var _preview_circle: Control = %PreviewCircle
+@onready var _bubble_tail: Node2D = %Tail
 @onready var _request_name: Label = %RequestName
 @onready var _popup: Control = %Popup
 @onready var _message: Label = %Message
@@ -128,6 +129,8 @@ func _fit_request() -> void:
 	if _requested == &"":
 		return
 	_request.offset_bottom = _request.offset_top + _request.get_combined_minimum_size().y
+	# The tail leaves the bubble's left edge near the bottom, towards the doctor.
+	_bubble_tail.position.y = _request.size.y
 	_request.modulate.a = 1.0
 
 
