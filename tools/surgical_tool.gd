@@ -21,6 +21,15 @@ const FOLDER := "res://tools/"
 static var _scenes_by_id: Dictionary[StringName, PackedScene] = {}
 
 
+## Scales the tool by factor: model, collision and grab shapes alike. The
+## body itself stays unscaled, because physics bodies don't scale well.
+func resize(factor: float) -> void:
+	for child in get_children():
+		if child is Node3D:
+			child.scale *= factor
+			child.position *= factor
+
+
 ## Bounding box of the tool's visible meshes, in its local space.
 ## The tool must be inside the scene tree.
 func visual_bounds() -> AABB:

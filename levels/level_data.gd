@@ -8,12 +8,15 @@ extends Resource
 @export var requested_ids: Array[StringName] = []
 ## Put in the tray but never asked for. Repeats are fine.
 @export var distractor_ids: Array[StringName] = []
+## Size of every tool on the tray, as a percentage of real size (the request
+## picture always shows real size). Bigger fills a sparse tray, smaller eases
+## a crowded one. All tools change together, so their sizes stay comparable.
+@export_range(70.0, 150.0, 5.0, "suffix:%") var tool_size_percent := 100.0
 
 @export_group("Reshuffle")
-## How many times the tray leaves and comes back with a new set of tools. 0 = never.
-@export var reshuffle_count := 0
-## Correct hand-offs per tray before it reshuffles. Each tray holds exactly the
-## requests it will be asked for (the last tray holds all that are left).
+## Correct hand-offs per tray: then the tray leaves and comes back with the
+## next requests and fresh distractors. Each tray holds exactly the requests
+## it will be asked for (the last one whatever is left). 0 = never reshuffle.
 @export var reshuffle_after := 0
 ## Distractors per tray, drawn at random from distractor_ids. Negative = all of them.
 @export var distractors_per_tray := -1
@@ -40,8 +43,6 @@ func problems(known_ids: Array[StringName]) -> PackedStringArray:
 		for id: StringName in get(list_name):
 			if not known_ids.has(id):
 				found.append("%s: no tool has the id \"%s\"." % [list_name, id])
-	if reshuffle_count > 0 and reshuffle_after <= 0:
-		found.append("reshuffle_count is set, but reshuffle_after is 0.")
 	return found
 
 
@@ -50,12 +51,11 @@ func plan_trays() -> Array[Array]:
 	var requests := requested_ids.duplicate()
 	requests.shuffle()
 	var trays: Array[Array] = []
-	for i in reshuffle_count:
-		if requests.size() <= reshuffle_after:
-			break
-		trays.append(requests.slice(0, reshuffle_after))
-		requests = requests.slice(reshuffle_after)
-	trays.append(requests)
+	if reshuffle_after <= 0:
+		trays.append(requests)
+		return trays
+	for start in range(0, requests.size(), reshuffle_after):
+		trays.append(requests.slice(start, start + reshuffle_after))
 	return trays
 
 

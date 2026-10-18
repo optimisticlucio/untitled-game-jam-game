@@ -83,7 +83,9 @@ func _start_tray() -> void:
 	_queue.assign(_trays[_tray_index])
 	var tools: Array[SurgicalTool] = []
 	for id in _queue + level.draw_distractors():
-		tools.append(_scenes[id].instantiate())
+		var tool: SurgicalTool = _scenes[id].instantiate()
+		tool.resize(level.tool_size_percent / 100.0)
+		tools.append(tool)
 	_tray.fill(tools)
 	_request_next()
 
