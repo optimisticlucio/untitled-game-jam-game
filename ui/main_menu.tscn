@@ -3,28 +3,32 @@
 [ext_resource type="Theme" path="res://ui/theme.tres" id="1_5klac"]
 [ext_resource type="Script" path="res://ui/main_menu.gd" id="2_lsdqh"]
 [ext_resource type="Texture2D" path="res://ui/icons/play.svg" id="3_jiymt"]
+[ext_resource type="Texture2D" path="res://ui/art/menu_background_mockup.png" id="3_lsdqh"]
 [ext_resource type="Texture2D" path="res://ui/icons/book.svg" id="4_bgtsx"]
+[ext_resource type="Texture2D" path="res://ui/art/logo.png" id="4_jiymt"]
 [ext_resource type="Texture2D" path="res://ui/icons/trophy.svg" id="5_kaxbk"]
 [ext_resource type="Texture2D" path="res://ui/icons/gear.svg" id="6_0nobx"]
 [ext_resource type="Script" path="res://ui/bottom_sheet.gd" id="7_iyrh0"]
 [ext_resource type="PackedScene" path="res://ui/settings_panel.tscn" id="8_8jgmr"]
-[ext_resource type="Script" path="res://ui/settings_panel.gd" id="9_q75kt"]
 [ext_resource type="Texture2D" path="res://ui/icons/close.svg" id="10_0i0gl"]
 
 [node name="MainMenu" type="Control" unique_id=247834141]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource("1_5klac")
 script = ExtResource("2_lsdqh")
 play_scene = "res://levels/level.tscn"
 
-[node name="Background" type="ColorRect" parent="." unique_id=1054247366]
+[node name="Background" type="TextureRect" parent="." unique_id=467392798]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0.82, 0.84, 0.86, 1)
+mouse_filter = 2
+texture = ExtResource("3_lsdqh")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="Column" type="VBoxContainer" parent="." unique_id=598362394]
 layout_mode = 0
@@ -32,21 +36,26 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -280.0
-offset_top = -440.0
-offset_right = 280.0
-offset_bottom = 440.0
 theme_override_constants/separation = 28
 alignment = 1
+offset_left = -300.0
+offset_top = -540.0
+offset_right = 300.0
+offset_bottom = 540.0
+grow_horizontal = 2
+grow_vertical = 2
 
-[node name="Title" type="Label" parent="Column" unique_id=858379427]
+[node name="Logo" type="TextureRect" parent="Column" unique_id=356136271]
+custom_minimum_size = Vector2(600, 312)
 layout_mode = 2
-theme_type_variation = &"TitleLabel"
-text = "Scalpel King"
-horizontal_alignment = 1
+size_flags_horizontal = 4
+mouse_filter = 2
+texture = ExtResource("4_jiymt")
+expand_mode = 1
+stretch_mode = 5
 
 [node name="Gap" type="Control" parent="Column" unique_id=1692167463]
-custom_minimum_size = Vector2(0, 60)
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 
 [node name="PlayButton" type="Button" parent="Column" unique_id=1613961544]
@@ -120,10 +129,8 @@ layout_mode = 2
 theme_type_variation = &"HeaderLabel"
 text = "Settings"
 
-[node name="SettingsPanel" type="VBoxContainer" parent="SettingsSheet/Column" unique_id=1276520400 instance=ExtResource("8_8jgmr")]
+[node name="SettingsPanel" parent="SettingsSheet/Column" unique_id=1276520400 instance=ExtResource("8_8jgmr")]
 layout_mode = 2
-theme_override_constants/separation = 16
-script = ExtResource("9_q75kt")
 
 [node name="CloseSettingsButton" type="Button" parent="SettingsSheet/Column" unique_id=700282366]
 unique_name_in_owner = true
