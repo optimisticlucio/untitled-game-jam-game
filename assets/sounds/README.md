@@ -37,22 +37,22 @@ Placeholder sounds for every event we know of, so the game isn't silent at the d
 
 ## Silly items (`items/`)
 
-Played when the item is grabbed, instead of `tool_grab`. Each file is named after the tool `id`, so code can look for `items/<id>.wav` and fall back to `gameplay/tool_grab.wav`. Metal lookalikes (`eyebrow_tweezers`, `dental_explorer`) use the default metal sound. Ids of items not built yet are guesses; rename the file if the id ends up different.
+Played when the item is grabbed, instead of `tool_grab`. Each item sounds like its real material when handled (no gag sounds). Each file is named after the tool `id`, so code can look for `items/<id>.wav` and fall back to `gameplay/tool_grab.wav`. Metal lookalikes (`eyebrow_tweezers`, `dental_explorer`) use the default metal sound. Ids of items not built yet are guesses; rename the file if the id ends up different.
 
 | File | Sound | Source |
 |---|---|---|
 | `rubber_duck.wav` | squeaky toy (Julia: squeak, not quack) | [Squeaky Toy #1](https://freesound.org/people/Breviceps/sounds/468443/) by Breviceps |
-| `banana.wav` | squish | [Splat/Squish 4](https://freesound.org/people/mrickey13/sounds/515621/) by mrickey13 |
+| `banana.wav` | soft thud | [soft-hit.wav](https://freesound.org/people/Krokulator/sounds/653910/) by Krokulator |
 | `eyelash_curler.wav` | metal click | [Metallic_Click](https://freesound.org/people/BlondPanda/sounds/778444/) by BlondPanda |
 | `spatula.wav` | wooden spoon on a counter | [hit - wooden spoon - dropped onto counter 07.wav](https://freesound.org/people/Anthousai/sounds/406287/) by Anthousai |
 | `lipstick.wav` | plastic cap click | [click1.wav](https://freesound.org/people/florian_reinke/sounds/63531/) by florian_reinke |
-| `wing_corkscrew.wav` | champagne cork pop | [Champagne Cork](https://freesound.org/people/KenRT/sounds/392624/) by KenRT |
-| `nose_hair_trimmer.wav` | electric trimmer buzz | [Electric razor 3 - trimmer mode short](https://freesound.org/people/giddster/sounds/434986/) by giddster |
+| `wing_corkscrew.wav` | metal ching | [Metallic_Ching_Keys_2.mp3](https://freesound.org/people/michael_grinnell/sounds/464426/) by michael_grinnell |
+| `nose_hair_trimmer.wav` | plastic hit | [Plastic Bottle Hit](https://freesound.org/people/WarcakeStudios/sounds/173598/) by WarcakeStudios |
 | `butt_plug.wav` | metal hit | [Metal Hit](https://freesound.org/people/BenjaminNelan/sounds/410364/) by BenjaminNelan |
-| `oscar_statuette.wav` | short applause | [Short applause.wav](https://freesound.org/people/johntrap/sounds/529455/) by johntrap |
+| `oscar_statuette.wav` | hollow plastic drop (the Oscar is a light plastic replica) | [hollow plastic box, dropped](https://freesound.org/people/Lemato/sounds/697092/) by Lemato |
 | `crime_and_punishment.wav` | book drop | [Book Dropping 1.wav](https://freesound.org/people/LightDJ/sounds/267481/) by LightDJ |
 | `sock.wav` | cloth rustle | [Fabric_Foley_1](https://freesound.org/people/Mediasaur/sounds/789038/) by Mediasaur |
-| `dentures.wav` | chattering teeth | [Chattering Teeth](https://freesound.org/people/danlucaz/sounds/517676/) by danlucaz |
+| `dentures.wav` | teeth click | [Perc_Teeth_lo](https://freesound.org/people/LudwigMueller/sounds/548541/) by LudwigMueller |
 | `cat_head.wav` | meow | [cat meow](https://freesound.org/people/tuberatanka/sounds/110011/) by tuberatanka |
 | `falafel.wav` | crunch | [Crunch](https://freesound.org/people/steenish/sounds/528962/) by steenish |
 | `coin_5_shekel.wav` | coin drop | [Real Coin Drop](https://freesound.org/people/Rocotilos/sounds/343462/) by Rocotilos |
