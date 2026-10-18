@@ -13,6 +13,12 @@ extends Resource
 ## a crowded one. All tools change together, so their sizes stay comparable.
 @export_range(70.0, 150.0, 5.0, "suffix:%") var tool_size_percent := 100.0
 
+@export_group("Tutorial")
+## If any are listed, the level opens with a tutorial tray holding only these
+## (no distractors), asked for in a random order, before the clock starts.
+## Separate from requested_ids. Repeats are fine.
+@export var tutorial_ids: Array[StringName] = []
+
 @export_group("Reshuffle")
 ## Correct hand-offs per tray: then the tray leaves and comes back with the
 ## next requests and fresh distractors. Each tray holds exactly the requests
@@ -39,18 +45,27 @@ func problems(known_ids: Array[StringName]) -> PackedStringArray:
 	var found := PackedStringArray()
 	if requested_ids.is_empty():
 		found.append("Requests nothing.")
-	for list_name in ["requested_ids", "distractor_ids", "name_only_ids"]:
+	for list_name in ["requested_ids", "distractor_ids", "tutorial_ids", "name_only_ids"]:
 		for id: StringName in get(list_name):
 			if not known_ids.has(id):
 				found.append("%s: no tool has the id \"%s\"." % [list_name, id])
 	return found
 
 
-## The requests split into trays, each in play order. Shuffled on every call.
+func has_tutorial() -> bool:
+	return not tutorial_ids.is_empty()
+
+
+## The requests split into trays, each in play order, the tutorial tray (if
+## any) first. Shuffled on every call.
 func plan_trays() -> Array[Array]:
+	var trays: Array[Array] = []
+	if has_tutorial():
+		var tutorial := tutorial_ids.duplicate()
+		tutorial.shuffle()
+		trays.append(tutorial)
 	var requests := requested_ids.duplicate()
 	requests.shuffle()
-	var trays: Array[Array] = []
 	if reshuffle_after <= 0:
 		trays.append(requests)
 		return trays

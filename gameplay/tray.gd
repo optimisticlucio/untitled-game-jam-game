@@ -14,6 +14,13 @@ extends Node3D
 ## Where the tray goes when it slides away, relative to where it rests.
 @export var away_offset := Vector3(0.0, 0.0, 0.7)
 @export var slide_seconds := 0.6
+## How long a freshly filled tray settles off screen before sliding in. The
+## player doesn't see it, so the tools fall with settle_gravity times their
+## gravity and settle_damping extra drag to get down fast. Whatever slight
+## motion is left (about a centimetre) finishes after the tray arrives.
+@export var settle_seconds := 0.4
+@export var settle_gravity := 4.0
+@export var settle_damping := 4.0
 
 ## Parent of the tools in the tray.
 @onready var tools_root: Node3D = $Tools
@@ -116,11 +123,39 @@ func slide_away() -> Signal:
 	return tween.finished
 
 
-## Slides back into place. Await the returned signal.
+## Slides back into place with its tools, which ride along out of the physics
+## simulation (as in slide_away) and come back to life once it's in place.
+## Await the returned signal.
 func slide_back() -> Signal:
+	for tool in tools():
+		tool.process_mode = Node.PROCESS_MODE_DISABLED
 	var tween := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 	tween.tween_property(self, "position", _rest_position, slide_seconds)
+	tween.tween_callback(func() -> void:
+		for tool in tools():
+			tool.process_mode = Node.PROCESS_MODE_INHERIT)
 	return tween.finished
+
+
+## Jumps to where slide_away leaves it, without animating.
+func place_away() -> void:
+	position = _rest_position + away_offset
+
+
+## Lets a freshly filled tray settle off screen (see settle_seconds), then
+## puts the tools' physics back to normal.
+func settle() -> void:
+	var settling := tools()
+	for tool in settling:
+		tool.gravity_scale *= settle_gravity
+		tool.linear_damp += settle_damping
+		tool.angular_damp += settle_damping
+	await get_tree().create_timer(settle_seconds, false, true).timeout
+	for tool in settling:
+		if is_instance_valid(tool):
+			tool.gravity_scale /= settle_gravity
+			tool.linear_damp -= settle_damping
+			tool.angular_damp -= settle_damping
 
 
 ## Adds the tools spread over the floor at random angles, longest first. Each

@@ -21,6 +21,9 @@ var _since_request := 0.0
 ## Starts at infinity: before the first let-go there's nothing to wait for.
 var _since_release := INF
 var _hint_shown := false
+## Whether the current request has been hinted yet (the tutorial's first hint
+## for a request comes at once).
+var _hinted_this_request := false
 var _hint_elapsed := 0.0
 
 @onready var _camera: Camera3D = $Camera3D
@@ -50,8 +53,9 @@ func _ready() -> void:
 	_grabber.tool_handed.connect(_on_tool_handed)
 	_grabber.tool_released.connect(func(_tool: SurgicalTool) -> void: _since_release = 0.0)
 	_trays = level.plan_trays()
-	_start_tray()
-	_hud.start_clock()
+	_request.hide()
+	_tray.place_away()
+	_bring_in_tray()
 
 
 func _process(delta: float) -> void:
@@ -82,14 +86,31 @@ func _place_request() -> void:
 	_request.position = top_left
 
 
-func _start_tray() -> void:
+## The tutorial tray, when the level has one, is the first: only its own
+## tools, and the clock waits for the tray after it.
+func _in_tutorial() -> bool:
+	return level.has_tutorial() and _tray_index == 0
+
+
+## Fills the tray while it's off screen, lets the tools settle there, then
+## slides it in. Grabbing, requests and the clock start once it's in place.
+func _bring_in_tray() -> void:
+	_grabber.enabled = false
 	_queue.assign(_trays[_tray_index])
+	var distractors: Array[StringName] = []
+	if not _in_tutorial():
+		distractors = level.draw_distractors()
 	var tools: Array[SurgicalTool] = []
-	for id in _queue + level.draw_distractors():
+	for id in _queue + distractors:
 		var tool: SurgicalTool = _scenes[id].instantiate()
 		tool.resize(level.tool_size_percent / 100.0)
 		tools.append(tool)
 	_tray.fill(tools)
+	await _tray.settle()
+	await _tray.slide_back()
+	_grabber.enabled = true
+	if not _in_tutorial() and not _hud.clock_running:
+		_hud.start_clock()
 	_request_next()
 
 
@@ -101,6 +122,7 @@ func _request_next() -> void:
 	_requested = _queue.pop_front()
 	_since_request = 0.0
 	_hint_shown = false
+	_hinted_this_request = false
 	var example: SurgicalTool = _tray.tools().filter(func(t: SurgicalTool) -> bool: return t.id == _requested)[0]
 	_request_name.text = tr(example.display_name)
 	_preview.visible = not level.name_only_ids.has(_requested)
@@ -123,9 +145,7 @@ func _finish_tray() -> void:
 		await get_tree().process_frame
 	await _tray.slide_away()
 	_tray.clear()
-	await _tray.slide_back()
-	_grabber.enabled = true
-	_start_tray()
+	_bring_in_tray()
 
 
 func _on_tool_handed(tool: SurgicalTool) -> void:
@@ -140,8 +160,11 @@ func _on_tool_handed(tool: SurgicalTool) -> void:
 ## A hint waits for both the request delay and a quiet spell after the last
 ## let-go, and never starts mid-grab, so it can't light up something else
 ## just as the player reaches for a tool. It lasts hint_duration_seconds,
-## then the request delay starts over.
+## then the request delay starts over. In the tutorial each request's first
+## hint comes at once, so the tool is easy to spot; after that, the same rules.
 func _hint_due() -> bool:
+	if _in_tutorial() and not _hinted_this_request:
+		return _requested != &"" and not _hint_shown and _grabber.enabled
 	return (_requested != &"" and not _hint_shown
 		and level.hint_delay_seconds > 0.0
 		and _since_request >= level.hint_delay_seconds
@@ -158,6 +181,7 @@ func _show_hint() -> void:
 	if best:
 		_grabber.hint(best)
 		_hint_shown = true
+		_hinted_this_request = true
 		_hint_elapsed = 0.0
 
 
