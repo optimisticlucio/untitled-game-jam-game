@@ -24,6 +24,11 @@ const FOLDER := "res://tools/"
 static var _scenes_by_id: Dictionary[StringName, PackedScene] = {}
 
 
+## A new random look (tint, scratches, stains) every time a tool is set up.
+func _ready() -> void:
+	ToolLook.apply_to_tool(self)
+
+
 ## Scales the tool by factor: model, collision and grab shapes alike. The
 ## body itself stays unscaled, because physics bodies don't scale well.
 func resize(factor: float) -> void:

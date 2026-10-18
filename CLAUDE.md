@@ -31,3 +31,4 @@ Game jam project in Godot 4.7 (GDScript). Several people work on it with Claude.
 - The instrument scenes (`tools/<slug>.tscn`, `assets/instruments/`) are generated from Julia's Blender export by `dev/instruments/build_instruments.gd`, so don't hand-edit them. See `dev/instruments/README.md`.
 - Grabbing: each tool has a `Pick` Area3D on collision layer 8 only (inflated shapes). Raycast that layer with `collide_with_areas`.
 - `project.godot` sets Jolt penetration slop 0.001 and speculative distance 0.004; the defaults (0.02) sink millimetre-thin tools.
+- Looks: tools and the tray get their materials at runtime from `ToolLook` (`gameplay/tool_look.gd`; shaders and textures in `assets/shaders/`), with a new random tint, scratches, stains and blood placement every tray, so tools are recognised by shape only. Don't set materials in tool scenes. Julia tunes the values in her browser shader lab; `dev/shader_lab/lab.tscn` renders them in Godot.

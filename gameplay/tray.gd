@@ -22,6 +22,10 @@ extends Node3D
 @onready var _rest_position := position
 
 
+func _ready() -> void:
+	ToolLook.apply_to_tray($Body)
+
+
 func tools() -> Array[SurgicalTool]:
 	var result: Array[SurgicalTool] = []
 	for child in tools_root.get_children():
@@ -124,6 +128,8 @@ func slide_back() -> Signal:
 ## on the floor. If it still overlaps others (a crowded tray), it starts above
 ## them and falls onto the pile.
 func fill(new_tools: Array[SurgicalTool]) -> void:
+	# A new tray: the blood moves too (the tools get their own new look as they're made).
+	ToolLook.reshuffle_tray($Body)
 	var sizes: Dictionary[SurgicalTool, AABB] = {}
 	for tool in new_tools:
 		tools_root.add_child(tool)
