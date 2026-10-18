@@ -16,7 +16,7 @@ func _init() -> void:
 	var fails := 0
 	for slug in by_slug:
 		var it: Dictionary = by_slug[slug]
-		var f: String = ("res://assets/instruments/%s.tscn" if it["body"] == "static" else "res://tools/%s.tscn") % slug
+		var f: String = ("res://tools/%s.tscn" if it["body"] == "rigid" else "res://assets/instruments/%s.tscn") % slug
 		if not ResourceLoader.exists(f):
 			continue
 		var root: Node3D = (load(f) as PackedScene).instantiate()
@@ -38,12 +38,17 @@ func _init() -> void:
 			limit = (float(it["overshoot_mm"]) + 1.0) / 1000.0
 		var is_tool: bool = root.get_script() != null and (root.get_script() as Script).resource_path == BASE_SCRIPT \
 			and String(root.get("id")) == slug
-		if it["body"] != "static" and not is_tool:
+		if it["body"] == "rigid" and not is_tool:
 			print("FAIL %s is not a SurgicalTool with id %s" % [f, slug])
 			fails += 1
 		var extra := (col_box.size - mesh_box.size) / 2.0
 		var ok := have_mesh and have_col and col_box.grow(0.0015).encloses(mesh_box) \
 			and extra.x < limit and extra.y < limit and extra.z < limit
+		if it["body"] == "static":
+			var origin_ok := absf(mesh_box.position.y) < 0.001
+			print("%s %s origin at the underside" % ["OK  " if origin_ok else "FAIL", f])
+			if not origin_ok:
+				fails += 1
 		print("%s %s mesh_mm=%s shapes_mm=%s" % ["OK  " if ok else "FAIL", f, mesh_box.size * 1000.0, col_box.size * 1000.0])
 		if not ok:
 			fails += 1

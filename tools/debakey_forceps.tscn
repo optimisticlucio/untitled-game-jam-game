@@ -22,27 +22,28 @@ id = &"debakey_forceps"
 display_name = "DeBakey Forceps"
 description = "Long, even forceps with narrow atraumatic tips: fine grooves, no teeth. For vessels and delicate tissue."
 specialities = Array[int]([0])
+category = 1
 
-[node name="Model" type="Node3D" parent="." unique_id=1626898316 instance=ExtResource("2_07mll")]
+[node name="Model" type="Node3D" parent="." unique_id=355727417 instance=ExtResource("2_07mll")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=2111707049]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=81490378]
 transform = Transform3D(1, 0, 0, 0, 0.999395, -0.034789, 0, 0.034789, 0.999395, 0, 0.003609, -0.000244)
 shape = SubResource("BoxShape3D_hmowl")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1805425243]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1246402513]
 transform = Transform3D(1, 0, 0, 0, 0.999395, 0.034789, 0, -0.034789, 0.999395, 0, -0.003609, -0.000244)
 shape = SubResource("BoxShape3D_nfw1o")
 
-[node name="Pick" type="Area3D" parent="." unique_id=665617922]
+[node name="Pick" type="Area3D" parent="." unique_id=1816134204]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1129090651]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=752808237]
 transform = Transform3D(1, 0, 0, 0, 0.999395, -0.034789, 0, 0.034789, 0.999395, 0, 0.003609, -0.000244)
 shape = SubResource("BoxShape3D_bdrs4")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=653725453]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1241753215]
 transform = Transform3D(1, 0, 0, 0, 0.999395, 0.034789, 0, -0.034789, 0.999395, 0, -0.003609, -0.000244)
 shape = SubResource("BoxShape3D_reg1h")

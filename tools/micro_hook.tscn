@@ -24,27 +24,28 @@ id = &"micro_hook"
 display_name = "Micro Hook"
 description = "Slim round handle tapering to a fine shaft with a tiny hook at the tip, for lifting fine structures."
 specialities = Array[int]([1, 2])
+category = 1
 
-[node name="Model" type="Node3D" parent="." unique_id=892112928 instance=ExtResource("2_nihie")]
+[node name="Model" type="Node3D" parent="." unique_id=1473373177 instance=ExtResource("2_nihie")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=21186565]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=518313162]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.020499)
 shape = SubResource("CapsuleShape3D_jcu3r")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=2060153518]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=673974338]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000411, 0, -0.0535)
 shape = SubResource("BoxShape3D_ay66t")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1639898329]
+[node name="Pick" type="Area3D" parent="." unique_id=1620430705]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1740725000]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1471509746]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.020499)
 shape = SubResource("CapsuleShape3D_l42l0")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=359427369]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1876202801]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000411, 0, -0.0535)
 shape = SubResource("BoxShape3D_n6j33")

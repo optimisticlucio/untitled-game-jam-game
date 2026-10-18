@@ -1,0 +1,134 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://ui/theme.tres" id="1_5klac"]
+[ext_resource type="Script" path="res://ui/main_menu.gd" id="2_lsdqh"]
+[ext_resource type="Texture2D" path="res://ui/icons/play.svg" id="3_jiymt"]
+[ext_resource type="Texture2D" path="res://ui/icons/book.svg" id="4_bgtsx"]
+[ext_resource type="Texture2D" path="res://ui/icons/trophy.svg" id="5_kaxbk"]
+[ext_resource type="Texture2D" path="res://ui/icons/gear.svg" id="6_0nobx"]
+[ext_resource type="Script" path="res://ui/bottom_sheet.gd" id="7_iyrh0"]
+[ext_resource type="PackedScene" path="res://ui/settings_panel.tscn" id="8_8jgmr"]
+[ext_resource type="Script" path="res://ui/settings_panel.gd" id="9_q75kt"]
+[ext_resource type="Texture2D" path="res://ui/icons/close.svg" id="10_0i0gl"]
+
+[node name="MainMenu" type="Control" unique_id=247834141]
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("1_5klac")
+script = ExtResource("2_lsdqh")
+play_scene = "res://levels/level.tscn"
+
+[node name="Background" type="ColorRect" parent="." unique_id=1054247366]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.82, 0.84, 0.86, 1)
+
+[node name="Column" type="VBoxContainer" parent="." unique_id=598362394]
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = -440.0
+offset_right = 280.0
+offset_bottom = 440.0
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="Title" type="Label" parent="Column" unique_id=858379427]
+layout_mode = 2
+theme_type_variation = &"TitleLabel"
+text = "Scalpel King"
+horizontal_alignment = 1
+
+[node name="Gap" type="Control" parent="Column" unique_id=1692167463]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="PlayButton" type="Button" parent="Column" unique_id=1613961544]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Play"
+icon = ExtResource("3_jiymt")
+
+[node name="GuideButton" type="Button" parent="Column" unique_id=1033447825]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Pocket Guide"
+icon = ExtResource("4_bgtsx")
+
+[node name="LeaderboardButton" type="Button" parent="Column" unique_id=1172933317]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Leaderboard"
+icon = ExtResource("5_kaxbk")
+
+[node name="SettingsButton" type="Button" parent="Column" unique_id=1311967200]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Settings"
+icon = ExtResource("6_0nobx")
+
+[node name="Toast" type="PanelContainer" parent="." unique_id=700282481]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -200.0
+offset_right = 300.0
+offset_bottom = -110.0
+mouse_filter = 2
+theme_type_variation = &"TealPanel"
+
+[node name="ToastLabel" type="Label" parent="Toast" unique_id=1083295149]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="SettingsSheet" type="PanelContainer" parent="." unique_id=353788720]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 400.0
+theme_type_variation = &"SheetPanel"
+script = ExtResource("7_iyrh0")
+
+[node name="Column" type="VBoxContainer" parent="SettingsSheet" unique_id=774936535]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Header" type="Label" parent="SettingsSheet/Column" unique_id=999847170]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Settings"
+
+[node name="SettingsPanel" type="VBoxContainer" parent="SettingsSheet/Column" unique_id=1276520400 instance=ExtResource("8_8jgmr")]
+layout_mode = 2
+theme_override_constants/separation = 16
+script = ExtResource("9_q75kt")
+
+[node name="CloseSettingsButton" type="Button" parent="SettingsSheet/Column" unique_id=700282366]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Close"
+icon = ExtResource("10_0i0gl")

@@ -1,0 +1,124 @@
+[gd_scene format=3]
+
+[ext_resource type="Theme" path="res://ui/theme.tres" id="1_c53l7"]
+[ext_resource type="Script" path="res://ui/pocket_guide.gd" id="2_l78u8"]
+[ext_resource type="Texture2D" path="res://ui/icons/back.svg" id="3_tof67"]
+[ext_resource type="PackedScene" path="res://ui/tool_preview.tscn" id="4_dqnyn"]
+[ext_resource type="Script" path="res://ui/tool_viewer.gd" id="5_rqxye"]
+[ext_resource type="Texture2D" path="res://ui/icons/close.svg" id="6_7pnah"]
+
+[node name="PocketGuide" type="Control" unique_id=1925513741]
+layout_mode = 3
+anchors_preset = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource("1_c53l7")
+script = ExtResource("2_l78u8")
+
+[node name="Background" type="ColorRect" parent="." unique_id=542017890]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.82, 0.84, 0.86, 1)
+
+[node name="Margin" type="MarginContainer" parent="." unique_id=1001741226]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="Column" type="VBoxContainer" parent="Margin" unique_id=203642714]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TopBar" type="HBoxContainer" parent="Margin/Column" unique_id=632040995]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="BackButton" type="Button" parent="Margin/Column/TopBar" unique_id=1065474062]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
+icon = ExtResource("3_tof67")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Title" type="Label" parent="Margin/Column/TopBar" unique_id=713698887]
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+text = "Pocket Guide"
+vertical_alignment = 1
+
+[node name="Tabs" type="TabBar" parent="Margin/Column" unique_id=311477427]
+unique_name_in_owner = true
+layout_mode = 2
+current_tab = 0
+tab_alignment = 1
+clip_tabs = false
+tab_count = 2
+tab_0/title = "By function"
+tab_1/title = "By specialty"
+
+[node name="Scroll" type="ScrollContainer" parent="Margin/Column" unique_id=1786131707]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="List" type="VBoxContainer" parent="Margin/Column/Scroll" unique_id=939095037]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="Detail" type="PanelContainer" parent="." unique_id=798784738]
+unique_name_in_owner = true
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_type_variation = &"CardPanel"
+
+[node name="Column" type="VBoxContainer" parent="Detail" unique_id=1972955758]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Viewer" type="SubViewportContainer" parent="Detail/Column" unique_id=1491332098 instance=ExtResource("4_dqnyn")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+size_flags_vertical = 3
+stretch = true
+script = ExtResource("5_rqxye")
+
+[node name="Hint" type="Label" parent="Detail/Column" unique_id=1040696941]
+layout_mode = 2
+theme_type_variation = &"SmallLabel"
+text = "Drag to turn it"
+horizontal_alignment = 1
+
+[node name="DetailName" type="Label" parent="Detail/Column" unique_id=1064309022]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"HeaderLabel"
+autowrap_mode = 3
+
+[node name="DetailTags" type="Label" parent="Detail/Column" unique_id=671523616]
+unique_name_in_owner = true
+layout_mode = 2
+theme_type_variation = &"SmallLabel"
+autowrap_mode = 3
+
+[node name="DetailText" type="Label" parent="Detail/Column" unique_id=251941070]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="CloseDetailButton" type="Button" parent="Detail/Column" unique_id=306524810]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Close"
+icon = ExtResource("6_7pnah")

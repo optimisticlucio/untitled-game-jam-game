@@ -1,0 +1,51 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://ui/settings_panel.gd" id="1_of5of"]
+[ext_resource type="Texture2D" path="res://ui/icons/sound.svg" id="2_my727"]
+[ext_resource type="Texture2D" path="res://ui/icons/music.svg" id="3_2s3gc"]
+
+[node name="SettingsPanel" type="VBoxContainer" unique_id=1276520400]
+theme_override_constants/separation = 16
+script = ExtResource("1_of5of")
+
+[node name="SoundRow" type="HBoxContainer" parent="." unique_id=404468082]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Icon" type="TextureRect" parent="SoundRow" unique_id=1722065045]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("2_my727")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="SoundSlider" type="HSlider" parent="SoundRow" unique_id=686303204]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="MusicRow" type="HBoxContainer" parent="." unique_id=675368948]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Icon" type="TextureRect" parent="MusicRow" unique_id=2075937632]
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+texture = ExtResource("3_2s3gc")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MusicSlider" type="HSlider" parent="MusicRow" unique_id=1131689339]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 72)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.01
+value = 1.0

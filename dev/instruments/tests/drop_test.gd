@@ -21,7 +21,9 @@ func _ready() -> void:
 	var t: Dictionary = spec["items"][tray_key]
 	var d: Array = t["dims_mm"]  # [length (Blender Y -> Godot -Z), width (X), height (Z -> Y)]
 	tray_half = Vector3(d[1], d[2], d[0]) / 2000.0
-	add_child((load("res://assets/instruments/%s.tscn" % t["slug"]) as PackedScene).instantiate())
+	var tray := (load("res://assets/instruments/%s.tscn" % t["slug"]) as PackedScene).instantiate() as Node3D
+	tray.position.y = -tray_half.y  # the tray's origin is its underside; keep its centre at 0
+	add_child(tray)
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 7
 	var y := 0.06

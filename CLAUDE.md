@@ -13,6 +13,8 @@ Game jam project in Godot 4.7 (GDScript). Several people work on it with Claude.
 - Gameplay code never names specific instruments. It finds `SurgicalTool` scenes at runtime with `SurgicalTool.scenes_by_id()`; which tools exist is the artists' call.
 - The tray's size and shape come only from its `Zone` collision shapes (boxes/cylinders) in `gameplay/tray.tscn`. Code asks the `Tray` (`contains`, `floor_height`, `random_point`) and never assumes dimensions.
 - Levels are data: one `LevelData` `.tres` per level in `levels/`, naming tools by `id`, played by `levels/level.tscn`. New per-level settings go on `LevelData`, not in a new scene or subclass.
+- UI is English for now, through `tr()`. The placeholder look lives in one theme, `ui/theme.tres`, plus `ui/icons/` (artists restyle there). The screens are `ui/main_menu.tscn` (Play, Pocket Guide, Leaderboard, Settings), `ui/pocket_guide.tscn` and `ui/hud.tscn`, all generated at first but fine to edit by hand.
+- Audio: players use the `Music` or `SFX` bus (`default_bus_layout.tres`). `SettingsPanel` saves both volumes to `user://settings.cfg`.
 - Export presets: add `addons/godot_ai/*` and `dev/*` to "Filters to exclude files". The plugin already strips its autoload from exports, but its files still ship otherwise.
 - Lookalike pairs will live in one central list, not on each tool (avoids out-of-sync data). Not built yet.
 - Instrument naming language: undecided. Refer to tools by `id` in code, and pass display names through `tr()`.
@@ -24,7 +26,7 @@ Game jam project in Godot 4.7 (GDScript). Several people work on it with Claude.
 - Tool scenes live in `tools/` (subfolders fine). Code reads the path from `SurgicalTool.FOLDER`, never a literal.
 - Each tool is an inherited scene of `tools/surgical_tool.tscn`, with its model and `CollisionShape3D` children added, and its data set in the `SurgicalTool` exports. No separate data files per tool.
 - Collision: boxes or convex shapes only. Never concave/trimesh: tools are dynamic bodies.
-- `SurgicalTool.Speciality` is append-only, because scenes store it as numbers.
+- `SurgicalTool.Speciality` and `SurgicalTool.Category` (what the tool does, which groups the Pocket Guide) are append-only, because scenes store them as numbers.
 - Models lie flat as they would on a tray (Y up), at real size in meters.
 - The instrument scenes (`tools/<slug>.tscn`, `assets/instruments/`) are generated from Julia's Blender export by `dev/instruments/build_instruments.gd`, so don't hand-edit them. See `dev/instruments/README.md`.
 - Grabbing: each tool has a `Pick` Area3D on collision layer 8 only (inflated shapes). Raycast that layer with `collide_with_areas`.

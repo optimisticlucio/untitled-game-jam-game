@@ -34,43 +34,44 @@ id = &"kelly_clamp"
 display_name = "Kelly Clamp"
 description = "Hemostat with ring handles and a ratchet lock. Serrations only on the distal half of the jaw: that is how it differs from the Crile."
 specialities = Array[int]([0])
+category = 2
 
-[node name="Model" type="Node3D" parent="." unique_id=492951182 instance=ExtResource("2_318on")]
+[node name="Model" type="Node3D" parent="." unique_id=1710081076 instance=ExtResource("2_318on")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=2139869986]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=914756977]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04327)
 shape = SubResource("BoxShape3D_yrhoq")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=286409694]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=610373769]
 transform = Transform3D(0.99463, 0, 0.103495, 0, 1, 0, -0.103495, 0, 0.99463, 0.00565, 0, 0.01748)
 shape = SubResource("BoxShape3D_ixevi")
 
-[node name="Collision02" type="CollisionShape3D" parent="." unique_id=812437948]
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=984566779]
 transform = Transform3D(0.99463, 0, -0.103495, 0, 1, 0, 0.103495, 0, 0.99463, -0.00565, 0, 0.01748)
 shape = SubResource("BoxShape3D_jm2ea")
 
-[node name="Collision03" type="CollisionShape3D" parent="." unique_id=643516020]
+[node name="Collision03" type="CollisionShape3D" parent="." unique_id=1365972286]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05468)
 shape = SubResource("BoxShape3D_ek8ig")
 
-[node name="Pick" type="Area3D" parent="." unique_id=719457226]
+[node name="Pick" type="Area3D" parent="." unique_id=1497570427]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1869737205]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=240550712]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04327)
 shape = SubResource("BoxShape3D_4twq3")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=2141368349]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1952235172]
 transform = Transform3D(0.99463, 0, 0.103495, 0, 1, 0, -0.103495, 0, 0.99463, 0.00565, 0, 0.01748)
 shape = SubResource("BoxShape3D_sgxdm")
 
-[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1404766073]
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1647007290]
 transform = Transform3D(0.99463, 0, -0.103495, 0, 1, 0, 0.103495, 0, 0.99463, -0.00565, 0, 0.01748)
 shape = SubResource("BoxShape3D_ec2iq")
 
-[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=1299568919]
+[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=1972114479]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05468)
 shape = SubResource("BoxShape3D_vvjh2")
