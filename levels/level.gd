@@ -120,11 +120,15 @@ func _request_next() -> void:
 ## The bubble keeps its width (it's anchored across the top) and fits its height to the content.
 ## That waits a frame, until the layout knows how many lines the wrapped name takes.
 func _fit_request() -> void:
+	# Layout only runs on visible controls (the bubble is hidden while a tray
+	# slides in), so lay it out invisibly for that frame, then fit and reveal.
+	_request.modulate.a = 0.0
+	_request.show()
 	await get_tree().process_frame
 	if _requested == &"":
 		return
 	_request.offset_bottom = _request.offset_top + _request.get_combined_minimum_size().y
-	_request.show()
+	_request.modulate.a = 1.0
 
 
 func _finish_tray() -> void:
