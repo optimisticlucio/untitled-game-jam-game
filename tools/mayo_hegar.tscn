@@ -36,42 +36,42 @@ description = "Needle holder: gold rings (tungsten-carbide inserts), long shanks
 specialities = Array[int]([0])
 category = 4
 
-[node name="Model" type="Node3D" parent="." unique_id=175180179 instance=ExtResource("2_4t882")]
+[node name="Model" type="Node3D" parent="." unique_id=2113072578 instance=ExtResource("2_4t882")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=727414962]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.05627)
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1992590235]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.056703)
 shape = SubResource("BoxShape3D_50rst")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=783387235]
-transform = Transform3D(0.997346, 0, 0.072806, 0, 1, 0, -0.072806, 0, 0.997346, 0.00585, 0, 0.01448)
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=120342830]
+transform = Transform3D(0.997346, 0, 0.072806, 0, 1, 0, -0.072806, 0, 0.997346, 0.00585, 0, 0.014047)
 shape = SubResource("BoxShape3D_l2upp")
 
-[node name="Collision02" type="CollisionShape3D" parent="." unique_id=40628674]
-transform = Transform3D(0.997346, 0, -0.072806, 0, 1, 0, 0.072806, 0, 0.997346, -0.00585, 0, 0.01448)
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=576734200]
+transform = Transform3D(0.997346, 0, -0.072806, 0, 1, 0, 0.072806, 0, 0.997346, -0.00585, 0, 0.014047)
 shape = SubResource("BoxShape3D_dbhbr")
 
-[node name="Collision03" type="CollisionShape3D" parent="." unique_id=1455476361]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.064681)
+[node name="Collision03" type="CollisionShape3D" parent="." unique_id=682887073]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.064247)
 shape = SubResource("BoxShape3D_e6am7")
 
-[node name="Pick" type="Area3D" parent="." unique_id=697801244]
+[node name="Pick" type="Area3D" parent="." unique_id=1009888512]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1054762582]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.05627)
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1615562236]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.056703)
 shape = SubResource("BoxShape3D_h5his")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=696076044]
-transform = Transform3D(0.997346, 0, 0.072806, 0, 1, 0, -0.072806, 0, 0.997346, 0.00585, 0, 0.01448)
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1165466891]
+transform = Transform3D(0.997346, 0, 0.072806, 0, 1, 0, -0.072806, 0, 0.997346, 0.00585, 0, 0.014047)
 shape = SubResource("BoxShape3D_hdygw")
 
-[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1289036730]
-transform = Transform3D(0.997346, 0, -0.072806, 0, 1, 0, 0.072806, 0, 0.997346, -0.00585, 0, 0.01448)
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=627624114]
+transform = Transform3D(0.997346, 0, -0.072806, 0, 1, 0, 0.072806, 0, 0.997346, -0.00585, 0, 0.014047)
 shape = SubResource("BoxShape3D_f01d1")
 
-[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=1322765133]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.064681)
+[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=1176261216]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.064247)
 shape = SubResource("BoxShape3D_cilr8")
