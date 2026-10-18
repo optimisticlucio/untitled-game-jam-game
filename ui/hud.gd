@@ -50,6 +50,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 
 
+## Screen y where the top bar (clock and pause button) ends. Game UI placed
+## near the top of the screen should stay below it.
+func top_bar_bottom() -> float:
+	return maxf(($Root/ClockPanel as Control).get_global_rect().end.y, _pause_button.get_global_rect().end.y)
+
+
 func start_clock() -> void:
 	elapsed = 0.0
 	clock_running = true

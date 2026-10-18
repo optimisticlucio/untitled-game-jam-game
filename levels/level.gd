@@ -34,6 +34,7 @@ var _hint_elapsed := 0.0
 @onready var _request_name: Label = %RequestName
 @onready var _popup: Control = %Popup
 @onready var _message: Label = %Message
+@onready var _hud: Hud = $Hud
 
 
 func _ready() -> void:
@@ -50,6 +51,7 @@ func _ready() -> void:
 	_grabber.tool_released.connect(func(_tool: SurgicalTool) -> void: _since_release = 0.0)
 	_trays = level.plan_trays()
 	_start_tray()
+	_hud.start_clock()
 
 
 func _process(delta: float) -> void:
@@ -68,14 +70,15 @@ func _process(delta: float) -> void:
 
 
 ## Beside the target, whatever the screen's aspect ratio, but never down over
-## the tray (a picture plus a two-line name is taller than the target).
+## the tray (a picture plus a two-line name is taller than the target) or up
+## under the HUD's top bar. The HUD wins if both can't be avoided.
 func _place_request() -> void:
 	const MARGIN := 8.0
 	var beside := _target.global_position + Vector3(0.13, 0.0, 0.0)
 	var top_left := _camera.unproject_position(beside) - _request.size * 0.5
 	var tray_top := _camera.unproject_position(_tray.far_edge()).y
 	top_left.y = minf(top_left.y, tray_top - MARGIN - _request.size.y)
-	top_left.y = maxf(top_left.y, MARGIN)
+	top_left.y = maxf(top_left.y, _hud.top_bar_bottom() + MARGIN)
 	_request.position = top_left
 
 
@@ -131,7 +134,7 @@ func _on_tool_handed(tool: SurgicalTool) -> void:
 		await _grabber.consume(tool)
 		_request_next()
 	else:
-		_grabber.return_to_tray(tool)
+		_grabber.reject(tool)
 
 
 ## A hint waits for both the request delay and a quiet spell after the last
@@ -163,6 +166,7 @@ func _on_play_again_pressed() -> void:
 
 
 func _show_message(text: String) -> void:
+	_hud.stop_clock()
 	_grabber.enabled = false
 	_message.text = text
 	_request.hide()

@@ -13,13 +13,15 @@ extends Node
 ## - anywhere else: flown back to the nearest spot on the tray, and the pile
 ##   gets a small nudge.
 ## Works with mouse and touch (Godot turns single touches into mouse events).
-## It also owns every glow on the tools, including hint() glows, so they
-## never fight over a tool's overlay material.
+## It also owns every highlight on the tools (held, hint() and reject()), so
+## they never fight over a tool's look. A highlight is a light glow (the
+## meshes' overlay material) plus an outline (a child mesh with smoothed
+## normals, made the first time a mesh is highlighted).
 
 signal tool_grabbed(tool: SurgicalTool)
 ## Emitted whenever a held tool is let go, wherever it lands (before tool_handed).
 signal tool_released(tool: SurgicalTool)
-## The listener must call consume() or return_to_tray() on the tool.
+## The listener must call consume(), reject() or return_to_tray() on the tool.
 ## Until then it stays frozen where it was let go.
 signal tool_handed(tool: SurgicalTool)
 
@@ -27,6 +29,10 @@ signal tool_handed(tool: SurgicalTool)
 const PICK_LAYER := 1 << 7
 const DROP_ZONE_LAYER := 1 << 8
 const RAY_LENGTH := 100.0
+const OUTLINE_NODE := &"HighlightOutline"
+
+## Outline copies of each mesh, with smoothed normals, made once and shared.
+static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 
 @export var camera: Camera3D
 ## Only the tray's tools can be grabbed. Its zone is where drops land.
@@ -41,15 +47,23 @@ const RAY_LENGTH := 100.0
 @export var hold_seconds := 0.15
 ## A press that moves further than this before hold_seconds is not a grab.
 @export var hold_slop_pixels := 24.0
+## Highlight of the held tool.
 @export var glow_color := Color(0.7, 1.0, 0.2):
 	set(value):
 		glow_color = value
-		_glow.set_shader_parameter("glow_color", value)
-## Glow of tools marked with hint().
+		_set_highlight_color(_glow, value)
+## Highlight of tools marked with hint().
 @export var hint_color := Color(0.3, 0.8, 1.0):
 	set(value):
 		hint_color = value
-		_hint_glow.set_shader_parameter("glow_color", value)
+		_set_highlight_color(_hint_glow, value)
+## Highlight of a tool handed over wrong, while it hovers before going back.
+@export var reject_color := Color(1.0, 0.2, 0.15):
+	set(value):
+		reject_color = value
+		_set_highlight_color(_reject_glow, value)
+## How long a rejected tool hovers before it flies back to the tray.
+@export var reject_seconds := 0.5
 ## Height above the tray's tools the held tool floats at. Higher is closer to the camera.
 @export var lift_height := 0.3
 ## On touch screens the held tool sits this far above the finger, so the finger
@@ -82,9 +96,12 @@ var enabled := true:
 				_set_glow(_held, false)
 				_held = null
 
-var _glow := ShaderMaterial.new()
-var _hint_glow := ShaderMaterial.new()
+var _glow := _make_highlight()
+var _hint_glow := _make_highlight()
+var _reject_glow := _make_highlight()
 var _hinted: Dictionary[SurgicalTool, bool] = {}
+## Tools hovering in reject_color before they go back to the tray.
+var _rejecting: Dictionary[SurgicalTool, bool] = {}
 var _pointer := Vector2.ZERO
 var _press_position := Vector2.ZERO
 var _press_time := 0.0
@@ -102,14 +119,10 @@ var _released_over: Dictionary[SurgicalTool, Vector3] = {}
 var _saved_layers: Dictionary[SurgicalTool, Vector2i] = {}
 
 
-func _init() -> void:
-	_glow.shader = preload("res://gameplay/held_glow.gdshader")
-	_hint_glow.shader = _glow.shader
-
-
 func _ready() -> void:
-	_glow.set_shader_parameter("glow_color", glow_color)
-	_hint_glow.set_shader_parameter("glow_color", hint_color)
+	_set_highlight_color(_glow, glow_color)
+	_set_highlight_color(_hint_glow, hint_color)
+	_set_highlight_color(_reject_glow, reject_color)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -168,6 +181,21 @@ func consume(tool: SurgicalTool) -> Signal:
 		_saved_layers.erase(tool)
 		tool.queue_free())
 	return tween.finished
+
+
+## For a tool handed over wrong: it hovers where it was let go, highlighted
+## in reject_color, for reject_seconds, then goes back to the tray.
+func reject(tool: SurgicalTool) -> void:
+	_make_intangible(tool)
+	# Not grabbable while it hovers.
+	_flying[tool] = true
+	_rejecting[tool] = true
+	_set_glow(tool, false)
+	get_tree().create_timer(reject_seconds, false).timeout.connect(func() -> void:
+		_rejecting.erase(tool)
+		_flying.erase(tool)
+		if is_instance_valid(tool):
+			return_to_tray(tool))
 
 
 ## Flies a tool to the nearest spot on the tray where it fits (turning it
@@ -278,15 +306,77 @@ func clear_hints() -> void:
 			_set_glow(tool, false)
 
 
-## Turns the held glow on, or back to the tool's resting look (its hint glow, if any).
+## Turns the held highlight on, or back to the tool's resting look: its
+## reject or hint highlight, if any.
 func _set_glow(tool: SurgicalTool, on: bool) -> void:
-	var material: Material = null
+	var glow: ShaderMaterial = null
 	if on:
-		material = _glow
+		glow = _glow
+	elif _rejecting.has(tool):
+		glow = _reject_glow
 	elif _hinted.has(tool):
-		material = _hint_glow
-	for node in tool.find_children("*", "GeometryInstance3D", true, false):
-		(node as GeometryInstance3D).material_overlay = material
+		glow = _hint_glow
+	for node in tool.find_children("*", "MeshInstance3D", true, false):
+		var mesh_instance := node as MeshInstance3D
+		if mesh_instance.name == OUTLINE_NODE or mesh_instance.mesh == null:
+			continue
+		mesh_instance.material_overlay = glow
+		var outline := mesh_instance.get_node_or_null(NodePath(OUTLINE_NODE)) as MeshInstance3D
+		if glow == null:
+			if outline:
+				outline.hide()
+			continue
+		if outline == null:
+			outline = MeshInstance3D.new()
+			outline.name = OUTLINE_NODE
+			outline.mesh = _outline_mesh(mesh_instance.mesh)
+			outline.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+			mesh_instance.add_child(outline)
+		outline.material_override = glow.get_meta(&"outline")
+		outline.show()
+
+
+## The mesh with its normals averaged wherever corners share a position, so
+## the outline, pushed out along them, stays one connected band.
+static func _outline_mesh(mesh: Mesh) -> ArrayMesh:
+	if _outline_meshes.has(mesh):
+		return _outline_meshes[mesh]
+	var result := ArrayMesh.new()
+	for surface in mesh.get_surface_count():
+		var arrays := mesh.surface_get_arrays(surface)
+		var vertices: PackedVector3Array = arrays[Mesh.ARRAY_VERTEX]
+		var normals: PackedVector3Array = arrays[Mesh.ARRAY_NORMAL]
+		var sums := {}
+		for i in vertices.size():
+			var key := vertices[i].snappedf(0.00001)
+			sums[key] = sums.get(key, Vector3.ZERO) + normals[i]
+		var smooth := PackedVector3Array()
+		smooth.resize(vertices.size())
+		for i in vertices.size():
+			smooth[i] = (sums[vertices[i].snappedf(0.00001)] as Vector3).normalized()
+		var outline_arrays := []
+		outline_arrays.resize(Mesh.ARRAY_MAX)
+		outline_arrays[Mesh.ARRAY_VERTEX] = vertices
+		outline_arrays[Mesh.ARRAY_NORMAL] = smooth
+		outline_arrays[Mesh.ARRAY_INDEX] = arrays[Mesh.ARRAY_INDEX]
+		result.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, outline_arrays)
+	_outline_meshes[mesh] = result
+	return result
+
+
+## A highlight: the glow material, carrying its outline material as metadata.
+static func _make_highlight() -> ShaderMaterial:
+	var glow := ShaderMaterial.new()
+	glow.shader = preload("res://gameplay/highlight_glow.gdshader")
+	var outline := ShaderMaterial.new()
+	outline.shader = preload("res://gameplay/highlight_outline.gdshader")
+	glow.set_meta(&"outline", outline)
+	return glow
+
+
+static func _set_highlight_color(highlight: ShaderMaterial, color: Color) -> void:
+	highlight.set_shader_parameter("glow_color", color)
+	(highlight.get_meta(&"outline") as ShaderMaterial).set_shader_parameter("outline_color", color)
 
 
 ## Where the held tool should be: under the pointer (minus the finger offset),
