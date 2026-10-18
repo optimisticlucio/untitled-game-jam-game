@@ -78,8 +78,8 @@ Played when the item lands after being dropped (its `drop_sound`), instead of th
 |---|---|---|
 | `music_menu.ogg` | Main menu loop (18 s). | [BirdFish Happy Loop.mp3](https://freesound.org/people/pinkinblue/sounds/425971/) by pinkinblue |
 | `music_level.ogg` | In-level loop (58 s). | [Upbeat loop](https://freesound.org/people/mistermender/sounds/512340/) by mistermender |
-| `ambience_or.ogg` | Optional quiet bed under the level: heart monitor beeps (28 s). | [Heart Monitor Beep](https://freesound.org/people/samfk360/sounds/148897/) by samfk360 |
-| `ambience_or_room.wav` | Level background: a real operating room, machine hum (31 s loop cut from the recording; the heart monitor beeps play on top) | [room tone operating room quiet machine hum and monitor beeps…](https://freesound.org/people/kyles/sounds/406512/) by kyles |
+| `heart_monitor.wav` | Level background, on top of the room: ten regular heartbeats (10.7 s loop; the speed-up and flatline in the recording are cut out) | [Heart Monitor Beep](https://freesound.org/people/samfk360/sounds/148897/) by samfk360 |
+| `ambience_or_room.wav` | Level background: a real operating room, machine hum (22 s loop from 72.5–94.5 s of the recording, which has no monitor alarms; the alarm melodies elsewhere in it are cut out) | [room tone operating room quiet machine hum and monitor beeps…](https://freesound.org/people/kyles/sounds/406512/) by kyles |
 
 ## Finding replacements
 
