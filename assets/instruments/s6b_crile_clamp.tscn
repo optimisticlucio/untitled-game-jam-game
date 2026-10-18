@@ -1,0 +1,80 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/s6b_crile_clamp.glb" id="1_3al1p"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_v6g2t"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dchg7"]
+size = Vector3(0.009, 0.0064, 0.0535)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qrqex"]
+size = Vector3(0.0049, 0.004, 0.0784)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ughgg"]
+size = Vector3(0.0049, 0.004, 0.0784)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2pndg"]
+size = Vector3(0.0488, 0.0048, 0.0324)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u0rq4"]
+size = Vector3(0.021, 0.02, 0.0655)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_f42kq"]
+size = Vector3(0.02, 0.02, 0.0904)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_q2w46"]
+size = Vector3(0.02, 0.02, 0.0904)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dewmj"]
+size = Vector3(0.0608, 0.02, 0.0444)
+
+[node name="s6b_crile_clamp" type="RigidBody3D" unique_id=318929473]
+mass = 0.045
+physics_material_override = SubResource("PhysicsMaterial_v6g2t")
+continuous_cd = true
+metadata/instrument_id = "s6b"
+metadata/name_he = "מלקחיים עוצרי דימום (קריל)"
+metadata/name_en = "Crile hemostat"
+metadata/lookalike = "clamp"
+
+[node name="visual" type="Node3D" parent="." unique_id=431731140 instance=ExtResource("1_3al1p")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=369557302]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04327)
+shape = SubResource("BoxShape3D_dchg7")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=452164501]
+transform = Transform3D(0.99463, 0, 0.103495, 0, 1, 0, -0.103495, 0, 0.99463, 0.00565, 0, 0.01748)
+shape = SubResource("BoxShape3D_qrqex")
+
+[node name="col_02_box" type="CollisionShape3D" parent="." unique_id=1026602853]
+transform = Transform3D(0.99463, 0, -0.103495, 0, 1, 0, 0.103495, 0, 0.99463, -0.00565, 0, 0.01748)
+shape = SubResource("BoxShape3D_ughgg")
+
+[node name="col_03_box" type="CollisionShape3D" parent="." unique_id=1682076415]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05468)
+shape = SubResource("BoxShape3D_2pndg")
+
+[node name="pick" type="Area3D" parent="." unique_id=1491006720]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="col_00_box" type="CollisionShape3D" parent="pick" unique_id=1959102853]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04327)
+shape = SubResource("BoxShape3D_u0rq4")
+
+[node name="col_01_box" type="CollisionShape3D" parent="pick" unique_id=477639890]
+transform = Transform3D(0.99463, 0, 0.103495, 0, 1, 0, -0.103495, 0, 0.99463, 0.00565, 0, 0.01748)
+shape = SubResource("BoxShape3D_f42kq")
+
+[node name="col_02_box" type="CollisionShape3D" parent="pick" unique_id=683557515]
+transform = Transform3D(0.99463, 0, -0.103495, 0, 1, 0, 0.103495, 0, 0.99463, -0.00565, 0, 0.01748)
+shape = SubResource("BoxShape3D_q2w46")
+
+[node name="col_03_box" type="CollisionShape3D" parent="pick" unique_id=1575060123]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.05468)
+shape = SubResource("BoxShape3D_dewmj")

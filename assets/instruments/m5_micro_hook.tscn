@@ -1,0 +1,54 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/m5_micro_hook.glb" id="1_meoq8"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dgweh"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7sb4h"]
+radius = 0.0041
+height = 0.1125
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_6k5ts"]
+size = Vector3(0.004, 0.004, 0.044498)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8j67b"]
+radius = 0.0101
+height = 0.1245
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cp0sc"]
+size = Vector3(0.02, 0.02, 0.056498)
+
+[node name="m5_micro_hook" type="RigidBody3D" unique_id=1424503658]
+mass = 0.02
+physics_material_override = SubResource("PhysicsMaterial_dgweh")
+continuous_cd = true
+metadata/instrument_id = "m5"
+metadata/name_he = "וו לנתיחה עדינה"
+metadata/name_en = "Micro dissector hook"
+metadata/lookalike = "micro"
+
+[node name="visual" type="Node3D" parent="." unique_id=1795162598 instance=ExtResource("1_meoq8")]
+
+[node name="col_00_capsule" type="CollisionShape3D" parent="." unique_id=835315400]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.020499)
+shape = SubResource("CapsuleShape3D_7sb4h")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1273216135]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000411, 0, -0.0535)
+shape = SubResource("BoxShape3D_6k5ts")
+
+[node name="pick" type="Area3D" parent="." unique_id=1856017486]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="col_00_capsule" type="CollisionShape3D" parent="pick" unique_id=4323194]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.020499)
+shape = SubResource("CapsuleShape3D_8j67b")
+
+[node name="col_01_box" type="CollisionShape3D" parent="pick" unique_id=1061086]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.000411, 0, -0.0535)
+shape = SubResource("BoxShape3D_cp0sc")

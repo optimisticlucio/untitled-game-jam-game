@@ -1,0 +1,66 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/m2_vannas_scissors.glb" id="1_y3gv6"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g0yjr"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xeyx6"]
+size = Vector3(0.006622, 0.006, 0.069489)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_717gn"]
+size = Vector3(0.006622, 0.006, 0.069489)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1gfbe"]
+size = Vector3(0.0042, 0.007, 0.022)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ufjof"]
+size = Vector3(0.02, 0.02, 0.081489004)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2hfwx"]
+size = Vector3(0.02, 0.02, 0.081489004)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d18u3"]
+size = Vector3(0.02, 0.02, 0.034)
+
+[node name="m2_vannas_scissors" type="RigidBody3D" unique_id=384338276]
+mass = 0.015
+physics_material_override = SubResource("PhysicsMaterial_g0yjr")
+continuous_cd = true
+metadata/instrument_id = "m2"
+metadata/name_he = "מספריים זעירות קפיציות"
+metadata/name_en = "Vannas spring scissors"
+metadata/lookalike = "scissors"
+
+[node name="visual" type="Node3D" parent="." unique_id=1836152224 instance=ExtResource("1_y3gv6")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=1244267458]
+transform = Transform3D(0.99863, 0, 0.052336, 0, 1, 0, -0.052336, 0, 0.99863, 0.001256, 0, 0.008477)
+shape = SubResource("BoxShape3D_xeyx6")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1753320306]
+transform = Transform3D(0.99863, 0, -0.052336, 0, 1, 0, 0.052336, 0, 0.99863, -0.001256, 0, 0.008477)
+shape = SubResource("BoxShape3D_717gn")
+
+[node name="col_02_box" type="CollisionShape3D" parent="." unique_id=245782327]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.03225)
+shape = SubResource("BoxShape3D_1gfbe")
+
+[node name="pick" type="Area3D" parent="." unique_id=1789094845]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="col_00_box" type="CollisionShape3D" parent="pick" unique_id=939415213]
+transform = Transform3D(0.99863, 0, 0.052336, 0, 1, 0, -0.052336, 0, 0.99863, 0.001256, 0, 0.008477)
+shape = SubResource("BoxShape3D_ufjof")
+
+[node name="col_01_box" type="CollisionShape3D" parent="pick" unique_id=1513426479]
+transform = Transform3D(0.99863, 0, -0.052336, 0, 1, 0, 0.052336, 0, 0.99863, -0.001256, 0, 0.008477)
+shape = SubResource("BoxShape3D_2hfwx")
+
+[node name="col_02_box" type="CollisionShape3D" parent="pick" unique_id=617957357]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.03225)
+shape = SubResource("BoxShape3D_d18u3")

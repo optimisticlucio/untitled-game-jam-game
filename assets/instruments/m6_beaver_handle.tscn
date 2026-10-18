@@ -1,0 +1,54 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/m6_beaver_handle.glb" id="1_u65un"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_2ofie"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_d0ncq"]
+radius = 0.0041
+height = 0.1165
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j67k5"]
+size = Vector3(0.004, 0.004, 0.019)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pjjlv"]
+radius = 0.0101
+height = 0.1285
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kw8uo"]
+size = Vector3(0.02, 0.02, 0.031)
+
+[node name="m6_beaver_handle" type="RigidBody3D" unique_id=231169616]
+mass = 0.02
+physics_material_override = SubResource("PhysicsMaterial_2ofie")
+continuous_cd = true
+metadata/instrument_id = "m6"
+metadata/name_he = "ידית סכין זעירה"
+metadata/name_en = "Beaver blade handle"
+metadata/lookalike = "micro"
+
+[node name="visual" type="Node3D" parent="." unique_id=54360272 instance=ExtResource("1_u65un")]
+
+[node name="col_00_capsule" type="CollisionShape3D" parent="." unique_id=766401192]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.00725)
+shape = SubResource("CapsuleShape3D_d0ncq")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=373726433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0004, 0, -0.056)
+shape = SubResource("BoxShape3D_j67k5")
+
+[node name="pick" type="Area3D" parent="." unique_id=1475199089]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="col_00_capsule" type="CollisionShape3D" parent="pick" unique_id=1842723626]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.00725)
+shape = SubResource("CapsuleShape3D_pjjlv")
+
+[node name="col_01_box" type="CollisionShape3D" parent="pick" unique_id=60347890]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0004, 0, -0.056)
+shape = SubResource("BoxShape3D_kw8uo")

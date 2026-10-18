@@ -1,0 +1,52 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/s1b_scalpel_11.glb" id="1_jptv1"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_wt7ds"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hgvdy"]
+size = Vector3(0.0095, 0.004, 0.1265)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l27s8"]
+size = Vector3(0.0092, 0.004, 0.0375)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ej8d2"]
+size = Vector3(0.021499999, 0.02, 0.13849999)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k6mk2"]
+size = Vector3(0.021200001, 0.02, 0.049500003)
+
+[node name="s1b_scalpel_11" type="RigidBody3D" unique_id=1150134901]
+mass = 0.02
+physics_material_override = SubResource("PhysicsMaterial_wt7ds")
+continuous_cd = true
+metadata/instrument_id = "s1b"
+metadata/name_he = "סכין מנתחים, להב 11"
+metadata/name_en = "Scalpel #3 handle + #11 blade"
+metadata/lookalike = "scalpel"
+
+[node name="visual" type="Node3D" parent="." unique_id=571377729 instance=ExtResource("1_jptv1")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=980990955]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00035, 0, 0.01775)
+shape = SubResource("BoxShape3D_hgvdy")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1744799010]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00075, 0, -0.06225)
+shape = SubResource("BoxShape3D_l27s8")
+
+[node name="pick" type="Area3D" parent="." unique_id=2011050393]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="col_00_box" type="CollisionShape3D" parent="pick" unique_id=909293979]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00035, 0, 0.01775)
+shape = SubResource("BoxShape3D_ej8d2")
+
+[node name="col_01_box" type="CollisionShape3D" parent="pick" unique_id=1684998355]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00075, 0, -0.06225)
+shape = SubResource("BoxShape3D_k6mk2")

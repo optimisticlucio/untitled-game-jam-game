@@ -1,0 +1,66 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/s8_army_navy.glb" id="1_pxr4f"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_qnvsn"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5hs1b"]
+size = Vector3(0.004, 0.017, 0.2182)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_l6jcx"]
+size = Vector3(0.0251, 0.014, 0.004)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_jt7x1"]
+size = Vector3(0.0316, 0.017, 0.004)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8iti5"]
+size = Vector3(0.02, 0.029000001, 0.2302)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7d06u"]
+size = Vector3(0.037100002, 0.026, 0.02)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o2d06"]
+size = Vector3(0.0436, 0.029000001, 0.02)
+
+[node name="s8_army_navy" type="RigidBody3D" unique_id=1003789186]
+mass = 0.07
+physics_material_override = SubResource("PhysicsMaterial_qnvsn")
+continuous_cd = true
+metadata/instrument_id = "s8"
+metadata/name_he = "מפשק ידני"
+metadata/name_en = "Army-Navy retractor"
+metadata/lookalike = ""
+
+[node name="visual" type="Node3D" parent="." unique_id=1697362640 instance=ExtResource("1_pxr4f")]
+
+[node name="col_00_box" type="CollisionShape3D" parent="." unique_id=721362782]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0142, 0, 0)
+shape = SubResource("BoxShape3D_5hs1b")
+
+[node name="col_01_box" type="CollisionShape3D" parent="." unique_id=1249295162]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00325, 0, 0.1075)
+shape = SubResource("BoxShape3D_l6jcx")
+
+[node name="col_02_box" type="CollisionShape3D" parent="." unique_id=1237479069]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1075)
+shape = SubResource("BoxShape3D_jt7x1")
+
+[node name="pick" type="Area3D" parent="." unique_id=619621483]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="col_00_box" type="CollisionShape3D" parent="pick" unique_id=845108166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0142, 0, 0)
+shape = SubResource("BoxShape3D_8iti5")
+
+[node name="col_01_box" type="CollisionShape3D" parent="pick" unique_id=115106861]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00325, 0, 0.1075)
+shape = SubResource("BoxShape3D_7d06u")
+
+[node name="col_02_box" type="CollisionShape3D" parent="pick" unique_id=485829689]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1075)
+shape = SubResource("BoxShape3D_o2d06")

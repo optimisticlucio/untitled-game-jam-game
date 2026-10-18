@@ -1,0 +1,146 @@
+[
+ {
+  "id": "t1",
+  "name_he": "מגש כלים",
+  "name_en": "Instrument tray",
+  "lookalike": null,
+  "body": "static",
+  "scene": "res://assets/instruments/t1_tray.tscn"
+ },
+ {
+  "id": "s1",
+  "name_he": "סכין מנתחים, להב 10",
+  "name_en": "Scalpel #3 handle + #10 blade",
+  "lookalike": "scalpel",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s1_scalpel_10.tscn"
+ },
+ {
+  "id": "s1b",
+  "name_he": "סכין מנתחים, להב 11",
+  "name_en": "Scalpel #3 handle + #11 blade",
+  "lookalike": "scalpel",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s1b_scalpel_11.tscn"
+ },
+ {
+  "id": "s1c",
+  "name_he": "סכין מנתחים, להב 15",
+  "name_en": "Scalpel #3 handle + #15 blade",
+  "lookalike": "scalpel",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s1c_scalpel_15.tscn"
+ },
+ {
+  "id": "s2",
+  "name_he": "מספריים ישרות",
+  "name_en": "Mayo scissors",
+  "lookalike": "scissors",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s2_mayo_scissors.tscn"
+ },
+ {
+  "id": "s3",
+  "name_he": "מספריים עדינות",
+  "name_en": "Metzenbaum scissors",
+  "lookalike": "scissors",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s3_metzenbaum_scissors.tscn"
+ },
+ {
+  "id": "s4",
+  "name_he": "פינצטה עם שיניים",
+  "name_en": "Adson toothed forceps",
+  "lookalike": "forceps",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s4_adson_forceps.tscn"
+ },
+ {
+  "id": "s5",
+  "name_he": "פינצטה חלקה",
+  "name_en": "DeBakey forceps",
+  "lookalike": "forceps",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s5_debakey_forceps.tscn"
+ },
+ {
+  "id": "s6",
+  "name_he": "מלקחיים עוצרי דימום (קלי)",
+  "name_en": "Kelly hemostat",
+  "lookalike": "clamp",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s6_kelly_clamp.tscn"
+ },
+ {
+  "id": "s6b",
+  "name_he": "מלקחיים עוצרי דימום (קריל)",
+  "name_en": "Crile hemostat",
+  "lookalike": "clamp",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s6b_crile_clamp.tscn"
+ },
+ {
+  "id": "s7",
+  "name_he": "מחזיק מחט",
+  "name_en": "Mayo-Hegar needle holder",
+  "lookalike": "clamp",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s7_mayo_hegar.tscn"
+ },
+ {
+  "id": "s8",
+  "name_he": "מפשק ידני",
+  "name_en": "Army-Navy retractor",
+  "lookalike": null,
+  "body": "rigid",
+  "scene": "res://assets/instruments/s8_army_navy.tscn"
+ },
+ {
+  "id": "m1",
+  "name_he": "מחזיק מחט זעיר",
+  "name_en": "Micro needle holder (round handle)",
+  "lookalike": "micro",
+  "body": "rigid",
+  "scene": "res://assets/instruments/m1_micro_needle_holder.tscn"
+ },
+ {
+  "id": "m2",
+  "name_he": "מספריים זעירות קפיציות",
+  "name_en": "Vannas spring scissors",
+  "lookalike": "scissors",
+  "body": "rigid",
+  "scene": "res://assets/instruments/m2_vannas_scissors.tscn"
+ },
+ {
+  "id": "m4",
+  "name_he": "מהדק כלי דם זעיר",
+  "name_en": "Acland micro clamp",
+  "lookalike": null,
+  "body": "rigid",
+  "scene": "res://assets/instruments/m4_acland_clamp.tscn"
+ },
+ {
+  "id": "m5",
+  "name_he": "וו לנתיחה עדינה",
+  "name_en": "Micro dissector hook",
+  "lookalike": "micro",
+  "body": "rigid",
+  "scene": "res://assets/instruments/m5_micro_hook.tscn"
+ },
+ {
+  "id": "m6",
+  "name_he": "ידית סכין זעירה",
+  "name_en": "Beaver blade handle",
+  "lookalike": "micro",
+  "body": "rigid",
+  "scene": "res://assets/instruments/m6_beaver_handle.tscn"
+ },
+ {
+  "id": "t2",
+  "name_he": "קערת כליה",
+  "name_en": "Kidney dish",
+  "lookalike": null,
+  "body": "rigid",
+  "scene": "res://assets/instruments/t2_kidney_dish.tscn"
+ }
+]
