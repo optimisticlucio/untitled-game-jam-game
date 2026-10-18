@@ -1,0 +1,80 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="PackedScene" path="res://assets/instruments/banana.glb" id="2_7850y"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i340t"]
+size = Vector3(0.035907, 0.032658, 0.063758)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hbkcj"]
+size = Vector3(0.033187, 0.031753, 0.059024)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_yaunu"]
+radius = 0.0095
+height = 0.021181
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_jriqn"]
+radius = 0.0065
+height = 0.023519
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_boiyo"]
+size = Vector3(0.047907002, 0.044657998, 0.075758)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o82l1"]
+size = Vector3(0.045186996, 0.043752998, 0.071024)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7nyib"]
+radius = 0.0155
+height = 0.033181
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_h4wey"]
+radius = 0.0125
+height = 0.035519
+
+[node name="Banana" instance=ExtResource("base_tool")]
+mass = 0.12
+continuous_cd = true
+id = &"banana"
+display_name = "Banana"
+description = "A ripe banana. Curved, but not a retractor."
+specialities = Array[int]([3])
+
+[node name="Model" type="Node3D" parent="." unique_id=693093804 instance=ExtResource("2_7850y")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=147553484]
+transform = Transform3D(0.962309, 0, -0.271957, 0, 1, 0, 0.271957, 0, 0.962309, -0.000808, 0, 0.046736)
+shape = SubResource("BoxShape3D_i340t")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1619262896]
+transform = Transform3D(0.965247, 0, 0.261339, 0, 1, 0, -0.261339, 0, 0.965247, -0.000835, -4.8e-05, -0.045395)
+shape = SubResource("BoxShape3D_hbkcj")
+
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=675635659]
+transform = Transform3D(-0.860611, -0.509262, 0, 0, 0, 1, -0.509262, 0.860611, 0, -0.015598, -0.001671, 0.085818)
+shape = SubResource("CapsuleShape3D_yaunu")
+
+[node name="Collision03" type="CollisionShape3D" parent="." unique_id=292400698]
+transform = Transform3D(0.87297, -0.487774, 0, 0, 0, 1, -0.487774, -0.87297, 0, -0.014434, -0.001671, -0.084349)
+shape = SubResource("CapsuleShape3D_jriqn")
+
+[node name="Pick" type="Area3D" parent="." unique_id=602517638]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1223535837]
+transform = Transform3D(0.962309, 0, -0.271957, 0, 1, 0, 0.271957, 0, 0.962309, -0.000808, 0, 0.046736)
+shape = SubResource("BoxShape3D_boiyo")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1036761951]
+transform = Transform3D(0.965247, 0, 0.261339, 0, 1, 0, -0.261339, 0, 0.965247, -0.000835, -4.8e-05, -0.045395)
+shape = SubResource("BoxShape3D_o82l1")
+
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1687988396]
+transform = Transform3D(-0.860611, -0.509262, 0, 0, 0, 1, -0.509262, 0.860611, 0, -0.015598, -0.001671, 0.085818)
+shape = SubResource("CapsuleShape3D_7nyib")
+
+[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=2098739170]
+transform = Transform3D(0.87297, -0.487774, 0, 0, 0, 1, -0.487774, -0.87297, 0, -0.014434, -0.001671, -0.084349)
+shape = SubResource("CapsuleShape3D_h4wey")
