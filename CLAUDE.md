@@ -18,6 +18,7 @@ Game jam project in Godot 4.7 (GDScript). Several people work on it with Claude.
 
 ## Surgical tools
 
+- `SurgicalTool` is only for items the player must recognize and hand over. The silly items count (they're `Speciality.SILLY`). Scenery and props don't: trays, tables, dishes, the doctor, the patient. Those are ordinary scenes, and never go in `tools/`.
 - Tool scenes live in `tools/` (subfolders fine). Code reads the path from `SurgicalTool.FOLDER`, never a literal.
 - Each tool is an inherited scene of `tools/surgical_tool.tscn`, with its model and `CollisionShape3D` children added, and its data set in the `SurgicalTool` exports. No separate data files per tool.
 - Collision: boxes or convex shapes only. Never concave/trimesh: tools are dynamic bodies.
