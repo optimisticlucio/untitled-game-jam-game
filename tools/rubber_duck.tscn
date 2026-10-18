@@ -1,0 +1,62 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="PackedScene" path="res://assets/instruments/rubber_duck.glb" id="2_q4h0j"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_67ejw"]
+size = Vector3(0.060128, 0.046407, 0.076)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_skrf4"]
+size = Vector3(0.041895, 0.044, 0.044)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2uqb1"]
+size = Vector3(0.017454, 0.013, 0.017)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wm6cf"]
+size = Vector3(0.072128, 0.058407, 0.088)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0oock"]
+size = Vector3(0.053894997, 0.056, 0.056)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_0a4tg"]
+size = Vector3(0.029454, 0.025, 0.029000001)
+
+[node name="RubberDuck" instance=ExtResource("base_tool")]
+mass = 0.035
+continuous_cd = true
+id = &"rubber_duck"
+display_name = "Rubber Duck"
+description = "A yellow bath duck. It squeaks. Not sterile."
+specialities = Array[int]([3])
+
+[node name="Model" type="Node3D" parent="." unique_id=366194826 instance=ExtResource("2_q4h0j")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1927143460]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.016345, 0.0055)
+shape = SubResource("BoxShape3D_67ejw")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=983800401]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.017548, -0.01)
+shape = SubResource("BoxShape3D_skrf4")
+
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=1957896033]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.014048, -0.035)
+shape = SubResource("BoxShape3D_2uqb1")
+
+[node name="Pick" type="Area3D" parent="." unique_id=1589099770]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=581289021]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.016345, 0.0055)
+shape = SubResource("BoxShape3D_wm6cf")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1631735124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.017548, -0.01)
+shape = SubResource("BoxShape3D_0oock")
+
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1242772679]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.014048, -0.035)
+shape = SubResource("BoxShape3D_0a4tg")
