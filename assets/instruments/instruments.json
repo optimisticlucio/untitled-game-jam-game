@@ -1,0 +1,26 @@
+[
+ {
+  "id": "t1",
+  "name_he": "מגש כלים",
+  "name_en": "Instrument tray",
+  "lookalike": null,
+  "body": "static",
+  "scene": "res://assets/instruments/t1_tray.tscn"
+ },
+ {
+  "id": "s1",
+  "name_he": "סכין מנתחים, להב 10",
+  "name_en": "Scalpel #3 handle + #10 blade",
+  "lookalike": "scalpel",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s1_scalpel_10.tscn"
+ },
+ {
+  "id": "s6",
+  "name_he": "מלקחיים עוצרי דימום (קלי)",
+  "name_en": "Kelly hemostat",
+  "lookalike": "clamp",
+  "body": "rigid",
+  "scene": "res://assets/instruments/s6_kelly_clamp.tscn"
+ }
+]
