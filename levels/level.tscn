@@ -131,8 +131,8 @@ hand_off_zone = NodePath("../Target/HandOffZone")
 [node name="Request" type="PanelContainer" parent="UI"]
 unique_name_in_owner = true
 anchor_right = 1.0
-offset_left = 230.0
-offset_top = 28.0
+offset_left = 200.0
+offset_top = 16.0
 offset_right = -24.0
 offset_bottom = 230.0
 grow_horizontal = 2
@@ -164,16 +164,22 @@ theme_override_constants/separation = 24
 
 [node name="PreviewCircle" type="Control" parent="UI/Request/Inner/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 140)
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
 
 [node name="Circle" type="PanelContainer" parent="UI/Request/Inner/Content/PreviewCircle"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -52.0
+offset_right = 52.0
+offset_bottom = 52.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -182,17 +188,17 @@ theme_type_variation = &"BubbleCircle"
 [node name="ToolPreview" parent="UI/Request/Inner/Content/PreviewCircle" instance=ExtResource("3_preview")]
 unique_name_in_owner = true
 material = SubResource("Material_outline")
-custom_minimum_size = Vector2(220, 220)
+custom_minimum_size = Vector2(150, 150)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -110.0
-offset_top = -110.0
-offset_right = 110.0
-offset_bottom = 110.0
+offset_left = -75.0
+offset_top = -75.0
+offset_right = 75.0
+offset_bottom = 75.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
