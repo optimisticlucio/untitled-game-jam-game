@@ -19,6 +19,7 @@ func toggle() -> void:
 
 func set_open(open: bool) -> void:
 	is_open = open
+	get_node(^"/root/UiSounds/Slide").play()
 	if _tween:
 		_tween.kill()
 	show()

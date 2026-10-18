@@ -24,6 +24,8 @@ func _ready() -> void:
 	(%LeaderboardButton as Button).pressed.connect(_show_toast.bind("Leaderboard: coming soon"))
 	(%SettingsButton as Button).pressed.connect(_settings_sheet.toggle)
 	(%CloseSettingsButton as Button).pressed.connect(_settings_sheet.toggle)
+	for button in find_children("*", "BaseButton", true, false):
+		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
 	_toast.modulate.a = 0.0
 
 
@@ -43,6 +45,7 @@ func _on_play() -> void:
 
 func _show_toast(text: String) -> void:
 	(%ToastLabel as Label).text = text
+	get_node(^"/root/UiSounds/Toast").play()
 	if _toast_tween:
 		_toast_tween.kill()
 	_toast.modulate.a = 1.0

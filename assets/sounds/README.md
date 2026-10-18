@@ -5,8 +5,8 @@ Placeholder sounds for every event we know of, so the game isn't silent at the d
 - **License:** every file is **CC0** (public domain) from [Freesound](https://freesound.org). Commercial use is fine and credit isn't required, but the sources are listed below anyway.
 - **Format:** effects are mono 16-bit WAV (Godot's choice for short sounds), trimmed and levelled to about the same loudness. Music and ambience are the original Ogg Vorbis previews.
 - **Buses:** play effects on `SFX` and music/ambience on `Music` (see CLAUDE.md).
-- **Loops:** after Godot imports the files, select `music/*.ogg` and tick **Loop** in the Import dock, then Reimport.
-- **Wired so far:** `SurgicalTool.drop_sound` plays when a tool lands after being let go (`ToolGrabber`, on the `SFX` bus). The base scene `tools/surgical_tool.tscn` sets it to a random pick of `gameplay/tool_drop_1–3.wav`; tools with an `items/<id>.wav` get that instead (see below). Everything else here isn't wired yet.
+- **Loops:** the music and background files are set to loop in their `.import` files.
+- **Wired:** `SurgicalTool.drop_sound` plays when a tool lands after being let go (`ToolGrabber`, on the `SFX` bus). The base scene `tools/surgical_tool.tscn` sets it to a random pick of `gameplay/tool_drop_1–3.wav`; tools with an `items/<id>.wav` get that instead (see below). `ToolGrabber` also plays `tool_grab` on pick-up (silly items play their own sound), `tool_return_whoosh` and `surgeon_receive`. `levels/level.tscn` has a `Sounds` node with the request, right, wrong, hint, tray slide and level-complete players, called from `level.gd`, plus the operating-room background. UI sounds live in the `UiSounds` autoload (`ui/ui_sounds.tscn`), so a click survives a scene change: every button clicks, and the sheet, settings slider, toast, Pocket Guide tabs and cards have their own sounds. The main menu plays `music_menu`. Sounds not listed here aren't wired yet.
 
 ## Gameplay (`gameplay/`)
 
@@ -79,6 +79,7 @@ Played when the item lands after being dropped (its `drop_sound`), instead of th
 | `music_menu.ogg` | Main menu loop (18 s). | [BirdFish Happy Loop.mp3](https://freesound.org/people/pinkinblue/sounds/425971/) by pinkinblue |
 | `music_level.ogg` | In-level loop (58 s). | [Upbeat loop](https://freesound.org/people/mistermender/sounds/512340/) by mistermender |
 | `ambience_or.ogg` | Optional quiet bed under the level: heart monitor beeps (28 s). | [Heart Monitor Beep](https://freesound.org/people/samfk360/sounds/148897/) by samfk360 |
+| `ambience_or_room.wav` | Level background: a real operating room, machine hum (31 s loop cut from the recording; the heart monitor beeps play on top) | [room tone operating room quiet machine hum and monitor beeps…](https://freesound.org/people/kyles/sounds/406512/) by kyles |
 
 ## Finding replacements
 

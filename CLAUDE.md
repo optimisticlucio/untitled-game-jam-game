@@ -14,7 +14,7 @@ Game jam project in Godot 4.7 (GDScript). Several people work on it with Claude.
 - The tray's size and shape come only from its `Zone` collision shapes (boxes/cylinders) in `gameplay/tray.tscn`. Code asks the `Tray` (`contains`, `floor_height`, `random_point`, `nearest_placement`) and never assumes dimensions.
 - Levels are data: one `LevelData` `.tres` per level in `levels/`, naming tools by `id`, played by `levels/level.tscn`. New per-level settings go on `LevelData`, not in a new scene or subclass.
 - UI is English for now, through `tr()`. The placeholder look lives in one theme, `ui/theme.tres`, plus `ui/icons/` (artists restyle there). The screens are `ui/main_menu.tscn` (Play, Pocket Guide, Leaderboard, Settings), `ui/pocket_guide.tscn` and `ui/hud.tscn`, all generated at first but fine to edit by hand.
-- Audio: players use the `Music` or `SFX` bus (`default_bus_layout.tres`). `SettingsPanel` saves both volumes to `user://settings.cfg`.
+- Audio: players use the `Music` or `SFX` bus (`default_bus_layout.tres`). `SettingsPanel` saves both volumes to `user://settings.cfg`. UI sounds play from the `UiSounds` autoload (`ui/ui_sounds.tscn`, players only, reached as `/root/UiSounds/<Name>`) so a click survives a scene change; level sounds are players under `Sounds` in `levels/level.tscn`. Sound files and what plays when: `assets/sounds/README.md`.
 - Export presets: add `addons/godot_ai/*` and `dev/*` to "Filters to exclude files". The plugin already strips its autoload from exports, but its files still ship otherwise.
 - Lookalike pairs will live in one central list, not on each tool (avoids out-of-sync data). Not built yet.
 - Instrument naming language: undecided. Refer to tools by `id` in code, and pass display names through `tr()`.

@@ -44,6 +44,8 @@ var _hint_elapsed := 0.0
 func _ready() -> void:
 	get_viewport().size_changed.connect(_fit_camera)
 	_fit_camera()
+	for button in $UI.find_children("*", "BaseButton", true, false):
+		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
 	_scenes = SurgicalTool.scenes_by_id()
 	var problems := level.problems(_scenes.keys()) if level else PackedStringArray(["No LevelData set on the level scene."])
 	if not problems.is_empty():
@@ -94,6 +96,7 @@ func _bring_in_tray() -> void:
 		tools.append(tool)
 	_tray.fill(tools)
 	await _tray.settle()
+	$Sounds/TraySlide.play()
 	await _tray.slide_back()
 	_grabber.enabled = true
 	if not _in_tutorial() and not _hud.clock_running:
@@ -132,11 +135,13 @@ func _fit_request() -> void:
 	# The tail leaves the bubble's left edge near the bottom, towards the doctor.
 	_bubble_tail.position.y = _request.size.y
 	_request.modulate.a = 1.0
+	$Sounds/Request.play()
 
 
 func _finish_tray() -> void:
 	_tray_index += 1
 	if _tray_index >= _trays.size():
+		$Sounds/Complete.play()
 		_show_message("Level complete!")
 		return
 	_request.hide()
@@ -144,6 +149,7 @@ func _finish_tray() -> void:
 	# A tool still flying back would land after the tray left, and fall out.
 	while _grabber.is_busy():
 		await get_tree().process_frame
+	$Sounds/TraySlide.play()
 	await _tray.slide_away()
 	_tray.clear()
 	_bring_in_tray()
@@ -152,9 +158,11 @@ func _finish_tray() -> void:
 func _on_tool_handed(tool: SurgicalTool) -> void:
 	if tool.id == _requested:
 		_requested = &""
+		$Sounds/Correct.play()
 		await _grabber.consume(tool)
 		_request_next()
 	else:
+		$Sounds/Wrong.play()
 		_grabber.reject(tool)
 
 
@@ -181,6 +189,7 @@ func _show_hint() -> void:
 			best = tool
 	if best:
 		_grabber.hint(best)
+		$Sounds/Hint.play()
 		_hint_shown = true
 		_hinted_this_request = true
 		_hint_elapsed = 0.0

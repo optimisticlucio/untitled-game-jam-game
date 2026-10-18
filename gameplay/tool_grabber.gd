@@ -171,6 +171,7 @@ func consume(tool: SurgicalTool) -> Signal:
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_property(tool, "global_rotation", flat_rotation, consume_drop_seconds)
 	tween.chain()
+	tween.tween_callback(_play.bind(preload("res://assets/sounds/gameplay/surgeon_receive.wav")))
 	# Shrink the visuals, not the body: physics bodies don't scale well.
 	for child in tool.get_children():
 		if child is Node3D and not child is CollisionShape3D:
@@ -202,6 +203,7 @@ func reject(tool: SurgicalTool) -> void:
 ## only if that gets it closer), eases it to a stop drop_height above the
 ## floor, and lets it fall. The rest of the pile is nudged when it lands.
 func return_to_tray(tool: SurgicalTool) -> void:
+	_play(preload("res://assets/sounds/gameplay/tool_return_whoosh.wav"))
 	_make_intangible(tool)
 	_set_glow(tool, false)
 	_flying[tool] = true
@@ -223,6 +225,11 @@ func _grab(tool: SurgicalTool) -> void:
 	_held = tool
 	_make_intangible(tool)
 	_set_glow(tool, true)
+	# Silly items sound like themselves when picked up too (the duck squeaks); instruments clink.
+	if tool.specialities.has(SurgicalTool.Speciality.SILLY):
+		_play(tool.drop_sound)
+	else:
+		_play(preload("res://assets/sounds/gameplay/tool_grab.wav"))
 	# Tools resting on this one shouldn't hang in the air once it's gone.
 	for other in tray.tools():
 		other.sleeping = false

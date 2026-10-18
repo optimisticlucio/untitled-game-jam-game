@@ -23,7 +23,11 @@ var _entries: Array[Dictionary] = []
 func _ready() -> void:
 	(%BackButton as Button).pressed.connect(_on_back)
 	(%CloseDetailButton as Button).pressed.connect(_detail.hide)
-	_tabs.tab_changed.connect(func(_tab: int) -> void: _rebuild())
+	_tabs.tab_changed.connect(func(_tab: int) -> void:
+		get_node(^"/root/UiSounds/Tab").play()
+		_rebuild())
+	for button in find_children("*", "BaseButton", true, false):
+		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
 	_entries = _tool_entries()
 	_entries.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		return (a["name"] as String).naturalnocasecmp_to(b["name"]) < 0)
@@ -103,6 +107,7 @@ func _on_card_input(event: InputEvent, card: Control, entry: Dictionary) -> void
 
 
 func _open(entry: Dictionary) -> void:
+	get_node(^"/root/UiSounds/CardOpen").play()
 	_viewer.show_tool(entry["scene"])
 	(%DetailName as Label).text = entry["name"]
 	var tags: Array[String] = [CATEGORY_NAMES[entry["category"]]]

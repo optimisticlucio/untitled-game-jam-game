@@ -56,6 +56,9 @@ static func _apply(bus: StringName, value: float) -> void:
 
 func _on_changed(value: float, bus: StringName) -> void:
 	_apply(bus, value)
+	# A sample at the new volume, so the player hears where they set it.
+	if bus == SOUND_BUS:
+		get_node(^"/root/UiSounds/Tick").play()
 	var cfg := ConfigFile.new()
 	cfg.load(SETTINGS_PATH)  # Keeps the mute.
 	cfg.set_value("audio", "sound", _sound.value)

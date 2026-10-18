@@ -11,6 +11,7 @@
 [ext_resource type="Script" path="res://ui/bottom_sheet.gd" id="7_iyrh0"]
 [ext_resource type="PackedScene" path="res://ui/settings_panel.tscn" id="8_8jgmr"]
 [ext_resource type="Texture2D" path="res://ui/icons/close.svg" id="10_0i0gl"]
+[ext_resource type="AudioStream" path="res://assets/sounds/music/music_menu.ogg" id="11_music"]
 
 [node name="MainMenu" type="Control" unique_id=247834141]
 layout_mode = 3
@@ -139,3 +140,9 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Close"
 icon = ExtResource("10_0i0gl")
+
+[node name="Music" type="AudioStreamPlayer" parent="." unique_id=1907351126]
+stream = ExtResource("11_music")
+volume_db = -6.0
+autoplay = true
+bus = &"Music"

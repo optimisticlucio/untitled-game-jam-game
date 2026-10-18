@@ -1,0 +1,35 @@
+[gd_scene format=3]
+
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_click.wav" id="1_click"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_sheet.wav" id="2_slide"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_slider_tick.wav" id="3_tick"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_toast.wav" id="4_toast"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_tab.wav" id="5_tab"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/guide_card_open.wav" id="6_card"]
+
+[node name="UiSounds" type="Node"]
+process_mode = 3
+
+[node name="Click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_click")
+bus = &"SFX"
+
+[node name="Slide" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_slide")
+bus = &"SFX"
+
+[node name="Tick" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_tick")
+bus = &"SFX"
+
+[node name="Toast" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_toast")
+bus = &"SFX"
+
+[node name="Tab" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_tab")
+bus = &"SFX"
+
+[node name="CardOpen" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_card")
+bus = &"SFX"

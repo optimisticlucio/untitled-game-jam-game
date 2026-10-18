@@ -30,6 +30,8 @@ func _ready() -> void:
 	(%ExitButton as Button).pressed.connect(_on_exit_pressed)
 	_mute.set_pressed_no_signal(SettingsPanel.is_muted())
 	_mute.toggled.connect(_on_mute_toggled)
+	for button in find_children("*", "BaseButton", true, false):
+		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
 	_update_mute_icon()
 	_update_clock()
 
