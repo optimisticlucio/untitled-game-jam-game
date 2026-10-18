@@ -17,3 +17,31 @@ const FOLDER := "res://tools/"
 ## Notable features, shown when explaining a right or wrong pick.
 @export_multiline var description: String
 @export var specialities: Array[Speciality]
+
+static var _scenes_by_id: Dictionary[StringName, PackedScene] = {}
+
+
+## Every tool scene under FOLDER, by id. Scenes whose tool has no id (like the
+## base surgical_tool.tscn) are skipped. Scanned once, then cached.
+static func scenes_by_id() -> Dictionary[StringName, PackedScene]:
+	if _scenes_by_id.is_empty():
+		_scan(FOLDER)
+	return _scenes_by_id
+
+
+static func _scan(folder: String) -> void:
+	for dir in DirAccess.get_directories_at(folder):
+		if not dir.begins_with("."):
+			_scan(folder.path_join(dir))
+	for file in DirAccess.get_files_at(folder):
+		# Exported builds list scenes as .tscn.remap.
+		var path := folder.path_join(file.trim_suffix(".remap"))
+		if path.get_extension() != "tscn":
+			continue
+		var scene := load(path) as PackedScene
+		var node := scene.instantiate()
+		if node is SurgicalTool and node.id != &"":
+			if _scenes_by_id.has(node.id):
+				push_error("Two tool scenes share the id %s: %s and %s" % [node.id, _scenes_by_id[node.id].resource_path, path])
+			_scenes_by_id[node.id] = scene
+		node.free()

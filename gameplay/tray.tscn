@@ -1,0 +1,88 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://gameplay/tray.gd" id="1_tray"]
+
+[sub_resource type="StandardMaterial3D" id="Material_tray"]
+albedo_color = Color(0.55, 0.56, 0.58, 1)
+
+[sub_resource type="BoxMesh" id="Mesh_tray_floor"]
+material = SubResource("Material_tray")
+size = Vector3(0.3, 0.01, 0.42)
+
+[sub_resource type="BoxShape3D" id="Shape_tray_floor"]
+size = Vector3(0.3, 0.01, 0.42)
+
+[sub_resource type="BoxMesh" id="Mesh_rim_side"]
+material = SubResource("Material_tray")
+size = Vector3(0.01, 0.02, 0.44)
+
+[sub_resource type="BoxMesh" id="Mesh_rim_end"]
+material = SubResource("Material_tray")
+size = Vector3(0.32, 0.02, 0.01)
+
+[sub_resource type="BoxShape3D" id="Shape_wall_side"]
+size = Vector3(0.01, 0.08, 0.44)
+
+[sub_resource type="BoxShape3D" id="Shape_wall_end"]
+size = Vector3(0.32, 0.08, 0.01)
+
+[sub_resource type="BoxShape3D" id="Shape_tray_zone"]
+size = Vector3(0.3, 0.04, 0.42)
+
+[node name="Tray" type="Node3D"]
+script = ExtResource("1_tray")
+
+[node name="Body" type="StaticBody3D" parent="."]
+
+[node name="Floor" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("Mesh_tray_floor")
+
+[node name="RimLeft" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.155, 0.01, 0)
+mesh = SubResource("Mesh_rim_side")
+
+[node name="RimRight" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.155, 0.01, 0)
+mesh = SubResource("Mesh_rim_side")
+
+[node name="RimFar" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, -0.215)
+mesh = SubResource("Mesh_rim_end")
+
+[node name="RimNear" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0.215)
+mesh = SubResource("Mesh_rim_end")
+
+[node name="FloorShape" type="CollisionShape3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+shape = SubResource("Shape_tray_floor")
+
+[node name="WallLeft" type="CollisionShape3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.155, 0.04, 0)
+shape = SubResource("Shape_wall_side")
+
+[node name="WallRight" type="CollisionShape3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.155, 0.04, 0)
+shape = SubResource("Shape_wall_side")
+
+[node name="WallFar" type="CollisionShape3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -0.215)
+shape = SubResource("Shape_wall_end")
+
+[node name="WallNear" type="CollisionShape3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0.215)
+shape = SubResource("Shape_wall_end")
+
+[node name="Zone" type="Area3D" parent="."]
+collision_layer = 256
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape3D" parent="Zone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+shape = SubResource("Shape_tray_zone")
+
+[node name="Tools" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)

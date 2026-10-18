@@ -10,7 +10,8 @@ Game jam project in Godot 4.7 (GDScript). Several people work on it with Claude.
 - Renderer: Compatibility, so a web build stays possible. Physics: Jolt.
 - Portrait, designed for 720×1280 (9:16).
 - Collision layers: 8 = `pick` (instruments' enlarged grab areas), 9 = `drop_zones` (flat areas at table level, see `gameplay/tool_grabber.gd`).
-- Gameplay code never names specific instruments. It finds `SurgicalTool` scenes at runtime; which tools exist is the artists' call.
+- Gameplay code never names specific instruments. It finds `SurgicalTool` scenes at runtime with `SurgicalTool.scenes_by_id()`; which tools exist is the artists' call.
+- Levels are data: one `LevelData` `.tres` per level in `levels/`, naming tools by `id`, played by `levels/level.tscn`. New per-level settings go on `LevelData`, not in a new scene or subclass.
 - Export presets: add `addons/godot_ai/*` and `dev/*` to "Filters to exclude files". The plugin already strips its autoload from exports, but its files still ship otherwise.
 - Lookalike pairs will live in one central list, not on each tool (avoids out-of-sync data). Not built yet.
 - Instrument naming language: undecided. Refer to tools by `id` in code, and pass display names through `tr()`.

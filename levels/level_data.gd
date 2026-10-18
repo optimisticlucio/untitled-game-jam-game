@@ -1,0 +1,62 @@
+class_name LevelData
+extends Resource
+## One level's settings. Make one .tres per level and give it to level.tscn.
+## Tools are referred to by their SurgicalTool id. Unknown ids are reported
+## when the level starts.
+
+## What the doctor asks for. Repeats are fine. Asked in a random order each play.
+@export var requested_ids: Array[StringName] = []
+## Put in the tray but never asked for. Repeats are fine.
+@export var distractor_ids: Array[StringName] = []
+
+@export_group("Reshuffle")
+## How many times the tray leaves and comes back with a new set of tools. 0 = never.
+@export var reshuffle_count := 0
+## Correct hand-offs per tray before it reshuffles. Each tray holds exactly the
+## requests it will be asked for (the last tray holds all that are left).
+@export var reshuffle_after := 0
+## Distractors per tray, drawn at random from distractor_ids. Negative = all of them.
+@export var distractors_per_tray := -1
+
+@export_group("Hints")
+## Requests for these tools show only the name, without the picture.
+@export var name_only_ids: Array[StringName] = []
+## Seconds into a request before one copy of the requested tool glows. 0 or less = never.
+@export var hint_delay_seconds := 0.0
+
+
+## Every problem that would stop this level from starting, as readable lines.
+func problems(known_ids: Array[StringName]) -> PackedStringArray:
+	var found := PackedStringArray()
+	if requested_ids.is_empty():
+		found.append("Requests nothing.")
+	for list_name in ["requested_ids", "distractor_ids", "name_only_ids"]:
+		for id: StringName in get(list_name):
+			if not known_ids.has(id):
+				found.append("%s: no tool has the id \"%s\"." % [list_name, id])
+	if reshuffle_count > 0 and reshuffle_after <= 0:
+		found.append("reshuffle_count is set, but reshuffle_after is 0.")
+	return found
+
+
+## The requests split into trays, each in play order. Shuffled on every call.
+func plan_trays() -> Array[Array]:
+	var requests := requested_ids.duplicate()
+	requests.shuffle()
+	var trays: Array[Array] = []
+	for i in reshuffle_count:
+		if requests.size() <= reshuffle_after:
+			break
+		trays.append(requests.slice(0, reshuffle_after))
+		requests = requests.slice(reshuffle_after)
+	trays.append(requests)
+	return trays
+
+
+## A fresh random draw of distractors for one tray.
+func draw_distractors() -> Array[StringName]:
+	var pool := distractor_ids.duplicate()
+	pool.shuffle()
+	if distractors_per_tray >= 0:
+		pool = pool.slice(0, distractors_per_tray)
+	return pool

@@ -1,0 +1,137 @@
+extends Node3D
+## Plays one level: fills the tray, shows the doctor's requests next to the
+## hand-off square, checks what's handed over, and reshuffles the tray as the
+## LevelData says.
+
+## The screen shape the scene is laid out for. Wider screens get bars of
+## extra table at the sides instead of losing the top and bottom.
+const DESIGN_ASPECT := 9.0 / 16.0
+
+@export var level: LevelData
+
+var _scenes: Dictionary[StringName, PackedScene]
+## Requests for each tray, in play order.
+var _trays: Array[Array] = []
+var _tray_index := 0
+## Requests still to come on the current tray.
+var _queue: Array[StringName] = []
+var _requested: StringName
+
+@onready var _camera: Camera3D = $Camera3D
+## The camera's horizontal field of view at DESIGN_ASPECT, as set in the scene.
+@onready var _design_fov := _camera.fov
+@onready var _tray: Tray = $Tray
+@onready var _grabber: ToolGrabber = $ToolGrabber
+@onready var _target: Node3D = $Target
+@onready var _hint_timer: Timer = $HintTimer
+@onready var _request: Control = %Request
+@onready var _preview: ToolPreview = %ToolPreview
+@onready var _request_name: Label = %RequestName
+@onready var _popup: Control = %Popup
+@onready var _message: Label = %Message
+
+
+func _ready() -> void:
+	get_viewport().size_changed.connect(_fit_camera)
+	_fit_camera()
+	_scenes = SurgicalTool.scenes_by_id()
+	var problems := level.problems(_scenes.keys()) if level else PackedStringArray(["No LevelData set on the level scene."])
+	if not problems.is_empty():
+		for problem in problems:
+			push_error("Level %s: %s" % [level.resource_path if level else "", problem])
+		_show_message("This level can't start:\n" + "\n".join(problems))
+		return
+	_grabber.tool_handed.connect(_on_tool_handed)
+	_hint_timer.timeout.connect(_on_hint_timer_timeout)
+	_trays = level.plan_trays()
+	_start_tray()
+
+
+func _process(_delta: float) -> void:
+	# Keep the request beside the target, whatever the screen's aspect ratio.
+	var beside := _target.global_position + Vector3(0.13, 0.0, 0.0)
+	var anchor := _camera.unproject_position(beside)
+	_request.position = anchor - Vector2(_request.size.x * 0.5, _preview.size.y * 0.5)
+
+
+func _start_tray() -> void:
+	_queue.assign(_trays[_tray_index])
+	var tools: Array[SurgicalTool] = []
+	for id in _queue + level.draw_distractors():
+		tools.append(_scenes[id].instantiate())
+	_tray.fill(tools)
+	_request_next()
+
+
+func _request_next() -> void:
+	_grabber.clear_hints()
+	if _queue.is_empty():
+		_finish_tray()
+		return
+	_requested = _queue.pop_front()
+	var example: SurgicalTool = _tray.tools().filter(func(t: SurgicalTool) -> bool: return t.id == _requested)[0]
+	_request_name.text = tr(example.display_name)
+	_preview.visible = not level.name_only_ids.has(_requested)
+	if _preview.visible:
+		_preview.show_tool(_scenes[_requested])
+	_request.show()
+	if level.hint_delay_seconds > 0.0:
+		_hint_timer.start(level.hint_delay_seconds)
+	else:
+		_hint_timer.stop()
+
+
+func _finish_tray() -> void:
+	_hint_timer.stop()
+	_tray_index += 1
+	if _tray_index >= _trays.size():
+		_show_message("Level complete!")
+		return
+	_request.hide()
+	_grabber.enabled = false
+	await _tray.slide_away()
+	_tray.clear()
+	await _tray.slide_back()
+	_grabber.enabled = true
+	_start_tray()
+
+
+func _on_tool_handed(tool: SurgicalTool) -> void:
+	if tool.id == _requested:
+		_hint_timer.stop()
+		await _grabber.consume(tool)
+		_request_next()
+	else:
+		_grabber.return_to_tray(tool)
+
+
+## Hints the copy of the requested tool nearest the top of the pile.
+func _on_hint_timer_timeout() -> void:
+	var best: SurgicalTool
+	for tool in _tray.tools():
+		if tool.id == _requested and (best == null or tool.global_position.y > best.global_position.y):
+			best = tool
+	if best:
+		_grabber.hint(best)
+
+
+func _on_play_again_pressed() -> void:
+	get_tree().reload_current_scene()
+
+
+func _show_message(text: String) -> void:
+	_message.text = text
+	_request.hide()
+	_popup.show()
+
+
+## Keeps the whole DESIGN_ASPECT area in view on any screen shape.
+func _fit_camera() -> void:
+	var size := get_viewport().get_visible_rect().size
+	if size.x / size.y <= DESIGN_ASPECT:
+		_camera.keep_aspect = Camera3D.KEEP_WIDTH
+		_camera.fov = _design_fov
+	else:
+		_camera.keep_aspect = Camera3D.KEEP_HEIGHT
+		var half_width := tan(deg_to_rad(_design_fov) * 0.5)
+		_camera.fov = rad_to_deg(2.0 * atan(half_width / DESIGN_ASPECT))

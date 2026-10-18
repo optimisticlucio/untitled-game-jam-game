@@ -1,8 +1,10 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://test_scenes/grab_test.gd" id="1_test"]
+[ext_resource type="Script" path="res://levels/level.gd" id="1_level"]
 [ext_resource type="Script" path="res://gameplay/tool_grabber.gd" id="2_grabber"]
 [ext_resource type="PackedScene" path="res://ui/tool_preview.tscn" id="3_preview"]
+[ext_resource type="PackedScene" path="res://gameplay/tray.tscn" id="4_tray"]
+[ext_resource type="Resource" path="res://levels/example_level.tres" id="5_example"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_main"]
 
@@ -18,9 +20,6 @@ reflected_light_source = 2
 [sub_resource type="StandardMaterial3D" id="Material_table"]
 albedo_color = Color(0.18, 0.2, 0.22, 1)
 
-[sub_resource type="StandardMaterial3D" id="Material_tray"]
-albedo_color = Color(0.55, 0.56, 0.58, 1)
-
 [sub_resource type="StandardMaterial3D" id="Material_target"]
 albedo_color = Color(1, 0.85, 0.1, 1)
 
@@ -30,30 +29,6 @@ size = Vector3(2, 0.02, 2)
 [sub_resource type="PlaneMesh" id="Mesh_table"]
 material = SubResource("Material_table")
 size = Vector2(2, 2)
-
-[sub_resource type="BoxMesh" id="Mesh_tray_floor"]
-material = SubResource("Material_tray")
-size = Vector3(0.3, 0.01, 0.42)
-
-[sub_resource type="BoxShape3D" id="Shape_tray_floor"]
-size = Vector3(0.3, 0.01, 0.42)
-
-[sub_resource type="BoxMesh" id="Mesh_rim_side"]
-material = SubResource("Material_tray")
-size = Vector3(0.01, 0.02, 0.44)
-
-[sub_resource type="BoxMesh" id="Mesh_rim_end"]
-material = SubResource("Material_tray")
-size = Vector3(0.32, 0.02, 0.01)
-
-[sub_resource type="BoxShape3D" id="Shape_wall_side"]
-size = Vector3(0.01, 0.08, 0.44)
-
-[sub_resource type="BoxShape3D" id="Shape_wall_end"]
-size = Vector3(0.32, 0.08, 0.01)
-
-[sub_resource type="BoxShape3D" id="Shape_tray_zone"]
-size = Vector3(0.3, 0.04, 0.42)
 
 [sub_resource type="BoxMesh" id="Mesh_target"]
 material = SubResource("Material_target")
@@ -73,8 +48,9 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[node name="GrabTest" type="Node3D"]
-script = ExtResource("1_test")
+[node name="Level" type="Node3D"]
+script = ExtResource("1_level")
+level = ExtResource("5_example")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_main")
@@ -99,57 +75,7 @@ mesh = SubResource("Mesh_table")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
 shape = SubResource("Shape_table")
 
-[node name="Tray" type="StaticBody3D" parent="."]
-
-[node name="Floor" type="MeshInstance3D" parent="Tray"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
-mesh = SubResource("Mesh_tray_floor")
-
-[node name="RimLeft" type="MeshInstance3D" parent="Tray"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.155, 0.01, 0)
-mesh = SubResource("Mesh_rim_side")
-
-[node name="RimRight" type="MeshInstance3D" parent="Tray"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.155, 0.01, 0)
-mesh = SubResource("Mesh_rim_side")
-
-[node name="RimFar" type="MeshInstance3D" parent="Tray"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, -0.215)
-mesh = SubResource("Mesh_rim_end")
-
-[node name="RimNear" type="MeshInstance3D" parent="Tray"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0.215)
-mesh = SubResource("Mesh_rim_end")
-
-[node name="FloorShape" type="CollisionShape3D" parent="Tray"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
-shape = SubResource("Shape_tray_floor")
-
-[node name="WallLeft" type="CollisionShape3D" parent="Tray"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.155, 0.04, 0)
-shape = SubResource("Shape_wall_side")
-
-[node name="WallRight" type="CollisionShape3D" parent="Tray"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.155, 0.04, 0)
-shape = SubResource("Shape_wall_side")
-
-[node name="WallFar" type="CollisionShape3D" parent="Tray"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -0.215)
-shape = SubResource("Shape_wall_end")
-
-[node name="WallNear" type="CollisionShape3D" parent="Tray"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0.215)
-shape = SubResource("Shape_wall_end")
-
-[node name="TrayZone" type="Area3D" parent="Tray"]
-collision_layer = 256
-collision_mask = 0
-monitoring = false
-monitorable = false
-
-[node name="Shape" type="CollisionShape3D" parent="Tray/TrayZone"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
-shape = SubResource("Shape_tray_zone")
+[node name="Tray" parent="." instance=ExtResource("4_tray")]
 
 [node name="Target" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 0, -0.3)
@@ -168,24 +94,39 @@ monitorable = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
 shape = SubResource("Shape_hand_off_zone")
 
-[node name="Tools" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
-
 [node name="ToolGrabber" type="Node" parent="." node_paths=PackedStringArray("camera", "tools_root", "tray_zone", "hand_off_zone")]
 script = ExtResource("2_grabber")
 camera = NodePath("../Camera3D")
-tools_root = NodePath("../Tools")
-tray_zone = NodePath("../Tray/TrayZone")
+tools_root = NodePath("../Tray/Tools")
+tray_zone = NodePath("../Tray/Zone")
 hand_off_zone = NodePath("../Target/HandOffZone")
+
+[node name="HintTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="ToolPreview" parent="UI" instance=ExtResource("3_preview")]
+[node name="Request" type="VBoxContainer" parent="UI"]
+unique_name_in_owner = true
+offset_right = 240.0
+offset_bottom = 260.0
+mouse_filter = 2
+
+[node name="ToolPreview" parent="UI/Request" instance=ExtResource("3_preview")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 200)
-offset_right = 200.0
-offset_bottom = 200.0
+layout_mode = 2
+size_flags_horizontal = 4
 mouse_filter = 2
+
+[node name="RequestName" type="Label" parent="UI/Request"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 28
+horizontal_alignment = 1
+autowrap_mode = 3
 
 [node name="Popup" type="CenterContainer" parent="UI"]
 unique_name_in_owner = true
@@ -209,7 +150,7 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(480, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 44
-text = "Congratulations!"
+text = "Level complete!"
 horizontal_alignment = 1
 autowrap_mode = 3
 
