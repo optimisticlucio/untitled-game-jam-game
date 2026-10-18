@@ -1,0 +1,34 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="AudioStream" path="res://assets/sounds/items/dentures.wav" id="2_gbwua"]
+[ext_resource type="PackedScene" path="res://assets/instruments/dentures.glb" id="3_2a4k3"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ooa8g"]
+size = Vector3(0.044518, 0.024904, 0.02635)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_k1iwe"]
+size = Vector3(0.056518003, 0.036904, 0.03835)
+
+[node name="Dentures" instance=ExtResource("base_tool")]
+mass = 0.04
+continuous_cd = true
+id = &"dentures"
+display_name = "Dentures"
+description = "A full set of false teeth. Someone will be looking for these."
+specialities = Array[int]([3])
+drop_sound = ExtResource("2_gbwua")
+
+[node name="Model" type="Node3D" parent="." unique_id=1655576142 instance=ExtResource("3_2a4k3")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1434458132]
+shape = SubResource("BoxShape3D_ooa8g")
+
+[node name="Pick" type="Area3D" parent="." unique_id=415720868]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=546102922]
+shape = SubResource("BoxShape3D_k1iwe")
