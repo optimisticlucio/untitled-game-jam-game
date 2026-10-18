@@ -18,6 +18,15 @@ func _ready() -> void:
 	await get_tree().create_timer(3.5).timeout
 	_report(level)
 	_save("tray_1")
+	# Skip ahead to a request that shows the spinning tool (some are name only), for the bubble.
+	var circle := level.get("_preview_circle") as Control
+	for i in 6:
+		if circle == null or circle.visible:
+			break
+		level.call("_request_next")
+		await get_tree().create_timer(0.3).timeout
+	await get_tree().create_timer(1.5).timeout
+	_save("bubble")
 	if level.has_method("_finish_tray"):
 		level.call("_finish_tray")
 		await get_tree().create_timer(8.0).timeout

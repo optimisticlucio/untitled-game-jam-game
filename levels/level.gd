@@ -28,9 +28,9 @@ var _hint_elapsed := 0.0
 @onready var _design_fov := _camera.fov
 @onready var _tray: Tray = $Tray
 @onready var _grabber: ToolGrabber = $ToolGrabber
-@onready var _target: Node3D = $Target
 @onready var _request: Control = %Request
 @onready var _preview: ToolPreview = %ToolPreview
+@onready var _preview_circle: Control = %PreviewCircle
 @onready var _request_name: Label = %RequestName
 @onready var _popup: Control = %Popup
 @onready var _message: Label = %Message
@@ -66,20 +66,6 @@ func _process(delta: float) -> void:
 			_since_request = 0.0
 	elif _hint_due():
 		_show_hint()
-	_place_request()
-
-
-## Beside the target, whatever the screen's aspect ratio, but never down over
-## the tray (a picture plus a two-line name is taller than the target) or up
-## under the HUD's top bar. The HUD wins if both can't be avoided.
-func _place_request() -> void:
-	const MARGIN := 8.0
-	var beside := _target.global_position + Vector3(0.13, 0.0, 0.0)
-	var top_left := _camera.unproject_position(beside) - _request.size * 0.5
-	var tray_top := _camera.unproject_position(_tray.far_edge()).y
-	top_left.y = minf(top_left.y, tray_top - MARGIN - _request.size.y)
-	top_left.y = maxf(top_left.y, _hud.top_bar_bottom() + MARGIN)
-	_request.position = top_left
 
 
 func _start_tray() -> void:
@@ -103,11 +89,19 @@ func _request_next() -> void:
 	_hint_shown = false
 	var example: SurgicalTool = _tray.tools().filter(func(t: SurgicalTool) -> bool: return t.id == _requested)[0]
 	_request_name.text = tr(example.display_name)
-	_preview.visible = not level.name_only_ids.has(_requested)
-	if _preview.visible:
+	_preview_circle.visible = not level.name_only_ids.has(_requested)
+	if _preview_circle.visible:
 		_preview.show_tool(_scenes[_requested])
-	# Shrink the card to fit whichever of picture and name is showing.
-	_request.reset_size()
+	_fit_request()
+
+
+## The bubble keeps its width (it's anchored across the top) and fits its height to the content.
+## That waits a frame, until the layout knows how many lines the wrapped name takes.
+func _fit_request() -> void:
+	await get_tree().process_frame
+	if _requested == &"":
+		return
+	_request.offset_bottom = _request.offset_top + _request.get_combined_minimum_size().y
 	_request.show()
 
 

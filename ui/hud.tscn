@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_srpbi"]
 [ext_resource type="Theme" path="res://ui/theme.tres" id="2_spcu4"]
-[ext_resource type="Texture2D" path="res://ui/icons/pause.svg" id="3_ff8ar"]
+[ext_resource type="Texture2D" path="res://ui/icons/sound.svg" id="3_sound"]
 [ext_resource type="Script" path="res://ui/bottom_sheet.gd" id="4_m0eg6"]
 [ext_resource type="PackedScene" path="res://ui/settings_panel.tscn" id="5_b00kl"]
 [ext_resource type="Script" path="res://ui/settings_panel.gd" id="6_so1yu"]
@@ -20,39 +20,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 mouse_filter = 2
 theme = ExtResource("2_spcu4")
-
-[node name="ClockPanel" type="PanelContainer" parent="Root" unique_id=1455967893]
-layout_mode = 0
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -150.0
-offset_top = 24.0
-offset_right = 150.0
-offset_bottom = 128.0
-mouse_filter = 2
-theme_type_variation = &"TealPanel"
-
-[node name="Clock" type="Label" parent="Root/ClockPanel" unique_id=848465814]
-unique_name_in_owner = true
-layout_mode = 2
-theme_type_variation = &"ClockLabel"
-text = "00:00"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="PauseButton" type="Button" parent="Root" unique_id=124914252]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(116, 116)
-layout_mode = 0
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -140.0
-offset_top = 18.0
-offset_right = -24.0
-offset_bottom = 134.0
-icon = ExtResource("3_ff8ar")
-icon_alignment = 1
-expand_icon = true
 
 [node name="Sheet" type="PanelContainer" parent="Root" unique_id=865930575]
 unique_name_in_owner = true
@@ -74,23 +41,59 @@ layout_mode = 2
 theme_override_constants/separation = 16
 script = ExtResource("6_so1yu")
 
-[node name="Buttons" type="HBoxContainer" parent="Root/Sheet/Column" unique_id=2135303886]
-layout_mode = 2
-theme_override_constants/separation = 24
-
-[node name="ExitButton" type="Button" parent="Root/Sheet/Column/Buttons" unique_id=594009865]
+[node name="ExitButton" type="Button" parent="Root/Sheet/Column" unique_id=594009865]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 140)
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Exit"
 icon = ExtResource("7_65xic")
 
-[node name="SettingsButton" type="Button" parent="Root/Sheet/Column/Buttons" unique_id=1433113420]
+[node name="BarRoom" type="Control" parent="Root/Sheet/Column" unique_id=1093384721]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="BottomBar" type="PanelContainer" parent="Root" unique_id=1782204917]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(140, 140)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -190.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_type_variation = &"BottomBar"
+
+[node name="Row" type="HBoxContainer" parent="Root/BottomBar" unique_id=340181257]
+layout_mode = 2
+
+[node name="SettingsButton" type="Button" parent="Root/BottomBar/Row" unique_id=1433113420]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"RoundButton"
+icon = ExtResource("8_mp5xd")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Clock" type="Label" parent="Root/BottomBar/Row" unique_id=848465814]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-icon = ExtResource("8_mp5xd")
+theme_type_variation = &"ClockLabel"
+text = "00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MuteButton" type="Button" parent="Root/BottomBar/Row" unique_id=124914252]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+size_flags_vertical = 4
+theme_type_variation = &"RoundButton"
+toggle_mode = true
+icon = ExtResource("3_sound")
 icon_alignment = 1
 expand_icon = true

@@ -1,43 +1,41 @@
 class_name Hud
 extends CanvasLayer
-## In-game HUD (portrait): a clock counting up (top centre), a pause button (top right) and a
-## pause sheet that slides up from the bottom with Exit and Settings (sound and music volume).
-## The same button opens and closes the pause. Pausing sets get_tree().paused; the HUD runs anyway.
+## In-game HUD (portrait): a bottom bar with Settings (left), a clock counting up (middle) and a
+## sound on/off button (right). Settings opens a sheet that slides up from behind the bar, with
+## sound and music volume and Exit. The game never pauses.
 ## Placeholder art: ui/theme.tres and ui/icons/.
 ##
 ## For the game scene: instance ui/hud.tscn and call start_clock() when a round starts.
 ## Exit goes to the main menu unless something is connected to exit_requested.
 
-signal pause_toggled(paused: bool)
-## Exit was pressed (the game is unpaused first).
+## Exit was pressed.
 signal exit_requested
 
 const MAIN_MENU := "res://ui/main_menu.tscn"
-const PAUSE_ICON := preload("res://ui/icons/pause.svg")
-const PLAY_ICON := preload("res://ui/icons/play.svg")
+const SOUND_ICON := preload("res://ui/icons/sound.svg")
+const SOUND_OFF_ICON := preload("res://ui/icons/sound_off.svg")
 
-## Seconds counted by the clock (only while running and not paused).
+## Seconds counted by the clock (only while running).
 var elapsed := 0.0
 var clock_running := false
 
 @onready var _clock: Label = %Clock
-@onready var _pause_button: Button = %PauseButton
 @onready var _sheet: BottomSheet = %Sheet
-@onready var _settings: Control = %SettingsBox
+@onready var _mute: Button = %MuteButton
 
 
 func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
 	SettingsPanel.apply_saved()
-	_pause_button.pressed.connect(toggle_pause)
+	(%SettingsButton as Button).pressed.connect(_sheet.toggle)
 	(%ExitButton as Button).pressed.connect(_on_exit_pressed)
-	(%SettingsButton as Button).pressed.connect(_on_settings_pressed)
-	_settings.hide()
+	_mute.set_pressed_no_signal(SettingsPanel.is_muted())
+	_mute.toggled.connect(_on_mute_toggled)
+	_update_mute_icon()
 	_update_clock()
 
 
 func _process(delta: float) -> void:
-	if clock_running and not get_tree().paused:
+	if clock_running:
 		# Capped so a hitch, or the app coming back from the background, doesn't add time.
 		elapsed += minf(delta, 0.25)
 		_update_clock()
@@ -46,14 +44,8 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	# Escape on desktop, the back button on Android.
 	if event.is_action_pressed("ui_cancel"):
-		toggle_pause()
+		_sheet.toggle()
 		get_viewport().set_input_as_handled()
-
-
-## Screen y where the top bar (clock and pause button) ends. Game UI placed
-## near the top of the screen should stay below it.
-func top_bar_bottom() -> float:
-	return maxf(($Root/ClockPanel as Control).get_global_rect().end.y, _pause_button.get_global_rect().end.y)
 
 
 func start_clock() -> void:
@@ -66,31 +58,21 @@ func stop_clock() -> void:
 	clock_running = false
 
 
-func toggle_pause() -> void:
-	set_paused(not get_tree().paused)
-
-
-func set_paused(paused: bool) -> void:
-	get_tree().paused = paused
-	_pause_button.icon = PLAY_ICON if paused else PAUSE_ICON
-	if not paused:
-		_settings.hide()
-	_sheet.set_open(paused)
-	pause_toggled.emit(paused)
-
-
 func _update_clock() -> void:
 	var s := int(elapsed)
 	_clock.text = "%02d:%02d" % [s / 60, s % 60]
 
 
-func _on_settings_pressed() -> void:
-	_settings.visible = not _settings.visible
-	_sheet.refit()
+func _on_mute_toggled(muted: bool) -> void:
+	SettingsPanel.set_muted(muted)
+	_update_mute_icon()
+
+
+func _update_mute_icon() -> void:
+	_mute.icon = SOUND_OFF_ICON if _mute.button_pressed else SOUND_ICON
 
 
 func _on_exit_pressed() -> void:
-	set_paused(false)
 	exit_requested.emit()
 	if exit_requested.get_connections().is_empty():
 		get_tree().change_scene_to_file(MAIN_MENU)
