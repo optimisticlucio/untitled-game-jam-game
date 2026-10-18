@@ -28,7 +28,7 @@ func _process(delta: float) -> void:
 
 ## Centers the tool on the pivot and pulls the camera back until it fits.
 func _frame(tool: SurgicalTool) -> void:
-	var bounds := _visual_bounds(tool)
+	var bounds := visual_bounds(tool)
 	if bounds.size == Vector3.ZERO:
 		return
 	tool.position = -bounds.get_center()
@@ -40,7 +40,8 @@ func _frame(tool: SurgicalTool) -> void:
 
 
 ## Bounding box of every visible mesh under root, in root's local space.
-func _visual_bounds(root: Node3D) -> AABB:
+## Root must be inside the scene tree.
+static func visual_bounds(root: Node3D) -> AABB:
 	var bounds := AABB()
 	var first := true
 	for node in root.find_children("*", "VisualInstance3D", true, false):

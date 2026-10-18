@@ -1,0 +1,221 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://test_scenes/grab_test.gd" id="1_test"]
+[ext_resource type="Script" path="res://gameplay/tool_grabber.gd" id="2_grabber"]
+[ext_resource type="PackedScene" path="res://ui/tool_preview.tscn" id="3_preview"]
+
+[sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_main"]
+
+[sub_resource type="Sky" id="Sky_main"]
+sky_material = SubResource("SkyMaterial_main")
+
+[sub_resource type="Environment" id="Environment_main"]
+background_mode = 2
+sky = SubResource("Sky_main")
+ambient_light_source = 3
+reflected_light_source = 2
+
+[sub_resource type="StandardMaterial3D" id="Material_table"]
+albedo_color = Color(0.18, 0.2, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="Material_tray"]
+albedo_color = Color(0.55, 0.56, 0.58, 1)
+
+[sub_resource type="StandardMaterial3D" id="Material_target"]
+albedo_color = Color(1, 0.85, 0.1, 1)
+
+[sub_resource type="BoxShape3D" id="Shape_table"]
+size = Vector3(2, 0.02, 2)
+
+[sub_resource type="PlaneMesh" id="Mesh_table"]
+material = SubResource("Material_table")
+size = Vector2(2, 2)
+
+[sub_resource type="BoxMesh" id="Mesh_tray_floor"]
+material = SubResource("Material_tray")
+size = Vector3(0.3, 0.01, 0.42)
+
+[sub_resource type="BoxShape3D" id="Shape_tray_floor"]
+size = Vector3(0.3, 0.01, 0.42)
+
+[sub_resource type="BoxMesh" id="Mesh_rim_side"]
+material = SubResource("Material_tray")
+size = Vector3(0.01, 0.02, 0.44)
+
+[sub_resource type="BoxMesh" id="Mesh_rim_end"]
+material = SubResource("Material_tray")
+size = Vector3(0.32, 0.02, 0.01)
+
+[sub_resource type="BoxShape3D" id="Shape_wall_side"]
+size = Vector3(0.01, 0.08, 0.44)
+
+[sub_resource type="BoxShape3D" id="Shape_wall_end"]
+size = Vector3(0.32, 0.08, 0.01)
+
+[sub_resource type="BoxShape3D" id="Shape_tray_zone"]
+size = Vector3(0.3, 0.04, 0.42)
+
+[sub_resource type="BoxMesh" id="Mesh_target"]
+material = SubResource("Material_target")
+size = Vector3(0.1, 0.02, 0.1)
+
+[sub_resource type="BoxShape3D" id="Shape_hand_off_zone"]
+size = Vector3(0.12, 0.04, 0.12)
+
+[sub_resource type="StyleBoxFlat" id="Style_popup"]
+content_margin_left = 40.0
+content_margin_top = 32.0
+content_margin_right = 40.0
+content_margin_bottom = 32.0
+bg_color = Color(0.1, 0.11, 0.13, 0.95)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[node name="GrabTest" type="Node3D"]
+script = ExtResource("1_test")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_main")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 1, 0)
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.374, 0.9274, 0, -0.9274, 0.374, 0, 0.62, 0.22)
+keep_aspect = 0
+fov = 32.0
+near = 0.02
+current = true
+
+[node name="Table" type="StaticBody3D" parent="."]
+
+[node name="Mesh" type="MeshInstance3D" parent="Table"]
+mesh = SubResource("Mesh_table")
+
+[node name="Shape" type="CollisionShape3D" parent="Table"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
+shape = SubResource("Shape_table")
+
+[node name="Tray" type="StaticBody3D" parent="."]
+
+[node name="Floor" type="MeshInstance3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+mesh = SubResource("Mesh_tray_floor")
+
+[node name="RimLeft" type="MeshInstance3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.155, 0.01, 0)
+mesh = SubResource("Mesh_rim_side")
+
+[node name="RimRight" type="MeshInstance3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.155, 0.01, 0)
+mesh = SubResource("Mesh_rim_side")
+
+[node name="RimFar" type="MeshInstance3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, -0.215)
+mesh = SubResource("Mesh_rim_end")
+
+[node name="RimNear" type="MeshInstance3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0.215)
+mesh = SubResource("Mesh_rim_end")
+
+[node name="FloorShape" type="CollisionShape3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.005, 0)
+shape = SubResource("Shape_tray_floor")
+
+[node name="WallLeft" type="CollisionShape3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.155, 0.04, 0)
+shape = SubResource("Shape_wall_side")
+
+[node name="WallRight" type="CollisionShape3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.155, 0.04, 0)
+shape = SubResource("Shape_wall_side")
+
+[node name="WallFar" type="CollisionShape3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, -0.215)
+shape = SubResource("Shape_wall_end")
+
+[node name="WallNear" type="CollisionShape3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0.215)
+shape = SubResource("Shape_wall_end")
+
+[node name="TrayZone" type="Area3D" parent="Tray"]
+collision_layer = 256
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape3D" parent="Tray/TrayZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+shape = SubResource("Shape_tray_zone")
+
+[node name="Target" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 0, -0.3)
+
+[node name="Mesh" type="MeshInstance3D" parent="Target"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+mesh = SubResource("Mesh_target")
+
+[node name="HandOffZone" type="Area3D" parent="Target"]
+collision_layer = 256
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Shape" type="CollisionShape3D" parent="Target/HandOffZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+shape = SubResource("Shape_hand_off_zone")
+
+[node name="Tools" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+
+[node name="ToolGrabber" type="Node" parent="." node_paths=PackedStringArray("camera", "tools_root", "tray_zone", "hand_off_zone")]
+script = ExtResource("2_grabber")
+camera = NodePath("../Camera3D")
+tools_root = NodePath("../Tools")
+tray_zone = NodePath("../Tray/TrayZone")
+hand_off_zone = NodePath("../Target/HandOffZone")
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ToolPreview" parent="UI" instance=ExtResource("3_preview")]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 200)
+offset_right = 200.0
+offset_bottom = 200.0
+mouse_filter = 2
+
+[node name="Popup" type="CenterContainer" parent="UI"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="UI/Popup"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("Style_popup")
+
+[node name="Content" type="VBoxContainer" parent="UI/Popup/Panel"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="Message" type="Label" parent="UI/Popup/Panel/Content"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(480, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 44
+text = "Congratulations!"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="PlayAgain" type="Button" parent="UI/Popup/Panel/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Play again"
+
+[connection signal="pressed" from="UI/Popup/Panel/Content/PlayAgain" to="." method="_on_play_again_pressed"]

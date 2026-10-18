@@ -8,6 +8,9 @@ extends RigidBody3D
 ## reordering or removing a value silently changes existing tools.
 enum Speciality { GENERAL, HAND, PLASTIC, SILLY }
 
+## Every tool scene lives here (subfolders are fine).
+const FOLDER := "res://assets/instruments/"
+
 ## Stable identifier for code and data. Never shown to the player.
 @export var id: StringName
 @export var display_name: String

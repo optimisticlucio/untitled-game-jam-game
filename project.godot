@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="מלך האיזמל"
+run/main_scene="res://test_scenes/grab_test.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
@@ -20,12 +21,20 @@ _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]
 
+window/size/viewport_width=720
+window/size/viewport_height=1280
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
+window/handheld/orientation=1
 
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
+
+[layer_names]
+
+3d_physics/layer_8="pick"
+3d_physics/layer_9="drop_zones"
 
 [physics]
 
