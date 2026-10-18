@@ -61,7 +61,7 @@ func _fit_camera() -> void:
 
 func _on_tool_handed(tool: SurgicalTool) -> void:
 	if tool.id == _requested.id:
-		tool.queue_free()
+		await _grabber.consume(tool)
 		_request_next()
 	else:
 		_grabber.return_to_tray(tool)

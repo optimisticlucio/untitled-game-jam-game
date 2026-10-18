@@ -3,79 +3,74 @@
 [ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
 [ext_resource type="PackedScene" path="res://assets/instruments/mayo_scissors.glb" id="2_ani7e"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_dethu"]
-friction = 0.4
-bounce = 0.05
+[sub_resource type="BoxShape3D" id="BoxShape3D_dethu"]
+size = Vector3(0.0102, 0.008, 0.071)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pk68b"]
-size = Vector3(0.0102, 0.008, 0.071)
+size = Vector3(0.0049, 0.004, 0.080331)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6dsja"]
 size = Vector3(0.0049, 0.004, 0.080331)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8ya3s"]
-size = Vector3(0.0049, 0.004, 0.080331)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_x7qjf"]
 size = Vector3(0.0488, 0.0048, 0.0228)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_wcju4"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_x7qjf"]
 size = Vector3(0.0222, 0.02, 0.083000004)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wcju4"]
+size = Vector3(0.02, 0.02, 0.092331)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_rrqoc"]
 size = Vector3(0.02, 0.02, 0.092331)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_c2eoe"]
-size = Vector3(0.02, 0.02, 0.092331)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_so0ko"]
 size = Vector3(0.0608, 0.02, 0.0348)
 
 [node name="MayoScissors" instance=ExtResource("base_tool")]
 mass = 0.06
-physics_material_override = SubResource("PhysicsMaterial_dethu")
 continuous_cd = true
 id = &"mayo_scissors"
 display_name = "Mayo Scissors"
 description = "Heavy straight scissors with short, wide blades and blunt tips. For cutting sutures and tough tissue."
 specialities = Array[int]([0])
 
-[node name="Model" type="Node3D" parent="." unique_id=398370352 instance=ExtResource("2_ani7e")]
+[node name="Model" type="Node3D" parent="." unique_id=1429759957 instance=ExtResource("2_ani7e")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1440706938]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1269510597]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04452)
+shape = SubResource("BoxShape3D_dethu")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1488281620]
+transform = Transform3D(0.995665, 0, 0.093016, 0, 1, 0, -0.093016, 0, 0.995665, 0.00595, 0, 0.02648)
 shape = SubResource("BoxShape3D_pk68b")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1730351179]
-transform = Transform3D(0.995665, 0, 0.093016, 0, 1, 0, -0.093016, 0, 0.995665, 0.00595, 0, 0.02648)
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=2000713138]
+transform = Transform3D(0.995665, 0, -0.093016, 0, 1, 0, 0.093016, 0, 0.995665, -0.00595, 0, 0.02648)
 shape = SubResource("BoxShape3D_6dsja")
 
-[node name="Collision02" type="CollisionShape3D" parent="." unique_id=1303819012]
-transform = Transform3D(0.995665, 0, -0.093016, 0, 1, 0, 0.093016, 0, 0.995665, -0.00595, 0, 0.02648)
+[node name="Collision03" type="CollisionShape3D" parent="." unique_id=1411557425]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.069481)
 shape = SubResource("BoxShape3D_8ya3s")
 
-[node name="Collision03" type="CollisionShape3D" parent="." unique_id=1200746098]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.069481)
-shape = SubResource("BoxShape3D_x7qjf")
-
-[node name="Pick" type="Area3D" parent="." unique_id=2131179720]
+[node name="Pick" type="Area3D" parent="." unique_id=105448204]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=522597628]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1480988175]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.04452)
+shape = SubResource("BoxShape3D_x7qjf")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=617425331]
+transform = Transform3D(0.995665, 0, 0.093016, 0, 1, 0, -0.093016, 0, 0.995665, 0.00595, 0, 0.02648)
 shape = SubResource("BoxShape3D_wcju4")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1459213692]
-transform = Transform3D(0.995665, 0, 0.093016, 0, 1, 0, -0.093016, 0, 0.995665, 0.00595, 0, 0.02648)
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1502875643]
+transform = Transform3D(0.995665, 0, -0.093016, 0, 1, 0, 0.093016, 0, 0.995665, -0.00595, 0, 0.02648)
 shape = SubResource("BoxShape3D_rrqoc")
 
-[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=137166038]
-transform = Transform3D(0.995665, 0, -0.093016, 0, 1, 0, 0.093016, 0, 0.995665, -0.00595, 0, 0.02648)
-shape = SubResource("BoxShape3D_c2eoe")
-
-[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=1080990712]
+[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=674412433]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.069481)
-shape = SubResource("BoxShape3D_so0ko")
+shape = SubResource("BoxShape3D_c2eoe")

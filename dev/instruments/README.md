@@ -5,9 +5,10 @@ generated, so don't hand-edit them. Ask Julia, or rebuild with `build_instrument
 
 | Output | What |
 |---|---|
-| `tools/<slug>.tscn` | 17 tools, each an inherited scene of `tools/surgical_tool.tscn`. Exports filled: `id` (= slug), `display_name` (English, goes through `tr()`), `description`, `specialities` |
+| `tools/<slug>.tscn` | 16 tools, each an inherited scene of `tools/surgical_tool.tscn`. Exports filled: `id` (= slug), `display_name` (English, goes through `tr()`), `description`, `specialities` |
 | `assets/instruments/<slug>.glb` | Models with embedded 512 px textures (albedo + ORM) |
 | `assets/instruments/tray.tscn` | The tray: a `StaticBody3D`, not a tool |
+| `assets/instruments/kidney_dish.tscn` | A prop (`"body": "prop"` in spec.json): a plain `RigidBody3D`, not a tool |
 
 - `display_name`, `description` and `specialities` are **drafts**. A clinician should check them,
   and the source is Julia's `scripts/spec.json`.

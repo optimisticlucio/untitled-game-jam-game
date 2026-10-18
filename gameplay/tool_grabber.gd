@@ -5,6 +5,8 @@ extends Node
 ## Hold a tool for hold_seconds to pick it up: it lifts toward the camera
 ## (so it looks bigger), glows, and passes through everything while dragged.
 ## On release:
+## (Where it's released is judged by the pointer, not the tool, since the tool
+## floats above a finger.)
 ## - over tray_zone: lowered onto the pile and dropped with physics.
 ## - over hand_off_zone: tool_handed is emitted, and the listener decides.
 ## - anywhere else: flown back to a random spot in the tray, and the pile
@@ -12,7 +14,7 @@ extends Node
 ## Works with mouse and touch (Godot turns single touches into mouse events).
 
 signal tool_grabbed(tool: SurgicalTool)
-## The listener must either free the tool or call return_to_tray() on it.
+## The listener must call consume() or return_to_tray() on the tool.
 ## Until then it stays frozen where it was let go.
 signal tool_handed(tool: SurgicalTool)
 
@@ -29,7 +31,8 @@ const RAY_LENGTH := 100.0
 ## steal drops meant for a zone behind them.
 ## Tray zone: its box covers the tray, with its bottom at the tray floor.
 @export var tray_zone: Area3D
-## Where tools are handed over.
+## Where tools are handed over. Consumed tools land at the height of its box's
+## centre, so centre the box on the surface they should land on.
 @export var hand_off_zone: Area3D
 
 @export var hold_seconds := 0.3
@@ -41,7 +44,8 @@ const RAY_LENGTH := 100.0
 		_glow.set_shader_parameter("glow_color", value)
 ## Height above tools_root the held tool floats at. Higher is closer to the camera.
 @export var lift_height := 0.25
-## The held tool sits this far above the finger on screen, so the finger doesn't hide it.
+## On touch screens the held tool sits this far above the finger, so the finger
+## doesn't hide it. Mice get no offset.
 @export var finger_offset_pixels := 90.0
 ## How quickly the held tool catches up with the finger.
 @export var follow_sharpness := 20.0
@@ -49,12 +53,17 @@ const RAY_LENGTH := 100.0
 @export var drop_height := 0.06
 @export var return_seconds := 0.35
 ## Speed (m/s) of the random nudge every tray tool gets when a tool is returned.
-@export var jumble_speed := 0.08
+@export var jumble_speed := 0.15
+## How long a consumed tool takes to drop onto the hand-off zone, then to shrink away.
+@export var consume_drop_seconds := 0.3
+@export var consume_shrink_seconds := 0.2
 
 var _glow := ShaderMaterial.new()
 var _pointer := Vector2.ZERO
 var _press_position := Vector2.ZERO
 var _press_time := 0.0
+## Whether the current press came from a finger (Godot reports those as emulated mouse events).
+var _is_touch := false
 var _candidate: SurgicalTool
 var _held: SurgicalTool
 ## Tools mid-flight back to the tray. They can't be grabbed until they land.
@@ -75,6 +84,7 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		_pointer = event.position
 		if event.pressed:
+			_is_touch = event.device == InputEvent.DEVICE_ID_EMULATION
 			_candidate = _tool_at(event.position)
 			_press_position = event.position
 			_press_time = 0.0
@@ -98,6 +108,31 @@ func _process(delta: float) -> void:
 		var target := _held_position()
 		var weight := 1.0 - exp(-follow_sharpness * delta)
 		_held.global_position = _held.global_position.lerp(target, weight)
+
+
+## Drops a handed-over tool onto the middle of the hand-off zone, shrinks it
+## away and frees it. Await the returned signal to act once it's gone.
+func consume(tool: SurgicalTool) -> Signal:
+	_make_intangible(tool)
+	_flying[tool] = true
+	var landing := hand_off_zone.global_transform * _first_shape(hand_off_zone).position
+	var flat_rotation := Vector3(0.0, tool.global_rotation.y, 0.0)
+	var tween := create_tween()
+	tween.set_parallel()
+	tween.tween_property(tool, "global_position", landing, consume_drop_seconds) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.tween_property(tool, "global_rotation", flat_rotation, consume_drop_seconds)
+	tween.chain()
+	# Shrink the visuals, not the body: physics bodies don't scale well.
+	for child in tool.get_children():
+		if child is Node3D and not child is CollisionShape3D:
+			tween.tween_property(child, "scale", Vector3.ONE * 0.001, consume_shrink_seconds) \
+				.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	tween.chain().tween_callback(func() -> void:
+		_flying.erase(tool)
+		_saved_layers.erase(tool)
+		tool.queue_free())
+	return tween.finished
 
 
 ## Flies a tool back to a random spot in the tray, then nudges the pile.
@@ -129,7 +164,7 @@ func _grab(tool: SurgicalTool) -> void:
 func _release() -> void:
 	var tool := _held
 	_held = null
-	var zone := _zone_under(tool)
+	var zone := _zone_under(_pointer)
 	if zone == hand_off_zone:
 		_set_glow(tool, false)
 		tool_handed.emit(tool)
@@ -182,7 +217,8 @@ func _set_glow(tool: SurgicalTool, on: bool) -> void:
 ## Where the held tool should be: under the pointer (minus the finger offset),
 ## on the plane lift_height above the tools.
 func _held_position() -> Vector3:
-	var screen := _pointer - Vector2(0.0, finger_offset_pixels)
+	var offset := finger_offset_pixels if _is_touch else 0.0
+	var screen := _pointer - Vector2(0.0, offset)
 	var origin := camera.project_ray_origin(screen)
 	var direction := camera.project_ray_normal(screen)
 	var plane := Plane(Vector3.UP, tools_root.global_position.y + lift_height)
@@ -207,10 +243,10 @@ func _tool_at(screen: Vector2) -> SurgicalTool:
 	return tool
 
 
-## The drop zone the tool is over, as seen from the camera, or null.
-func _zone_under(tool: SurgicalTool) -> Area3D:
-	var origin := camera.global_position
-	var direction := origin.direction_to(tool.global_position)
+## The drop zone under a screen position, or null.
+func _zone_under(screen: Vector2) -> Area3D:
+	var origin := camera.project_ray_origin(screen)
+	var direction := camera.project_ray_normal(screen)
 	var query := PhysicsRayQueryParameters3D.create(origin, origin + direction * RAY_LENGTH, DROP_ZONE_LAYER)
 	query.collide_with_areas = true
 	query.collide_with_bodies = false
@@ -233,7 +269,11 @@ func _tray_floor_y() -> float:
 
 
 func _tray_shape() -> CollisionShape3D:
-	return tray_zone.find_children("*", "CollisionShape3D", false, false)[0]
+	return _first_shape(tray_zone)
+
+
+func _first_shape(zone: Area3D) -> CollisionShape3D:
+	return zone.find_children("*", "CollisionShape3D", false, false)[0]
 
 
 func _tray_box() -> BoxShape3D:

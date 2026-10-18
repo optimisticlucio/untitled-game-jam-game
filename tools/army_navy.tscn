@@ -3,65 +3,60 @@
 [ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
 [ext_resource type="PackedScene" path="res://assets/instruments/army_navy.glb" id="2_4efs0"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_wx3q5"]
-friction = 0.4
-bounce = 0.05
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_133ll"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_wx3q5"]
 size = Vector3(0.004, 0.017, 0.2182)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_2urqb"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_133ll"]
 size = Vector3(0.0251, 0.014, 0.004)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_o11ym"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_2urqb"]
 size = Vector3(0.0316, 0.017, 0.004)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_6in1p"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_o11ym"]
 size = Vector3(0.02, 0.029000001, 0.2302)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_6dr3n"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_6in1p"]
 size = Vector3(0.037100002, 0.026, 0.02)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_857c5"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_6dr3n"]
 size = Vector3(0.0436, 0.029000001, 0.02)
 
 [node name="ArmyNavy" instance=ExtResource("base_tool")]
 mass = 0.07
-physics_material_override = SubResource("PhysicsMaterial_wx3q5")
 continuous_cd = true
 id = &"army_navy"
 display_name = "Army-Navy Retractor"
 description = "Flat, double-ended retractor with a right-angled blade at each end, in two sizes. Held by hand to pull back the wound edges."
 specialities = Array[int]([0, 1, 2])
 
-[node name="Model" type="Node3D" parent="." unique_id=1749185921 instance=ExtResource("2_4efs0")]
+[node name="Model" type="Node3D" parent="." unique_id=1782874715 instance=ExtResource("2_4efs0")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=2001766615]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=2073371031]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0142, 0, 0)
+shape = SubResource("BoxShape3D_wx3q5")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=2071706821]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00325, 0, 0.1075)
 shape = SubResource("BoxShape3D_133ll")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=394057526]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00325, 0, 0.1075)
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=405899323]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1075)
 shape = SubResource("BoxShape3D_2urqb")
 
-[node name="Collision02" type="CollisionShape3D" parent="." unique_id=8935152]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1075)
-shape = SubResource("BoxShape3D_o11ym")
-
-[node name="Pick" type="Area3D" parent="." unique_id=236787552]
+[node name="Pick" type="Area3D" parent="." unique_id=1986485566]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1612590964]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=89865510]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0142, 0, 0)
+shape = SubResource("BoxShape3D_o11ym")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=699247838]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00325, 0, 0.1075)
 shape = SubResource("BoxShape3D_6in1p")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=533147137]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00325, 0, 0.1075)
-shape = SubResource("BoxShape3D_6dr3n")
-
-[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=2096447876]
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=57277964]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1075)
-shape = SubResource("BoxShape3D_857c5")
+shape = SubResource("BoxShape3D_6dr3n")

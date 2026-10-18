@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cf33j61q6n314"
-path="res://.godot/imported/debakey_forceps_s5_orm.png-5aaad48caff541c13a0c4b8d5aea91fc.ctex"
+path.s3tc="res://.godot/imported/debakey_forceps_s5_orm.png-5aaad48caff541c13a0c4b8d5aea91fc.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "ff1e5ddbeceb7b1d83c9d81bc020ed49"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/debakey_forceps_s5_orm.png"
-dest_files=["res://.godot/imported/debakey_forceps_s5_orm.png-5aaad48caff541c13a0c4b8d5aea91fc.ctex"]
+dest_files=["res://.godot/imported/debakey_forceps_s5_orm.png-5aaad48caff541c13a0c4b8d5aea91fc.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b8kxkb3bpcrky"
-path="res://.godot/imported/micro_hook_m5_orm.png-6d37f9f7d77c9298e91c4a6b13153b61.ctex"
+path.s3tc="res://.godot/imported/micro_hook_m5_orm.png-6d37f9f7d77c9298e91c4a6b13153b61.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "b06381e1d5b11c8717b02962b00cbf05"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/micro_hook_m5_orm.png"
-dest_files=["res://.godot/imported/micro_hook_m5_orm.png-6d37f9f7d77c9298e91c4a6b13153b61.ctex"]
+dest_files=["res://.godot/imported/micro_hook_m5_orm.png-6d37f9f7d77c9298e91c4a6b13153b61.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

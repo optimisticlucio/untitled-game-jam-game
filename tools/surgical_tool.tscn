@@ -2,5 +2,10 @@
 
 [ext_resource type="Script" path="res://tools/surgical_tool.gd" id="1_tool"]
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tool"]
+friction = 0.3
+bounce = 0.25
+
 [node name="SurgicalTool" type="RigidBody3D"]
+physics_material_override = SubResource("PhysicsMaterial_tool")
 script = ExtResource("1_tool")

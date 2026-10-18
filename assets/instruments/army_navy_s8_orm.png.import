@@ -3,9 +3,10 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b2a7t1g82j007"
-path="res://.godot/imported/army_navy_s8_orm.png-a0db62dc1d3ce922b5ee36aad6f79780.ctex"
+path.s3tc="res://.godot/imported/army_navy_s8_orm.png-a0db62dc1d3ce922b5ee36aad6f79780.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
 "md5": "e9b8a587821f9dde341172bea01c8ad7"
@@ -14,11 +15,11 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/army_navy_s8_orm.png"
-dest_files=["res://.godot/imported/army_navy_s8_orm.png-a0db62dc1d3ce922b5ee36aad6f79780.ctex"]
+dest_files=["res://.godot/imported/army_navy_s8_orm.png-a0db62dc1d3ce922b5ee36aad6f79780.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0

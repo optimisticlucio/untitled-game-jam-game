@@ -2,8 +2,10 @@ extends SceneTree
 ## Builds the instrument scenes from Julia's Blender export. Never edit the outputs by hand.
 ##   tools/<slug>.tscn             inherited scene of tools/surgical_tool.tscn (SurgicalTool)
 ##   assets/instruments/tray.tscn  the tray: a StaticBody3D, not a tool
+##   assets/instruments/<slug>.tscn  props ("body": "prop"): a plain RigidBody3D, not a tool
 ## Inputs: assets/instruments/<slug>.glb (model) and dev/instruments/data/ (<slug>.json colliders
 ## in Godot space, spec.json: mass, display_name, description, specialities).
+## Tools get their physics material from tools/surgical_tool.tscn; only the tray and props get one here.
 ## Run: Godot --headless --path <repo> --script res://dev/instruments/build_instruments.gd
 ##
 ## Every tool also gets a "pick" Area3D: the same shapes, inflated (PICK_PAD per side, at least
@@ -35,6 +37,13 @@ func _init() -> void:
 			body = StaticBody3D.new()
 			body.name = slug.capitalize().replace(" ", "")
 			out = MODELS + slug + ".tscn"
+		elif it["body"] == "prop":
+			var prop := RigidBody3D.new()
+			prop.name = slug.capitalize().replace(" ", "")
+			prop.mass = float(it["mass_g"]) / 1000.0
+			prop.continuous_cd = true
+			body = prop
+			out = MODELS + slug + ".tscn"
 		else:
 			var tool := base.instantiate(PackedScene.GEN_EDIT_STATE_MAIN_INHERITED) as RigidBody3D
 			tool.scene_file_path = ""
@@ -50,10 +59,14 @@ func _init() -> void:
 			tool.continuous_cd = true
 			body = tool
 			out = "res://tools/" + slug + ".tscn"
-		var pm := PhysicsMaterial.new()
-		pm.friction = 0.4
-		pm.bounce = 0.05
-		body.set("physics_material_override", pm)
+		if body is SurgicalTool:
+			# Left unset so the scene inherits it from the base.
+			body.set("physics_material_override", null)
+		else:
+			var pm := PhysicsMaterial.new()
+			pm.friction = 0.4
+			pm.bounce = 0.05
+			body.set("physics_material_override", pm)
 		var visual: Node3D = (load(glb) as PackedScene).instantiate()
 		visual.name = "Model"
 		body.add_child(visual)
@@ -68,12 +81,12 @@ func _init() -> void:
 			body.add_child(cs)
 			cs.owner = body
 			i += 1
-		if body is RigidBody3D:
+		if body is SurgicalTool:
 			_add_pick_area(body)
 		var ps := PackedScene.new()
 		ps.pack(body)
 		var err := ResourceSaver.save(ps, out)
-		if err == OK and body is RigidBody3D:
+		if err == OK and body is SurgicalTool:
 			err = _make_inherited(out)
 		print("%s %s (%d shapes)" % ["saved" if err == OK else "ERROR %d" % err, out, i])
 		body.free()

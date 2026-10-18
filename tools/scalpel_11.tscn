@@ -3,51 +3,46 @@
 [ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
 [ext_resource type="PackedScene" path="res://assets/instruments/scalpel_11.glb" id="2_l5uwe"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_c02bt"]
-friction = 0.4
-bounce = 0.05
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_0spun"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_c02bt"]
 size = Vector3(0.0095, 0.004, 0.1265)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_4ppve"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_0spun"]
 size = Vector3(0.0092, 0.004, 0.0375)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_mbo3r"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_4ppve"]
 size = Vector3(0.021499999, 0.02, 0.13849999)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_vppxs"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_mbo3r"]
 size = Vector3(0.021200001, 0.02, 0.049500003)
 
 [node name="Scalpel11" instance=ExtResource("base_tool")]
 mass = 0.02
-physics_material_override = SubResource("PhysicsMaterial_c02bt")
 continuous_cd = true
 id = &"scalpel_11"
 display_name = "Scalpel #11"
 description = "#3 handle with a #11 blade: a straight edge running to a sharp triangular point, for stab incisions."
 specialities = Array[int]([0])
 
-[node name="Model" type="Node3D" parent="." unique_id=374427964 instance=ExtResource("2_l5uwe")]
+[node name="Model" type="Node3D" parent="." unique_id=709006417 instance=ExtResource("2_l5uwe")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1130432668]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=68725604]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00035, 0, 0.01775)
+shape = SubResource("BoxShape3D_c02bt")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=306972603]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00075, 0, -0.06225)
 shape = SubResource("BoxShape3D_0spun")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1420677224]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00075, 0, -0.06225)
-shape = SubResource("BoxShape3D_4ppve")
-
-[node name="Pick" type="Area3D" parent="." unique_id=1769485155]
+[node name="Pick" type="Area3D" parent="." unique_id=572433937]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1638269343]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=466826810]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00035, 0, 0.01775)
-shape = SubResource("BoxShape3D_mbo3r")
+shape = SubResource("BoxShape3D_4ppve")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=841160046]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1492903330]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00075, 0, -0.06225)
-shape = SubResource("BoxShape3D_vppxs")
+shape = SubResource("BoxShape3D_mbo3r")

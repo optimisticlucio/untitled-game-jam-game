@@ -3,37 +3,32 @@
 [ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
 [ext_resource type="PackedScene" path="res://assets/instruments/acland_clamp.glb" id="2_g6ofh"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_855vk"]
-friction = 0.4
-bounce = 0.05
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_ygtci"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_855vk"]
 size = Vector3(0.004, 0.004, 0.0104)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_pgkvm"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_ygtci"]
 size = Vector3(0.02, 0.02, 0.0224)
 
 [node name="AclandClamp" instance=ExtResource("base_tool")]
 mass = 0.002
-physics_material_override = SubResource("PhysicsMaterial_855vk")
 continuous_cd = true
 id = &"acland_clamp"
 display_name = "Acland Clamp"
 description = "A 1 cm spring clamp that temporarily closes a small vessel during microsurgery."
 specialities = Array[int]([1, 2])
 
-[node name="Model" type="Node3D" parent="." unique_id=566862094 instance=ExtResource("2_g6ofh")]
+[node name="Model" type="Node3D" parent="." unique_id=1699830072 instance=ExtResource("2_g6ofh")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=840455627]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=330950587]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000107)
-shape = SubResource("BoxShape3D_ygtci")
+shape = SubResource("BoxShape3D_855vk")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1442200807]
+[node name="Pick" type="Area3D" parent="." unique_id=869561391]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1438713198]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=395958008]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000107)
-shape = SubResource("BoxShape3D_pgkvm")
+shape = SubResource("BoxShape3D_ygtci")
