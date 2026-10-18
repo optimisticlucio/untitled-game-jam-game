@@ -64,10 +64,19 @@ func _process(delta: float) -> void:
 			_since_request = 0.0
 	elif _hint_due():
 		_show_hint()
-	# Keep the request beside the target, whatever the screen's aspect ratio.
+	_place_request()
+
+
+## Beside the target, whatever the screen's aspect ratio, but never down over
+## the tray (a picture plus a two-line name is taller than the target).
+func _place_request() -> void:
+	const MARGIN := 8.0
 	var beside := _target.global_position + Vector3(0.13, 0.0, 0.0)
-	var anchor := _camera.unproject_position(beside)
-	_request.position = anchor - Vector2(_request.size.x * 0.5, _preview.size.y * 0.5)
+	var top_left := _camera.unproject_position(beside) - _request.size * 0.5
+	var tray_top := _camera.unproject_position(_tray.far_edge()).y
+	top_left.y = minf(top_left.y, tray_top - MARGIN - _request.size.y)
+	top_left.y = maxf(top_left.y, MARGIN)
+	_request.position = top_left
 
 
 func _start_tray() -> void:
@@ -92,6 +101,8 @@ func _request_next() -> void:
 	_preview.visible = not level.name_only_ids.has(_requested)
 	if _preview.visible:
 		_preview.show_tool(_scenes[_requested])
+	# Shrink the card to fit whichever of picture and name is showing.
+	_request.reset_size()
 	_request.show()
 
 
@@ -102,6 +113,9 @@ func _finish_tray() -> void:
 		return
 	_request.hide()
 	_grabber.enabled = false
+	# A tool still flying back would land after the tray left, and fall out.
+	while _grabber.is_busy():
+		await get_tree().process_frame
 	await _tray.slide_away()
 	_tray.clear()
 	await _tray.slide_back()
@@ -147,6 +161,7 @@ func _on_play_again_pressed() -> void:
 
 
 func _show_message(text: String) -> void:
+	_grabber.enabled = false
 	_message.text = text
 	_request.hide()
 	_popup.show()

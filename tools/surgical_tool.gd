@@ -21,6 +21,19 @@ const FOLDER := "res://tools/"
 static var _scenes_by_id: Dictionary[StringName, PackedScene] = {}
 
 
+## Bounding box of the tool's visible meshes, in its local space.
+## The tool must be inside the scene tree.
+func visual_bounds() -> AABB:
+	var bounds := AABB()
+	var first := true
+	for node in find_children("*", "VisualInstance3D", true, false):
+		var visual := node as VisualInstance3D
+		var box := global_transform.affine_inverse() * visual.global_transform * visual.get_aabb()
+		bounds = box if first else bounds.merge(box)
+		first = false
+	return bounds
+
+
 ## Every tool scene under FOLDER, by id. Scenes whose tool has no id (like the
 ## base surgical_tool.tscn) are skipped. Scanned once, then cached.
 static func scenes_by_id() -> Dictionary[StringName, PackedScene]:
@@ -39,6 +52,9 @@ static func _scan(folder: String) -> void:
 		if path.get_extension() != "tscn":
 			continue
 		var scene := load(path) as PackedScene
+		if scene == null:
+			push_error("Skipping tool scene that failed to load: %s" % path)
+			continue
 		var node := scene.instantiate()
 		if node is SurgicalTool and node.id != &"":
 			if _scenes_by_id.has(node.id):

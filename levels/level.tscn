@@ -48,6 +48,17 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
+[sub_resource type="StyleBoxFlat" id="Style_request"]
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.11, 0.13, 0.85)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
 [node name="Level" type="Node3D"]
 script = ExtResource("1_level")
 level = ExtResource("5_example")
@@ -94,34 +105,38 @@ monitorable = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
 shape = SubResource("Shape_hand_off_zone")
 
-[node name="ToolGrabber" type="Node" parent="." node_paths=PackedStringArray("camera", "tools_root", "tray_zone", "hand_off_zone")]
+[node name="ToolGrabber" type="Node" parent="." node_paths=PackedStringArray("camera", "tray", "hand_off_zone")]
 script = ExtResource("2_grabber")
 camera = NodePath("../Camera3D")
-tools_root = NodePath("../Tray/Tools")
-tray_zone = NodePath("../Tray/Zone")
+tray = NodePath("../Tray")
 hand_off_zone = NodePath("../Target/HandOffZone")
 
 [node name="UI" type="CanvasLayer" parent="."]
 
-[node name="Request" type="VBoxContainer" parent="UI"]
+[node name="Request" type="PanelContainer" parent="UI"]
 unique_name_in_owner = true
-offset_right = 240.0
-offset_bottom = 260.0
+offset_right = 220.0
+offset_bottom = 240.0
 mouse_filter = 2
+theme_override_styles/panel = SubResource("Style_request")
 
-[node name="ToolPreview" parent="UI/Request" instance=ExtResource("3_preview")]
+[node name="Content" type="VBoxContainer" parent="UI/Request"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="ToolPreview" parent="UI/Request/Content" instance=ExtResource("3_preview")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 200)
 layout_mode = 2
 size_flags_horizontal = 4
 mouse_filter = 2
 
-[node name="RequestName" type="Label" parent="UI/Request"]
+[node name="RequestName" type="Label" parent="UI/Request/Content"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 8
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 26
 horizontal_alignment = 1
 autowrap_mode = 3
 

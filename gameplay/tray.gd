@@ -2,20 +2,22 @@ class_name Tray
 extends Node3D
 ## The tray the tools lie in. It lays tools out, and can slide off the bottom
 ## of the screen and back (for reshuffles), carrying its tools with it.
+##
+## The Zone's collision shapes are the tray's floor: tools are laid out,
+## dropped and returned inside them, and nothing else knows the tray's size.
+## To resize or reshape the tray, change the Body (looks and walls) and the
+## Zone shapes together. Zone shapes can be any number of boxes and
+## cylinders, each with its bottom face on the floor.
 
-## Width and depth of the area in the tray that tools are laid out in.
-@export var layout_size := Vector2(0.28, 0.40)
-## How much neighbouring tools overlap when laid out (0 = just touching).
-@export_range(0.0, 0.5) var overlap := 0.15
-## Random turn given to each tool when laid out, in degrees either way.
-@export var yaw_jitter_degrees := 8.0
+## Random spots tried per tool when laying out; the most open one wins.
+@export var placement_tries := 40
 ## Where the tray goes when it slides away, relative to where it rests.
 @export var away_offset := Vector3(0.0, 0.0, 0.7)
 @export var slide_seconds := 0.6
 
-## Parent of the tools in the tray. Give it to ToolGrabber.tools_root.
+## Parent of the tools in the tray.
 @onready var tools_root: Node3D = $Tools
-## The tray's drop zone. Give it to ToolGrabber.tray_zone.
+## The tray's drop zone, on the drop_zones layer.
 @onready var zone: Area3D = $Zone
 @onready var _rest_position := position
 
@@ -33,12 +35,48 @@ func clear() -> void:
 		tool.queue_free()
 
 
+## True if the point is over the tray floor (its height is ignored).
+func contains(point: Vector3) -> bool:
+	return _shape_at(point) != null
+
+
+## Height of the floor under the point, or of the lowest floor if it's off the tray.
+func floor_height(point: Vector3) -> float:
+	var shape := _shape_at(point)
+	if shape:
+		return _bottom(shape)
+	var lowest := INF
+	for each in _shapes():
+		lowest = minf(lowest, _bottom(each))
+	return lowest
+
+
+## A random point on the tray floor.
+func random_point() -> Vector3:
+	var bounds := _bounds()
+	for i in 100:
+		var point := bounds.position + bounds.size * Vector3(randf(), 0.0, randf())
+		if contains(point):
+			point.y = floor_height(point)
+			return point
+	push_warning("Tray: couldn't find a point inside the Zone shapes")
+	return _bounds().get_center()
+
+
+## The middle of the tray's far edge (the one furthest from the player), at
+## the top of the zone, in world space. UI above the tray can keep clear of it.
+func far_edge() -> Vector3:
+	var bounds := _bounds()
+	return Vector3(bounds.get_center().x, bounds.end.y, bounds.position.z)
+
+
 ## Slides off screen with all its tools. Await the returned signal.
 func slide_away() -> Signal:
-	# Frozen bodies follow their parent; free ones would stay behind.
+	# Out of the physics simulation, so they ride along with the tray. (Even
+	# frozen bodies lag behind a moving parent: physics keeps writing back
+	# their previous position.) They're cleared afterwards anyway.
 	for tool in tools():
-		tool.freeze_mode = RigidBody3D.FREEZE_MODE_KINEMATIC
-		tool.freeze = true
+		tool.process_mode = Node.PROCESS_MODE_DISABLED
 	var tween := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	tween.tween_property(self, "position", _rest_position + away_offset, slide_seconds)
 	return tween.finished
@@ -51,42 +89,118 @@ func slide_back() -> Signal:
 	return tween.finished
 
 
-## Adds the tools and packs them into rows, long side across, longest first.
-## When the rows run out of depth, the next tools go in a layer on top and
-## fall onto the pile.
+## Adds the tools spread over the floor at random angles, longest first. Each
+## goes at the most open of placement_tries random spots, with both of its ends
+## on the floor. If it still overlaps others (a crowded tray), it starts above
+## them and falls onto the pile.
 func fill(new_tools: Array[SurgicalTool]) -> void:
-	var footprints: Dictionary[SurgicalTool, Vector3] = {}
-	var centers: Dictionary[SurgicalTool, Vector3] = {}
+	var sizes: Dictionary[SurgicalTool, AABB] = {}
 	for tool in new_tools:
 		tools_root.add_child(tool)
-		var bounds := ToolPreview.visual_bounds(tool)
-		var yaw := 0.0 if bounds.size.x >= bounds.size.z else PI / 2.0
-		yaw += deg_to_rad(randf_range(-yaw_jitter_degrees, yaw_jitter_degrees))
-		tool.rotation.y = yaw
-		var size := bounds.size
-		footprints[tool] = Vector3(maxf(size.x, size.z), size.y, minf(size.x, size.z))
-		centers[tool] = bounds.get_center().rotated(Vector3.UP, yaw)
+		sizes[tool] = tool.visual_bounds()
 	var ordered := new_tools.duplicate()
 	ordered.sort_custom(func(a: SurgicalTool, b: SurgicalTool) -> bool:
-		return footprints[a].x > footprints[b].x)
+		return _length(sizes[a]) > _length(sizes[b]))
 
-	var x := 0.0
-	var z := 0.0
-	var row_depth := 0.0
-	var height := 0.02
-	for tool in ordered:
-		var size := footprints[tool] * (1.0 - overlap)
-		if x > 0.0 and x + size.x > layout_size.x:
-			x = 0.0
-			z += row_depth
-			row_depth = 0.0
-		if z > 0.0 and z + size.z > layout_size.y:
-			z = 0.0
-			height += 0.03
-		var slot := Vector3(x + size.x * 0.5 - layout_size.x * 0.5, 0.0, z + size.z * 0.5 - layout_size.y * 0.5)
-		var center := centers[tool]
-		tool.position = slot - Vector3(center.x, 0.0, center.z) + Vector3.UP * height
-		# Staggered so overlapping neighbours don't start inside each other.
-		height += 0.004
-		x += size.x
-		row_depth = maxf(row_depth, size.z)
+	var placed: Array[_Footprint] = []
+	for tool: SurgicalTool in ordered:
+		var bounds := sizes[tool]
+		var best: _Footprint
+		for i in placement_tries:
+			var candidate := _Footprint.new(random_point(), randf() * TAU, bounds)
+			if not (contains(candidate.a) and contains(candidate.b)):
+				continue
+			candidate.clearance = INF
+			for other in placed:
+				candidate.clearance = minf(candidate.clearance, candidate.gap_to(other))
+			if best == null or candidate.clearance > best.clearance:
+				best = candidate
+		if best == null:
+			best = _Footprint.new(random_point(), randf() * TAU, bounds)
+		# Start just above the floor, or above everything it overlaps.
+		best.top = floor_height(best.center) + 0.01 + bounds.size.y
+		for other in placed:
+			if best.gap_to(other) < 0.0:
+				best.top = maxf(best.top, other.top + 0.005 + bounds.size.y)
+		placed.append(best)
+		tool.rotation = Vector3(0.0, best.yaw, 0.0)
+		var offset: Vector3 = tool.basis * bounds.get_center()
+		tool.global_position = Vector3(best.center.x, best.top - bounds.size.y * 0.5, best.center.z) - offset
+
+
+## A tool's spot on the floor, as a line along its long side (a to b) with a
+## half-width around it.
+class _Footprint:
+	var center: Vector3
+	var yaw: float
+	var a: Vector3
+	var b: Vector3
+	var half_width: float
+	var clearance := 0.0
+	## Height of the tool's top when it starts.
+	var top := 0.0
+
+	func _init(at: Vector3, turn: float, bounds: AABB) -> void:
+		center = at
+		yaw = turn
+		var long_along_x := bounds.size.x >= bounds.size.z
+		var half_length := (bounds.size.x if long_along_x else bounds.size.z) * 0.5
+		half_width = (bounds.size.z if long_along_x else bounds.size.x) * 0.5
+		var axis := (Vector3.RIGHT if long_along_x else Vector3.BACK).rotated(Vector3.UP, yaw)
+		a = center - axis * half_length
+		b = center + axis * half_length
+
+	## Space between the two tools' outlines; negative when they overlap.
+	func gap_to(other: _Footprint) -> float:
+		var closest := Geometry3D.get_closest_points_between_segments(a, b, other.a, other.b)
+		var flat := closest[0] - closest[1]
+		flat.y = 0.0
+		return flat.length() - half_width - other.half_width
+
+
+static func _length(bounds: AABB) -> float:
+	return maxf(bounds.size.x, bounds.size.z)
+
+
+func _shapes() -> Array[CollisionShape3D]:
+	var shapes: Array[CollisionShape3D] = []
+	for child in zone.get_children():
+		if child is CollisionShape3D:
+			shapes.append(child)
+	return shapes
+
+
+## The zone shape whose floor area holds the point, or null.
+func _shape_at(point: Vector3) -> CollisionShape3D:
+	for shape in _shapes():
+		var local := shape.global_transform.affine_inverse() * point
+		if shape.shape is BoxShape3D:
+			var half := (shape.shape as BoxShape3D).size * 0.5
+			if absf(local.x) <= half.x and absf(local.z) <= half.z:
+				return shape
+		elif shape.shape is CylinderShape3D:
+			if Vector2(local.x, local.z).length() <= (shape.shape as CylinderShape3D).radius:
+				return shape
+		else:
+			push_warning("Tray: Zone shapes must be boxes or cylinders, not %s" % shape.shape.get_class())
+	return null
+
+
+func _bottom(shape: CollisionShape3D) -> float:
+	var height := 0.0
+	if shape.shape is BoxShape3D:
+		height = (shape.shape as BoxShape3D).size.y
+	elif shape.shape is CylinderShape3D:
+		height = (shape.shape as CylinderShape3D).height
+	return (shape.global_transform * Vector3(0.0, -height * 0.5, 0.0)).y
+
+
+## World-space box around all the zone shapes.
+func _bounds() -> AABB:
+	var bounds: AABB
+	var first := true
+	for shape in _shapes():
+		var box := shape.global_transform * shape.shape.get_debug_mesh().get_aabb()
+		bounds = box if first else bounds.merge(box)
+		first = false
+	return bounds
