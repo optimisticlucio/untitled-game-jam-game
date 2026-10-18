@@ -24,27 +24,28 @@ id = &"micro_needle_holder"
 display_name = "Micro Needle Holder"
 description = "Round, knurled handle closed by finger pressure, with a fine curved tip. Microsurgery needle holder, no rings."
 specialities = Array[int]([1, 2])
+category = 4
 
-[node name="Model" type="Node3D" parent="." unique_id=658074052 instance=ExtResource("2_6ynbj")]
+[node name="Model" type="Node3D" parent="." unique_id=1442350868 instance=ExtResource("2_6ynbj")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1634196962]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=671803753]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.018797)
 shape = SubResource("CapsuleShape3D_1xl1n")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=836379677]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=648874029]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.055989)
 shape = SubResource("BoxShape3D_k1ord")
 
-[node name="Pick" type="Area3D" parent="." unique_id=206760739]
+[node name="Pick" type="Area3D" parent="." unique_id=489157098]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=2083364567]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=762474907]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.018797)
 shape = SubResource("CapsuleShape3D_6vyb1")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1964426916]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1296170894]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.055989)
 shape = SubResource("BoxShape3D_iw8gi")

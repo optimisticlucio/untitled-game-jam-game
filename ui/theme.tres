@@ -1,0 +1,222 @@
+[gd_resource type="Theme" format=3]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_denks"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.65, 0.87, 0.9, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rqugq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jf26r"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.40500003, 0.779, 0.83, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6lx7k"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.3, 0.74, 0.8, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iqtc0"]
+content_margin_left = 16.0
+content_margin_top = 16.0
+content_margin_right = 16.0
+content_margin_bottom = 16.0
+bg_color = Color(0.24000001, 0.592, 0.64000005, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7any1"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.96, 0.95, 0.93, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3fgq6"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.3, 0.74, 0.8, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y5ki2"]
+content_margin_top = 8.0
+content_margin_bottom = 8.0
+bg_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtqkv"]
+content_margin_left = 28.0
+content_margin_top = 28.0
+content_margin_right = 28.0
+content_margin_bottom = 28.0
+bg_color = Color(0.96, 0.95, 0.93, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 28
+corner_radius_top_right = 28
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_47c11"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2j8s8"]
+content_margin_left = 14.0
+content_margin_top = 14.0
+content_margin_right = 14.0
+content_margin_bottom = 14.0
+bg_color = Color(0.51, 0.818, 0.86, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mo6nk"]
+content_margin_left = 14.0
+content_margin_top = 14.0
+content_margin_right = 14.0
+content_margin_bottom = 14.0
+bg_color = Color(0.3, 0.74, 0.8, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qijjd"]
+content_margin_left = 14.0
+content_margin_top = 14.0
+content_margin_right = 14.0
+content_margin_bottom = 14.0
+bg_color = Color(0.96, 0.95, 0.93, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_de4b7"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.3, 0.74, 0.8, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.05, 0.05, 0.06, 1)
+corner_radius_top_left = 18
+corner_radius_top_right = 18
+corner_radius_bottom_right = 18
+corner_radius_bottom_left = 18
+
+[resource]
+default_font_size = 40
+Button/colors/font_color = Color(0.05, 0.05, 0.06, 1)
+Button/colors/font_focus_color = Color(0.05, 0.05, 0.06, 1)
+Button/colors/font_hover_color = Color(0.05, 0.05, 0.06, 1)
+Button/colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+Button/constants/h_separation = 18
+Button/constants/icon_max_width = 72
+Button/font_sizes/font_size = 48
+Button/styles/disabled = SubResource("StyleBoxFlat_denks")
+Button/styles/focus = SubResource("StyleBoxEmpty_rqugq")
+Button/styles/hover = SubResource("StyleBoxFlat_jf26r")
+Button/styles/normal = SubResource("StyleBoxFlat_6lx7k")
+Button/styles/pressed = SubResource("StyleBoxFlat_iqtc0")
+CardPanel/base_type = &"PanelContainer"
+CardPanel/styles/panel = SubResource("StyleBoxFlat_7any1")
+ClockLabel/base_type = &"Label"
+ClockLabel/font_sizes/font_size = 64
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_3fgq6")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_3fgq6")
+HSlider/styles/slider = SubResource("StyleBoxFlat_y5ki2")
+HeaderLabel/base_type = &"Label"
+HeaderLabel/font_sizes/font_size = 52
+Label/colors/font_color = Color(0.05, 0.05, 0.06, 1)
+SheetPanel/base_type = &"PanelContainer"
+SheetPanel/styles/panel = SubResource("StyleBoxFlat_rtqkv")
+SmallLabel/base_type = &"Label"
+SmallLabel/colors/font_color = Color(0.43, 0.43, 0.43600002, 1)
+SmallLabel/font_sizes/font_size = 32
+TabBar/colors/font_hovered_color = Color(0.05, 0.05, 0.06, 1)
+TabBar/colors/font_selected_color = Color(0.05, 0.05, 0.06, 1)
+TabBar/colors/font_unselected_color = Color(0.05, 0.05, 0.06, 1)
+TabBar/font_sizes/font_size = 40
+TabBar/styles/tab_focus = SubResource("StyleBoxEmpty_47c11")
+TabBar/styles/tab_hovered = SubResource("StyleBoxFlat_2j8s8")
+TabBar/styles/tab_selected = SubResource("StyleBoxFlat_mo6nk")
+TabBar/styles/tab_unselected = SubResource("StyleBoxFlat_qijjd")
+TealPanel/base_type = &"PanelContainer"
+TealPanel/styles/panel = SubResource("StyleBoxFlat_de4b7")
+TitleLabel/base_type = &"Label"
+TitleLabel/font_sizes/font_size = 84

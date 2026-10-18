@@ -22,27 +22,28 @@ id = &"scalpel_15"
 display_name = "Scalpel #15"
 description = "#3 handle with a #15 blade: like a #10 but much smaller, with a short curved belly for small, precise incisions."
 specialities = Array[int]([0, 1, 2])
+category = 0
 
-[node name="Model" type="Node3D" parent="." unique_id=466737484 instance=ExtResource("2_bqbcq")]
+[node name="Model" type="Node3D" parent="." unique_id=1078410535 instance=ExtResource("2_bqbcq")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=803389425]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=460729223]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01225)
 shape = SubResource("BoxShape3D_v7wko")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1653765810]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=593347380]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00055, 0, -0.06225)
 shape = SubResource("BoxShape3D_avwbm")
 
-[node name="Pick" type="Area3D" parent="." unique_id=685810930]
+[node name="Pick" type="Area3D" parent="." unique_id=1953365675]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=217933590]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1388063101]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.01225)
 shape = SubResource("BoxShape3D_vgarr")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1634510592]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=2098301529]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00055, 0, -0.06225)
 shape = SubResource("BoxShape3D_bs6c5")

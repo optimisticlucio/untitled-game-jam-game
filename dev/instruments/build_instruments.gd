@@ -1,10 +1,12 @@
 extends SceneTree
 ## Builds the instrument scenes from Julia's Blender export. Never edit the outputs by hand.
 ##   tools/<slug>.tscn             inherited scene of tools/surgical_tool.tscn (SurgicalTool)
-##   assets/instruments/tray.tscn  the tray: a StaticBody3D, not a tool
+##   assets/instruments/tray.tscn  the tray's look and walls: a StaticBody3D, not a tool. Its origin is the
+##                                 centre of its underside. It's the Body of gameplay/tray.tscn, whose
+##                                 Zone (the floor) must match it: floor top at floor_top_mm.
 ##   assets/instruments/<slug>.tscn  props ("body": "prop"): a plain RigidBody3D, not a tool
 ## Inputs: assets/instruments/<slug>.glb (model) and dev/instruments/data/ (<slug>.json colliders
-## in Godot space, spec.json: mass, display_name, description, specialities).
+## in Godot space, spec.json: mass, display_name, description, specialities, category).
 ## Tools get their physics material from tools/surgical_tool.tscn; only the tray and props get one here.
 ## Run: Godot --headless --path <repo> --script res://dev/instruments/build_instruments.gd
 ##
@@ -55,6 +57,7 @@ func _init() -> void:
 			sp.clear()
 			for v in it["specialities"]:
 				sp.append(int(v))
+			tool.set("category", int(it.get("category", 5)))
 			tool.mass = float(it["mass_g"]) / 1000.0
 			tool.continuous_cd = true
 			body = tool
@@ -83,6 +86,8 @@ func _init() -> void:
 			i += 1
 		if body is SurgicalTool:
 			_add_pick_area(body)
+		if it["body"] == "static":
+			_tray_to_table_origin(body, float(it["dims_mm"][2]) / 1000.0)
 		var ps := PackedScene.new()
 		ps.pack(body)
 		var err := ResourceSaver.save(ps, out)
@@ -133,6 +138,15 @@ func _make_inherited(path: String) -> Error:
 	var ok := n.get_script() != null and (n.get_script() as Script).resource_path == "res://tools/surgical_tool.gd"
 	n.free()
 	return OK if ok else ERR_INVALID_DATA
+
+
+## The export centres every mesh on its origin. The tray is placed on a table, so move its children up
+## by half its height: the scene origin becomes the middle of the tray's underside.
+func _tray_to_table_origin(body: Node3D, height: float) -> void:
+	for c in body.get_children():
+		(c as Node3D).position.y += height / 2.0
+
+
 
 
 func _add_pick_area(body: Node3D) -> void:

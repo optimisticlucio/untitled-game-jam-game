@@ -22,27 +22,28 @@ id = &"adson_forceps"
 display_name = "Adson Forceps"
 description = "Short (12 cm) forceps with a wide thumb grip that narrows sharply to a fine tip with small teeth. For skin."
 specialities = Array[int]([0, 1, 2])
+category = 1
 
-[node name="Model" type="Node3D" parent="." unique_id=267388562 instance=ExtResource("2_a26cf")]
+[node name="Model" type="Node3D" parent="." unique_id=1130150452 instance=ExtResource("2_a26cf")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1790450241]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1136384056]
 transform = Transform3D(1, 0, 0, 0, 0.999397, -0.034725, 0, 0.034725, 0.999397, 0, 0.00276, -0.000246)
 shape = SubResource("BoxShape3D_kgmll")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=2134037755]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1664990773]
 transform = Transform3D(1, 0, 0, 0, 0.999397, 0.034725, 0, -0.034725, 0.999397, 0, -0.00276, -0.000246)
 shape = SubResource("BoxShape3D_hlvur")
 
-[node name="Pick" type="Area3D" parent="." unique_id=797891182]
+[node name="Pick" type="Area3D" parent="." unique_id=1323606986]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=840264973]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=954166385]
 transform = Transform3D(1, 0, 0, 0, 0.999397, -0.034725, 0, 0.034725, 0.999397, 0, 0.00276, -0.000246)
 shape = SubResource("BoxShape3D_7lnd2")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=414458276]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=2109818811]
 transform = Transform3D(1, 0, 0, 0, 0.999397, 0.034725, 0, -0.034725, 0.999397, 0, -0.00276, -0.000246)
 shape = SubResource("BoxShape3D_i58i8")

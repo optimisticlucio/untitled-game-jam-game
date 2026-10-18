@@ -7,6 +7,8 @@ extends RigidBody3D
 ## Append new values at the end only: scenes store these as numbers, so
 ## reordering or removing a value silently changes existing tools.
 enum Speciality { GENERAL, HAND, PLASTIC, SILLY }
+## What the tool does: groups the Pocket Guide. Append-only, like Speciality.
+enum Category { CUTTING, GRASPING, CLAMPING, RETRACTING, SUTURING, OTHER }
 
 ## Every tool scene lives here (subfolders are fine).
 const FOLDER := "res://tools/"
@@ -17,6 +19,7 @@ const FOLDER := "res://tools/"
 ## Notable features, shown when explaining a right or wrong pick.
 @export_multiline var description: String
 @export var specialities: Array[Speciality]
+@export var category: Category = Category.OTHER
 
 static var _scenes_by_id: Dictionary[StringName, PackedScene] = {}
 

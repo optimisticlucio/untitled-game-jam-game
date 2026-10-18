@@ -28,35 +28,36 @@ id = &"army_navy"
 display_name = "Army-Navy Retractor"
 description = "Flat, double-ended retractor with a right-angled blade at each end, in two sizes. Held by hand to pull back the wound edges."
 specialities = Array[int]([0, 1, 2])
+category = 3
 
-[node name="Model" type="Node3D" parent="." unique_id=1782874715 instance=ExtResource("2_4efs0")]
+[node name="Model" type="Node3D" parent="." unique_id=1749185921 instance=ExtResource("2_4efs0")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=2073371031]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1673398386]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0142, 0, 0)
 shape = SubResource("BoxShape3D_wx3q5")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=2071706821]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1348724805]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00325, 0, 0.1075)
 shape = SubResource("BoxShape3D_133ll")
 
-[node name="Collision02" type="CollisionShape3D" parent="." unique_id=405899323]
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=627526998]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1075)
 shape = SubResource("BoxShape3D_2urqb")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1986485566]
+[node name="Pick" type="Area3D" parent="." unique_id=1479299960]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=89865510]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1701677506]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0142, 0, 0)
 shape = SubResource("BoxShape3D_o11ym")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=699247838]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1830080580]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00325, 0, 0.1075)
 shape = SubResource("BoxShape3D_6in1p")
 
-[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=57277964]
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1865604958]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.1075)
 shape = SubResource("BoxShape3D_6dr3n")
