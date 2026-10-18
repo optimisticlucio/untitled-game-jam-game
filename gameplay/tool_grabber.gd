@@ -16,6 +16,8 @@ extends Node
 ## never fight over a tool's overlay material.
 
 signal tool_grabbed(tool: SurgicalTool)
+## Emitted whenever a held tool is let go, wherever it lands (before tool_handed).
+signal tool_released(tool: SurgicalTool)
 ## The listener must call consume() or return_to_tray() on the tool.
 ## Until then it stays frozen where it was let go.
 signal tool_handed(tool: SurgicalTool)
@@ -188,6 +190,7 @@ func _grab(tool: SurgicalTool) -> void:
 func _release() -> void:
 	var tool := _held
 	_held = null
+	tool_released.emit(tool)
 	var zone := _zone_under(_pointer)
 	if zone == hand_off_zone:
 		_set_glow(tool, false)
@@ -231,6 +234,11 @@ func _jumble() -> void:
 			continue
 		var direction := Vector3.RIGHT.rotated(Vector3.UP, randf() * TAU)
 		tool.apply_central_impulse(direction * jumble_speed * tool.mass)
+
+
+## True while a tool is held, or pressed and about to be.
+func is_busy() -> bool:
+	return _held != null or _candidate != null
 
 
 ## Makes the tool glow in hint_color until clear_hints(). Holding it shows

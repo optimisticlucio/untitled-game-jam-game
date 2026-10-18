@@ -11,3 +11,5 @@ reshuffle_after = 3
 distractors_per_tray = 4
 name_only_ids = Array[StringName]([&"scalpel_11", &"crile_clamp"])
 hint_delay_seconds = 8.0
+hint_idle_seconds = 3.0
+hint_duration_seconds = 2.0

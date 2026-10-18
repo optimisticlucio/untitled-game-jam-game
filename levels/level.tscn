@@ -101,9 +101,6 @@ tools_root = NodePath("../Tray/Tools")
 tray_zone = NodePath("../Tray/Zone")
 hand_off_zone = NodePath("../Target/HandOffZone")
 
-[node name="HintTimer" type="Timer" parent="."]
-one_shot = true
-
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="Request" type="VBoxContainer" parent="UI"]

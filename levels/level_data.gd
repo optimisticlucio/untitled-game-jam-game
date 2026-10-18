@@ -23,6 +23,12 @@ extends Resource
 @export var name_only_ids: Array[StringName] = []
 ## Seconds into a request before one copy of the requested tool glows. 0 or less = never.
 @export var hint_delay_seconds := 0.0
+## The hint also waits until this many seconds after the player last let go of
+## a tool, and never starts while they're holding one. 0 = no extra wait.
+@export var hint_idle_seconds := 0.0
+## How long the hint glows. Then it goes out and hint_delay_seconds starts
+## over. 0 or less = it stays on until the request changes.
+@export var hint_duration_seconds := 2.0
 
 
 ## Every problem that would stop this level from starting, as readable lines.
