@@ -9,7 +9,7 @@ extends RigidBody3D
 enum Speciality { GENERAL, HAND, PLASTIC, SILLY }
 
 ## Every tool scene lives here (subfolders are fine).
-const FOLDER := "res://assets/instruments/"
+const FOLDER := "res://tools/"
 
 ## Stable identifier for code and data. Never shown to the player.
 @export var id: StringName

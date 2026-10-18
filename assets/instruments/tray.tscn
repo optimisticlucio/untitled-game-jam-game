@@ -1,0 +1,47 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://assets/instruments/tray.glb" id="1_5wbya"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_xuy46"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_7tj4u"]
+size = Vector3(0.3, 0.02, 0.42)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ioniw"]
+size = Vector3(0.008, 0.0738, 0.421)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_61v21"]
+size = Vector3(0.008, 0.0738, 0.421)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5u16s"]
+size = Vector3(0.301, 0.0738, 0.008)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_s5gly"]
+size = Vector3(0.301, 0.0738, 0.008)
+
+[node name="Tray" type="StaticBody3D" unique_id=1838085180]
+physics_material_override = SubResource("PhysicsMaterial_xuy46")
+
+[node name="Model" type="Node3D" parent="." unique_id=159381726 instance=ExtResource("1_5wbya")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=838606837]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0213, 0)
+shape = SubResource("BoxShape3D_7tj4u")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1540266397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14625, 0.0256, 0)
+shape = SubResource("BoxShape3D_ioniw")
+
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=2145620392]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.14625, 0.0256, 0)
+shape = SubResource("BoxShape3D_61v21")
+
+[node name="Collision03" type="CollisionShape3D" parent="." unique_id=1610508841]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0256, -0.20625)
+shape = SubResource("BoxShape3D_5u16s")
+
+[node name="Collision04" type="CollisionShape3D" parent="." unique_id=1548407731]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0256, 0.20625)
+shape = SubResource("BoxShape3D_s5gly")

@@ -11,15 +11,18 @@ Game jam project in Godot 4.7 (GDScript). Several people work on it with Claude.
 - Portrait, designed for 720×1280 (9:16).
 - Collision layers: 8 = `pick` (instruments' enlarged grab areas), 9 = `drop_zones` (flat areas at table level, see `gameplay/tool_grabber.gd`).
 - Gameplay code never names specific instruments. It finds `SurgicalTool` scenes at runtime; which tools exist is the artists' call.
-- Export presets: add `addons/godot_ai/*` to "Filters to exclude files". The plugin already strips its autoload from exports, but its files still ship otherwise.
+- Export presets: add `addons/godot_ai/*` and `dev/*` to "Filters to exclude files". The plugin already strips its autoload from exports, but its files still ship otherwise.
 - Lookalike pairs will live in one central list, not on each tool (avoids out-of-sync data). Not built yet.
 - Instrument naming language: undecided. Refer to tools by `id` in code, and pass display names through `tr()`.
 - Tool pictures in dialogs: render the model at runtime (`ui/tool_preview.tscn`, slow spin). No PNGs from the artists.
 
 ## Surgical tools
 
-- Tool scenes live in `assets/instruments/` (subfolders fine). Code reads the path from `SurgicalTool.FOLDER`, never a literal.
+- Tool scenes live in `tools/` (subfolders fine). Code reads the path from `SurgicalTool.FOLDER`, never a literal.
 - Each tool is an inherited scene of `tools/surgical_tool.tscn`, with its model and `CollisionShape3D` children added, and its data set in the `SurgicalTool` exports. No separate data files per tool.
 - Collision: boxes or convex shapes only. Never concave/trimesh: tools are dynamic bodies.
 - `SurgicalTool.Speciality` is append-only, because scenes store it as numbers.
 - Models lie flat as they would on a tray (Y up), at real size in meters.
+- The instrument scenes (`tools/<slug>.tscn`, `assets/instruments/`) are generated from Julia's Blender export by `dev/instruments/build_instruments.gd`, so don't hand-edit them. See `dev/instruments/README.md`.
+- Grabbing: each tool has a `Pick` Area3D on collision layer 8 only (inflated shapes). Raycast that layer with `collide_with_areas`.
+- `project.godot` sets Jolt penetration slop 0.001 and speculative distance 0.004; the defaults (0.02) sink millimetre-thin tools.

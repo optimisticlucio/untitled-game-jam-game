@@ -1,0 +1,81 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="PackedScene" path="res://assets/instruments/metzenbaum_scissors.glb" id="2_8m82t"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ikanj"]
+friction = 0.4
+bounce = 0.05
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_idl7b"]
+size = Vector3(0.0078, 0.008, 0.051)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8w53h"]
+size = Vector3(0.0049, 0.004, 0.120255)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_83ewj"]
+size = Vector3(0.0049, 0.004, 0.120255)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qfl00"]
+size = Vector3(0.0488, 0.0048, 0.0228)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aknok"]
+size = Vector3(0.02, 0.02, 0.063)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_roklh"]
+size = Vector3(0.02, 0.02, 0.132255)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wi8br"]
+size = Vector3(0.02, 0.02, 0.132255)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ufqhx"]
+size = Vector3(0.0608, 0.02, 0.0348)
+
+[node name="MetzenbaumScissors" instance=ExtResource("base_tool")]
+mass = 0.05
+physics_material_override = SubResource("PhysicsMaterial_ikanj")
+continuous_cd = true
+id = &"metzenbaum_scissors"
+display_name = "Metzenbaum Scissors"
+description = "Long, slender scissors with short, narrow blades and rounded tips, for delicate dissection. Longer shanks than Mayo scissors."
+specialities = Array[int]([0, 2])
+
+[node name="Model" type="Node3D" parent="." unique_id=1756919193 instance=ExtResource("2_8m82t")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=625925484]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.06452)
+shape = SubResource("BoxShape3D_idl7b")
+
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1364058878]
+transform = Transform3D(0.997804, 0, 0.066234, 0, 1, 0, -0.066234, 0, 0.997804, 0.00565, 0, 0.01648)
+shape = SubResource("BoxShape3D_8w53h")
+
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=215151343]
+transform = Transform3D(0.997804, 0, -0.066234, 0, 1, 0, 0.066234, 0, 0.997804, -0.00565, 0, 0.01648)
+shape = SubResource("BoxShape3D_83ewj")
+
+[node name="Collision03" type="CollisionShape3D" parent="." unique_id=1966752436]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.07948)
+shape = SubResource("BoxShape3D_qfl00")
+
+[node name="Pick" type="Area3D" parent="." unique_id=1281331423]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1866579648]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.06452)
+shape = SubResource("BoxShape3D_aknok")
+
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1012626465]
+transform = Transform3D(0.997804, 0, 0.066234, 0, 1, 0, -0.066234, 0, 0.997804, 0.00565, 0, 0.01648)
+shape = SubResource("BoxShape3D_roklh")
+
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=401845933]
+transform = Transform3D(0.997804, 0, -0.066234, 0, 1, 0, 0.066234, 0, 0.997804, -0.00565, 0, 0.01648)
+shape = SubResource("BoxShape3D_wi8br")
+
+[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=439609474]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.07948)
+shape = SubResource("BoxShape3D_ufqhx")

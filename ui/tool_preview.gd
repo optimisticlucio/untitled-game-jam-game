@@ -34,6 +34,8 @@ func _frame(tool: SurgicalTool) -> void:
 	tool.position = -bounds.get_center()
 	var radius := bounds.size.length() * 0.5
 	var distance := radius / sin(deg_to_rad(_camera.fov) * 0.5)
+	# Tiny tools (the 1 cm Acland clamp) sit closer than the default 5 cm near plane.
+	_camera.near = maxf(distance * 0.05, 0.001)
 	var elevation := deg_to_rad(camera_elevation_degrees)
 	_camera.position = Vector3(0.0, sin(elevation), cos(elevation)) * distance
 	_camera.look_at(Vector3.ZERO)
