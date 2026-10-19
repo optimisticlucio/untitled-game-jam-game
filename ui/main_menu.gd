@@ -22,6 +22,7 @@ func _ready() -> void:
 	SettingsPanel.apply_saved()
 	if DisplayServer.is_touchscreen_available():
 		_drop_hover(theme)
+	ButtonFx.install(get_tree())
 	(%PlayButton as Button).pressed.connect(_on_play)
 	(%GuideButton as Button).pressed.connect(func() -> void: get_tree().change_scene_to_file(POCKET_GUIDE))
 	(%LeaderboardButton as Button).pressed.connect(func() -> void:
