@@ -22,14 +22,18 @@ const TOOL_LISTS: Array[StringName] = COUNTED_LISTS + [&"tutorial_ids", &"name_o
 @export var scoring: Scoring
 ## What the doctor asks for: each tool, and how many times. Asked in a random
 ## order each play, with repeats kept apart (see repeat_soon_weight).
-@export var requested_ids: Dictionary[StringName, int] = {}
+@export var requested_ids: Dictionary[StringName, int] = {}:
+	set(value):
+		requested_ids = _at_least_one(value)
 ## How likely a tool is asked for again soon, compared with one not asked lately.
 ## "Soon" means before every other listed tool has had a turn since. 1 = plain
 ## shuffle; lower spreads repeats out; 0 = never soon, unless nothing else is left.
 @export_range(0.0, 1.0, 0.05) var repeat_soon_weight := 0.2
 ## Put in the tray but never asked for: each tool, and how many copies are in
 ## the pool distractors_per_tray draws from.
-@export var distractor_ids: Dictionary[StringName, int] = {}
+@export var distractor_ids: Dictionary[StringName, int] = {}:
+	set(value):
+		distractor_ids = _at_least_one(value)
 ## Size of every tool on the tray, as a percentage of real size (the request
 ## picture always shows real size). Bigger fills a sparse tray, smaller eases
 ## a crowded one. All tools change together, so their sizes stay comparable.
@@ -86,11 +90,6 @@ func problems(known_ids: Array[StringName]) -> PackedStringArray:
 		for id: StringName in get(list_name):
 			if not known_ids.has(id):
 				found.append("%s: no tool has the id \"%s\"." % [list_name, id])
-	for list_name in COUNTED_LISTS:
-		var counts: Dictionary[StringName, int] = get(list_name)
-		for id in counts:
-			if counts[id] < 1:
-				found.append("%s: \"%s\" is in %d times; remove it instead." % [list_name, id, counts[id]])
 	var in_tutorial: Dictionary[StringName, bool] = {}
 	for id in tutorial_ids:
 		if in_tutorial.has(id):
@@ -128,6 +127,15 @@ func plan_trays() -> Array[Array]:
 	for start in range(0, requests.size(), reshuffle_after):
 		trays.append(requests.slice(start, start + reshuffle_after))
 	return trays
+
+
+## counts with every count under 1 raised to 1. The inspector adds a tool with
+## a count of 0, which would leave it out without anyone noticing.
+static func _at_least_one(counts: Dictionary[StringName, int]) -> Dictionary[StringName, int]:
+	var fixed := counts.duplicate()
+	for id in fixed:
+		fixed[id] = maxi(fixed[id], 1)
+	return fixed
 
 
 ## Each id in counts, as many times as its count.
