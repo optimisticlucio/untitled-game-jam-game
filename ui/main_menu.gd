@@ -34,8 +34,9 @@ func _ready() -> void:
 		_go(LEADERBOARD))
 	(%SettingsButton as Button).pressed.connect(_settings_sheet.toggle)
 	(%CloseSettingsButton as Button).pressed.connect(_settings_sheet.toggle)
+	var sounds := {%PlayButton: ^"/root/UiSounds/Play", %CloseSettingsButton: ^"/root/UiSounds/Back"}
 	for button in find_children("*", "BaseButton", true, false):
-		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
+		button.pressed.connect(get_node(sounds.get(button, ^"/root/UiSounds/Click")).play)
 	_toast.modulate.a = 0.0
 
 

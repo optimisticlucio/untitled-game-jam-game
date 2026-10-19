@@ -36,6 +36,8 @@ var _run := RunRecord.new()
 ## Seconds the player has had for the next hand-off (see RunRecord): since the last one, only
 ## while a request is live and the tray can be picked from.
 var _pick_seconds := 0.0
+## Seconds the current request has waited for the right tool (for the heart monitor).
+var _request_wait := 0.0
 
 @onready var _camera: Camera3D = $Camera3D
 ## The camera's horizontal field of view at DESIGN_ASPECT, as set in the scene.
@@ -51,13 +53,14 @@ var _pick_seconds := 0.0
 @onready var _popup: Control = %Popup
 @onready var _message: Label = %Message
 @onready var _hud: Hud = $Hud
+@onready var _monitor: HeartMonitor = $Sounds/Monitor
 
 
 func _ready() -> void:
 	get_viewport().size_changed.connect(_fit_camera)
 	_fit_camera()
 	for button in $UI.find_children("*", "BaseButton", true, false):
-		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
+		button.pressed.connect(get_node(^"/root/UiSounds/Play").play)
 	if LevelList.chosen:
 		level = LevelList.chosen
 	_scenes = SurgicalTool.scenes_by_id()
@@ -79,6 +82,10 @@ func _process(delta: float) -> void:
 	_since_busy = 0.0 if _grabber.is_busy() else _since_busy + delta
 	if _requested != &"" and _grabber.enabled:
 		_pick_seconds += delta
+		_request_wait += delta
+	# Calm in the tutorial, and while nothing is asked for.
+	_monitor.waiting_seconds = _request_wait if _requested != &"" and not _in_tutorial() else 0.0
+	_surgeon.waiting_seconds = _monitor.waiting_seconds
 	if _hint_shown:
 		_hint_elapsed += delta
 		if level.hint_duration_seconds > 0.0 and _hint_elapsed >= level.hint_duration_seconds:
@@ -127,6 +134,7 @@ func _request_next() -> void:
 		return
 	_requested = _queue.pop_front()
 	_since_request = 0.0
+	_request_wait = 0.0
 	_hinted_this_request = false
 	var example: SurgicalTool = _tray.tools().filter(func(t: SurgicalTool) -> bool: return t.id == _requested)[0]
 	_request_name.text = tr(example.display_name)
@@ -147,10 +155,40 @@ func _fit_request() -> void:
 	if _requested == &"":
 		return
 	_request.offset_bottom = _request.offset_top + _request.get_combined_minimum_size().y
-	# The tail leaves the bubble's left edge near the bottom, towards the doctor.
-	_bubble_tail.position.y = _request.size.y
+	_shape_tail()
 	_request.modulate.a = 1.0
 	$Sounds/Request.play()
+
+
+## The bubble's tail, fitted to the bubble's height (short with the name only, tall with the tool's
+## picture). It's drawn over the bubble: two black lines that start on the bubble's outline (on its
+## left side, above the grey bottom edge) and meet at the tip, towards the doctor, with white
+## between them that covers the outline there and runs a little into the bubble's white.
+func _shape_tail() -> void:
+	var style := _request.get_theme_stylebox(&"panel") as StyleBoxFlat
+	var border := float(style.border_width_left) if style else 7.0
+	var corner := float(style.corner_radius_top_left) if style else 46.0
+	var h := _request.size.y
+	var mouth_bottom := h - corner - 2.0
+	var mouth_top := maxf(mouth_bottom - 46.0, border * 3.0)
+	var top := Vector2(_outline_x(mouth_top, h, corner, border), mouth_top)
+	var bottom := Vector2(_outline_x(mouth_bottom, h, corner, border), mouth_bottom)
+	var tip := Vector2(-70.0, minf(h + 4.0, mouth_bottom + 40.0))
+	var inside := Vector2(border + 4.0, 0.0)
+	(_bubble_tail.get_node(^"Fill") as Polygon2D).polygon = PackedVector2Array([top, tip, bottom, bottom + inside, top + inside])
+	var outline := _bubble_tail.get_node(^"Outline") as Line2D
+	outline.width = border
+	outline.points = PackedVector2Array([top, tip, bottom])
+
+
+## x of the middle of the bubble's outline on its left side, at height y (it curves at the corners).
+func _outline_x(y: float, h: float, corner: float, border: float) -> float:
+	var r := corner - border / 2.0
+	if y < corner:
+		return corner - sqrt(maxf(r * r - (corner - y) * (corner - y), 0.0))
+	if y > h - corner:
+		return corner - sqrt(maxf(r * r - (y - h + corner) * (y - h + corner), 0.0))
+	return border / 2.0
 
 
 func _finish_tray() -> void:

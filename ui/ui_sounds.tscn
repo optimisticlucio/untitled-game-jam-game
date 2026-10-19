@@ -6,6 +6,17 @@
 [ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_toast.wav" id="4_toast"]
 [ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_tab.wav" id="5_tab"]
 [ext_resource type="AudioStream" path="res://assets/sounds/ui/guide_card_open.wav" id="6_card"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_back.wav" id="7_back"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_play.wav" id="8_play"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_mute.wav" id="9_mute"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_unmute.wav" id="10_unmute"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_save.wav" id="11_save"]
+[ext_resource type="AudioStream" path="res://assets/sounds/ui/ui_key.wav" id="12_key"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_key"]
+random_pitch = 1.15
+streams_count = 1
+stream_0/stream = ExtResource("12_key")
 
 [node name="UiSounds" type="Node"]
 process_mode = 3
@@ -32,4 +43,29 @@ bus = &"SFX"
 
 [node name="CardOpen" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_card")
+bus = &"SFX"
+
+[node name="Back" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_back")
+bus = &"SFX"
+
+[node name="Play" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_play")
+bus = &"SFX"
+
+[node name="Mute" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_mute")
+bus = &"SFX"
+
+[node name="Unmute" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_unmute")
+bus = &"SFX"
+
+[node name="Save" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_save")
+bus = &"SFX"
+
+[node name="Key" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_key")
+max_polyphony = 4
 bus = &"SFX"

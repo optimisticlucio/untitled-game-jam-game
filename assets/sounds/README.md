@@ -2,11 +2,11 @@
 
 Placeholder sounds for every event we know of, so the game isn't silent at the demo. Replace any file freely: keep the file name and nothing else needs to change.
 
-- **License:** every file is **CC0** (public domain) from [Freesound](https://freesound.org). Commercial use is fine and credit isn't required, but the sources are listed below anyway.
+- **License:** every file is **CC0** (public domain) from [Freesound](https://freesound.org), except the UI sounds marked *made for the game*: those are synthesised by `dev/ui_sounds/synth.py` (`python3 dev/ui_sounds/synth.py <out folder>` writes every family; Julia picked bubble for the buttons, marimba for save and typing), also CC0. Commercial use is fine and credit isn't required, but the sources are listed below anyway.
 - **Format:** effects are mono 16-bit WAV (Godot's choice for short sounds), trimmed and levelled to about the same loudness. Music and ambience are the original Ogg Vorbis previews.
 - **Buses:** play effects on `SFX` and music/ambience on `Music` (see CLAUDE.md).
 - **Loops:** the music and background files are set to loop in their `.import` files.
-- **Wired:** `SurgicalTool.drop_sound` plays when a tool lands after being let go (`ToolGrabber`, on the `SFX` bus). The base scene `tools/surgical_tool.tscn` sets it to a random pick of `gameplay/tool_drop_1–3.wav`; tools with an `items/<id>.wav` get that instead (see below). `ToolGrabber` also plays `tool_grab` on pick-up (silly items play their own sound), `tool_return_whoosh` and `surgeon_receive`. `levels/level.tscn` has a `Sounds` node with the request, right, wrong, hint, tray slide and level-complete players, called from `level.gd`, plus the operating-room background. UI sounds live in the `UiSounds` autoload (`ui/ui_sounds.tscn`), so a click survives a scene change: every button clicks, and the sheet, settings slider, toast, Pocket Guide tabs and cards have their own sounds. The main menu plays `music_menu`. Sounds not listed here aren't wired yet.
+- **Wired:** `SurgicalTool.drop_sound` plays when a tool lands after being let go (`ToolGrabber`, on the `SFX` bus). The base scene `tools/surgical_tool.tscn` sets it to a random pick of `gameplay/tool_drop_1–3.wav`; tools with an `items/<id>.wav` get that instead (see below). `ToolGrabber` also plays `tool_grab` on pick-up (silly items play their own sound), `tool_return_whoosh` and `surgeon_receive`. The surgeon speaks through `Surgeon.voices` (animation name → sound, on his `Voice` player in `gameplay/surgeon.tscn`): one of `surgeon_yes_1–3` at random with his nod at the right tool, one of `surgeon_no_1–2` as he shakes his head at a wrong one. His `Snap` player plays `surgeon_snap` on `Surgeon.snap_frames` of the impatient loop (while a hint glows), 8 dB quieter (Julia), its pitch varied a little. His `Throat` player clears his throat (`surgeon_throat_1–2`, 6 dB quieter) while a slow player keeps him waiting: after 6 s, then every 7 s, never over the snaps (`Surgeon.throat_clear_after` / `throat_clear_every`). `levels/level.tscn` has a `Sounds` node with the request, right, wrong, hint, tray slide and level-complete players, called from `level.gd`, plus the operating-room background and the heart monitor (`HeartMonitor`, `gameplay/heart_monitor.gd`), which beeps faster while the doctor waits for a tool. UI sounds live in the `UiSounds` autoload (`ui/ui_sounds.tscn`), so a click survives a scene change: every button makes a soft sound (back and close, play, mute and unmute, saving the score and each letter of the name have their own; the rest click), and the sheet, settings slider, toast, Pocket Guide tabs and cards have their own sounds. The main menu plays `music_menu`. Sounds not listed here aren't wired yet.
 
 ## Gameplay (`gameplay/`)
 
@@ -27,6 +27,14 @@ Placeholder sounds for every event we know of, so the game isn't silent at the d
 | `surgeon_receive.wav` | The tool lands in the surgeon's hand (`consume`). | [Slap.wav](https://freesound.org/people/MrDrPrFr/sounds/337148/) by MrDrPrFr |
 | `surgeon_happy.wav` | Surgeon is pleased. | [mhm.mp3](https://freesound.org/people/gnimpl/sounds/339838/) by gnimpl |
 | `surgeon_annoyed.wav` | Surgeon is annoyed (wrong tool, slow). | [male sigh.wav](https://freesound.org/people/Reitanna/sounds/215380/) by Reitanna |
+| `surgeon_yes_1.wav` | "Mm-hm" with his nod at the right tool (`correct` animation); one of the three at random. 0.2 s of silence first, so the two syllables land on his two nods. Takes 1–3 of the recording (Julia's picks). | [Guy saying mmhmm *5 takes*](https://freesound.org/people/NicolasLikesThisWebsite496/sounds/806888/) by NicolasLikesThisWebsite496 |
+| `surgeon_yes_2.wav` | Variation 2 of the above. | same |
+| `surgeon_yes_3.wav` | Variation 3 of the above. | same |
+| `surgeon_no_1.wav` | A "tsk" as he says no to a wrong tool (`wrong` animation), right at the start; one of the two at random. | [Tsk 2](https://freesound.org/people/hollandm/sounds/691913/) by hollandm |
+| `surgeon_no_2.wav` | The same "tsk", 0.27 s in, with his first head shake. | same |
+| `surgeon_snap.wav` | One finger snap, twice per impatient loop (frames 4 and 10 of its 15, where the hand jumps to the snapped drawing). | [Single Finger Snap](https://freesound.org/people/vckhaze/sounds/332604/) by vckhaze |
+| `surgeon_throat_1.wav` | He clears his throat while a slow player keeps him waiting; this one or the next, taking turns. The first clearing of the recording (0.22–1.36 s). | [Clearing Throat](https://freesound.org/people/qubodup/sounds/852756/) by qubodup |
+| `surgeon_throat_2.wav` | The same, the recording's short last clearing (3.06–3.84 s). | same |
 | `throw_whoosh.wav` | Surgeon throws the wrong tool at the patient (IDEAS.md). | [Whoosh #1](https://freesound.org/people/Kinoton/sounds/427823/) by Kinoton |
 | `throw_stab.wav` | ...and it lands in the patient. | [Knife Stab Melon.wav](https://freesound.org/people/jawbutch/sounds/344404/) by jawbutch |
 | `request_new.wav` | A new request card appears. | [Pop-up/notification.wav](https://freesound.org/people/GabrielAraujo/sounds/242502/) by GabrielAraujo |
@@ -61,13 +69,18 @@ Played when the item lands after being dropped (its `drop_sound`), instead of th
 
 | File | When | Source |
 |---|---|---|
-| `ui_click.wav` | Any button. | [Videogame Menu BUTTON CLICK](https://freesound.org/people/Christopherderp/sounds/342200/) by Christopherderp |
-| `ui_back.wav` | Back / close. | [Arcade UI Cancel](https://freesound.org/people/plasterbrain/sounds/464912/) by plasterbrain |
+| `ui_click.wav` | Any button without its own sound: a soft bubble pop. | made for the game (bubble) |
+| `ui_back.wav` | Back and close: Back buttons (and Escape / Android back), closing the settings sheet or a Pocket Guide card, Exit, Menu on the result card. A falling bubble. | made for the game (bubble) |
+| `ui_play.wav` | Play, a level card, Play again. Two rising bubbles. | made for the game (bubble) |
+| `ui_mute.wav` | The HUD's sound button turns sound off (it mutes once this has played). Two falling bubbles. | made for the game (bubble) |
+| `ui_unmute.wav` | ...and back on. Two rising bubbles. | made for the game (bubble) |
+| `ui_save.wav` | The score is saved on the result card (Save or Enter). Four rising marimba notes. | made for the game (marimba) |
+| `ui_key.wav` | Each letter typed in the result card's name field; pitch varies a little each time (an `AudioStreamRandomizer` in `ui/ui_sounds.tscn`). A tiny marimba tap. | made for the game (marimba) |
 | `ui_tab.wav` | Pocket Guide tab switch. | [UISwitchTab1](https://freesound.org/people/NoisyRedFox/sounds/759827/) by NoisyRedFox |
 | `ui_sheet.wav` | Bottom sheet slides up or down. | [swoosh_v2](https://freesound.org/people/migoreng1/sounds/786514/) by migoreng1 |
-| `ui_pause.wav` | Pause. | [pause.mp3](https://freesound.org/people/crisstanza/sounds/167127/) by crisstanza |
-| `ui_resume.wav` | Resume. | [unpause.mp3](https://freesound.org/people/crisstanza/sounds/167126/) by crisstanza |
-| `ui_locked.wav` | Tapping a locked level. | [acess denied buzz](https://freesound.org/people/Jacco18/sounds/419023/) by Jacco18 |
+| `ui_pause.wav` | Pause (not used: the game never pauses). | [pause.mp3](https://freesound.org/people/crisstanza/sounds/167127/) by crisstanza |
+| `ui_resume.wav` | Resume (not used). | [unpause.mp3](https://freesound.org/people/crisstanza/sounds/167126/) by crisstanza |
+| `ui_locked.wav` | Tapping a locked level (not used: every level is open). | [acess denied buzz](https://freesound.org/people/Jacco18/sounds/419023/) by Jacco18 |
 | `ui_slider_tick.wav` | Sample while the Sound slider moves. | [Button Tick](https://freesound.org/people/NenadSimic/sounds/268108/) by NenadSimic |
 | `ui_toast.wav` | "Coming soon" toast. | [Message Receive](https://freesound.org/people/Froey_/sounds/760369/) by Froey_ |
 | `guide_card_open.wav` | Pocket Guide card opens the 3D view. | [flipCard.wav](https://freesound.org/people/Splashdust/sounds/84322/) by Splashdust |
@@ -78,7 +91,8 @@ Played when the item lands after being dropped (its `drop_sound`), instead of th
 |---|---|---|
 | `music_menu.ogg` | Main menu loop (18 s). | [BirdFish Happy Loop.mp3](https://freesound.org/people/pinkinblue/sounds/425971/) by pinkinblue |
 | `music_level.ogg` | In-level loop (58 s). | [Upbeat loop](https://freesound.org/people/mistermender/sounds/512340/) by mistermender |
-| `heart_monitor.wav` | Level background, on top of the room: ten regular heartbeats (10.7 s loop; the speed-up and flatline in the recording are cut out) | [Heart Monitor Beep](https://freesound.org/people/samfk360/sounds/148897/) by samfk360 |
+| `monitor_beep.wav` | The heart monitor's one beep (the first beat of `heart_monitor.wav`). `HeartMonitor` plays it once per beat: 56 a minute while calm, speeding up from 3 s of the doctor waiting for the right tool to 130 a minute at 12 s, and calming down slowly after the hand-off. Wrong tools don't calm it. Always calm in the tutorial. Tuned in the `Monitor` node's inspector in `levels/level.tscn`. | [Heart Monitor Beep](https://freesound.org/people/samfk360/sounds/148897/) by samfk360 |
+| `heart_monitor.wav` | Not used now (`monitor_beep.wav` replaced it). Was the level background, on top of the room: ten regular heartbeats (10.7 s loop; the speed-up and flatline in the recording are cut out) | [Heart Monitor Beep](https://freesound.org/people/samfk360/sounds/148897/) by samfk360 |
 | `ambience_or_room.wav` | Level background: a real operating room, machine hum (22 s loop from 72.5–94.5 s of the recording, which has no monitor alarms; the alarm melodies elsewhere in it are cut out) | [room tone operating room quiet machine hum and monitor beeps…](https://freesound.org/people/kyles/sounds/406512/) by kyles |
 
 ## Finding replacements

@@ -22,13 +22,14 @@ var _entries: Array[Dictionary] = []
 
 func _ready() -> void:
 	(%BackButton as Button).pressed.connect(_on_back)
-	(%CloseDetailButton as Button).pressed.connect(_detail.hide)
+	(%CloseDetailButton as Button).pressed.connect(_on_back)
 	(%ResetButton as Button).pressed.connect(_viewer.reset_view)
+	for button in find_children("*", "BaseButton", true, false):
+		if button != %BackButton and button != %CloseDetailButton:  # Those play the back sound in _on_back().
+			button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
 	_tabs.tab_changed.connect(func(_tab: int) -> void:
 		get_node(^"/root/UiSounds/Tab").play()
 		_rebuild())
-	for button in find_children("*", "BaseButton", true, false):
-		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
 	_entries = _tool_entries()
 	_entries.sort_custom(func(a: Dictionary, b: Dictionary) -> bool:
 		return (a["name"] as String).naturalnocasecmp_to(b["name"]) < 0)
@@ -43,6 +44,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _on_back() -> void:
+	get_node(^"/root/UiSounds/Back").play()
 	if _detail.visible:
 		_detail.hide()
 	else:

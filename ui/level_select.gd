@@ -15,7 +15,9 @@ func _ready() -> void:
 	for level in LevelList.all():
 		_cards.add_child(_card(level, you))
 	for button in find_children("*", "BaseButton", true, false):
-		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
+		if button != %BackButton:  # It plays the back sound in _back().
+			var sound := ^"/root/UiSounds/Play" if button.get_parent() == _cards else ^"/root/UiSounds/Click"
+			button.pressed.connect(get_node(sound).play)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -25,6 +27,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func _back() -> void:
+	get_node(^"/root/UiSounds/Back").play()
 	get_tree().change_scene_to_file(MAIN_MENU)
 
 
