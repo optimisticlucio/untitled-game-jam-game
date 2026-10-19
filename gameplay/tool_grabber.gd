@@ -626,13 +626,19 @@ func _table_point_under(screen: Vector2) -> Vector3:
 	return hit if hit != null else tray.global_position
 
 
-## The grabbable tool under a screen position, or null.
+## The grabbable tool under a screen position, or null. The tool actually under the pointer
+## wins: the enlarged grab areas only count when the ray misses every tool's real shape, or
+## a thin tool on top (its grab area is at least 2 cm tall) would hide the edge of one beneath.
 func _tool_at(screen: Vector2) -> SurgicalTool:
+	var tool := _tray_tool_hit(screen, 1, false)
+	return tool if tool else _tray_tool_hit(screen, PICK_LAYER, true)
+
+
+## The tray tool the first thing a ray from the camera hits belongs to, or null.
+func _tray_tool_hit(screen: Vector2, mask: int, areas: bool) -> SurgicalTool:
 	var origin := camera.project_ray_origin(screen)
-	var query := PhysicsRayQueryParameters3D.create(origin, origin + camera.project_ray_normal(screen) * RAY_LENGTH)
-	# Bodies too, so tools without grab areas can still be picked.
-	query.collision_mask = PICK_LAYER | 1
-	query.collide_with_areas = true
+	var query := PhysicsRayQueryParameters3D.create(origin, origin + camera.project_ray_normal(screen) * RAY_LENGTH, mask)
+	query.collide_with_areas = areas
 	var hit := camera.get_world_3d().direct_space_state.intersect_ray(query)
 	var node: Node = hit.get("collider")
 	while node and node.get_parent() != tray.tools_root:
