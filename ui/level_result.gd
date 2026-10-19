@@ -2,6 +2,9 @@ class_name LevelResult
 extends CanvasLayer
 ## End-of-level card: time, wrong hand-offs and hints, the score (the level's Scoring) and how
 ## it's made, and a name field to save it (ScoreBoard). After saving it shows the rank, with buttons to the leaderboard, play again or menu.
+## The run is saved as soon as the card shows, under the last name used on this device ("You" at
+## first), so a played level is never forgotten. Saving, or leaving, with another name in the field
+## moves the run to that name.
 ## The level adds it with show_run() when the last tray is done.
 
 signal play_again_pressed
@@ -11,6 +14,10 @@ const LEADERBOARD := "res://ui/leaderboard.tscn"
 
 var _level: LevelData
 var _run: RunRecord
+## ScoreBoard.submit()'s result for where the run is saved now.
+var _submitted: Dictionary
+## Save was pressed: the name is final and the rank shown.
+var _confirmed := false
 
 @onready var _name: LineEdit = %NameEdit
 
@@ -39,19 +46,35 @@ func show_run(level: LevelData, run: RunRecord) -> void:
 	(%HintsValue as Label).text = str(run.hints)
 	(%ScoreValue as Label).text = scoring.format_score(scoring.score(run))
 	(%ScoreHint as Label).text = scoring.explanation()
-	_name.text = ScoreBoard.last_name()
+	# Filled in with the name it's saved under, so it's clear typing one is optional.
+	_name.text = ScoreBoard.clean_name(ScoreBoard.last_name())
+	_submitted = ScoreBoard.submit(level, _name.text, run)
+
+
+func _exit_tree() -> void:
+	if _run and not _confirmed:
+		_save_under_typed_name()
 
 
 func _save() -> void:
-	if not (%NameRow as Control).visible:
+	if _confirmed:
 		return
+	_confirmed = true
 	get_node(^"/root/UiSounds/Save").play()
-	var result := ScoreBoard.submit(_level, _name.text, _run)
+	var result := _save_under_typed_name()
 	(%NameRow as Control).hide()
 	(%SaveButton as Control).hide()
 	var rank := %RankLabel as Label
 	rank.text = "Rank %d of %d%s" % [result["rank"], result["count"], "\nNew best!" if result["new_best"] else ""]
 	rank.show()
+
+
+## Moves the run to the name in the field, if that's not where it's saved. Returns where it's saved.
+func _save_under_typed_name() -> Dictionary:
+	if ScoreBoard.clean_name(_name.text) != _submitted["name"]:
+		ScoreBoard.withdraw(_level, _submitted)
+		_submitted = ScoreBoard.submit(_level, _name.text, _run)
+	return _submitted
 
 
 func _open_leaderboard() -> void:

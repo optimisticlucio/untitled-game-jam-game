@@ -47,12 +47,17 @@ static func best(level: LevelData, name: String) -> Dictionary:
 	return runs.get(name, {})
 
 
+## A name as it's saved: trimmed, at most MAX_NAME_LENGTH, "You" if empty.
+static func clean_name(name: String) -> String:
+	name = name.strip_edges().left(MAX_NAME_LENGTH)
+	return name if not name.is_empty() else "You"
+
+
 ## Saves a run under name; each name keeps only its best per level. Returns this run's
 ## {score, rank, count, new_best}: rank among everyone on the board, sample rivals included.
+## Pass the result to withdraw() to take the run back off the board.
 static func submit(level: LevelData, name: String, run: RunRecord) -> Dictionary:
-	name = name.strip_edges().left(MAX_NAME_LENGTH)
-	if name.is_empty():
-		name = "You"
+	name = clean_name(name)
 	var scoring := scoring_for(level)
 	var section := _section(scoring)
 	var key := level_key(level)
@@ -70,7 +75,26 @@ static func submit(level: LevelData, name: String, run: RunRecord) -> Dictionary
 	var table := entries(level)
 	var ahead := table.filter(func(e: Dictionary) -> bool: return scoring.is_better(e["score"], this_score)).size()
 	return {"score": this_score, "rank": ahead + 1,
-		"count": table.size() if new_best else table.size() + 1, "new_best": new_best}
+		"count": table.size() if new_best else table.size() + 1, "new_best": new_best,
+		"name": name, "previous": previous}
+
+
+## Undoes a submit() (given its result): the name gets back the best it had before, or leaves
+## the board if it had none. Nothing changes if that run wasn't a new best.
+static func withdraw(level: LevelData, result: Dictionary) -> void:
+	if not result["new_best"]:
+		return
+	var section := _section(scoring_for(level))
+	var key := level_key(level)
+	var cfg := _load()
+	var runs: Dictionary = cfg.get_value(section, key, {})
+	var previous: Dictionary = result["previous"]
+	if previous.is_empty():
+		runs.erase(result["name"])
+	else:
+		runs[result["name"]] = previous
+	cfg.set_value(section, key, runs)
+	cfg.save(PATH)
 
 
 ## The board for a level, best first: {name, score, seconds, wrong, hints, sample}.
