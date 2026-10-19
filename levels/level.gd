@@ -147,10 +147,40 @@ func _fit_request() -> void:
 	if _requested == &"":
 		return
 	_request.offset_bottom = _request.offset_top + _request.get_combined_minimum_size().y
-	# The tail leaves the bubble's left edge near the bottom, towards the doctor.
-	_bubble_tail.position.y = _request.size.y
+	_shape_tail()
 	_request.modulate.a = 1.0
 	$Sounds/Request.play()
+
+
+## The bubble's tail, fitted to the bubble's height (short with the name only, tall with the tool's
+## picture). It's drawn over the bubble: two black lines that start on the bubble's outline (on its
+## left side, above the grey bottom edge) and meet at the tip, towards the doctor, with white
+## between them that covers the outline there and runs a little into the bubble's white.
+func _shape_tail() -> void:
+	var style := _request.get_theme_stylebox(&"panel") as StyleBoxFlat
+	var border := float(style.border_width_left) if style else 7.0
+	var corner := float(style.corner_radius_top_left) if style else 46.0
+	var h := _request.size.y
+	var mouth_bottom := h - corner - 2.0
+	var mouth_top := maxf(mouth_bottom - 46.0, border * 3.0)
+	var top := Vector2(_outline_x(mouth_top, h, corner, border), mouth_top)
+	var bottom := Vector2(_outline_x(mouth_bottom, h, corner, border), mouth_bottom)
+	var tip := Vector2(-70.0, minf(h + 4.0, mouth_bottom + 40.0))
+	var inside := Vector2(border + 4.0, 0.0)
+	(_bubble_tail.get_node(^"Fill") as Polygon2D).polygon = PackedVector2Array([top, tip, bottom, bottom + inside, top + inside])
+	var outline := _bubble_tail.get_node(^"Outline") as Line2D
+	outline.width = border
+	outline.points = PackedVector2Array([top, tip, bottom])
+
+
+## x of the middle of the bubble's outline on its left side, at height y (it curves at the corners).
+func _outline_x(y: float, h: float, corner: float, border: float) -> float:
+	var r := corner - border / 2.0
+	if y < corner:
+		return corner - sqrt(maxf(r * r - (corner - y) * (corner - y), 0.0))
+	if y > h - corner:
+		return corner - sqrt(maxf(r * r - (y - h + corner) * (y - h + corner), 0.0))
+	return border / 2.0
 
 
 func _finish_tray() -> void:
