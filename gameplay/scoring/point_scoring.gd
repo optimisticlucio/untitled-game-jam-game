@@ -42,8 +42,7 @@ func format_score(value: float) -> String:
 
 
 func explanation() -> String:
-	var wrong := tr("A wrong tool takes the same away.") if wrong_multiplier == -1.0 \
-		else tr("A wrong tool counts %s times as much.") % number(wrong_multiplier)
-	return tr("%s points per tool, plus up to %s for a quick pick (all of it within %s s, none after %s s). %s Higher is better.") % [
-		number(flat_points), number(bonus_points), number(bonus_full_seconds),
-		number(bonus_zero_seconds), wrong]
+	var wrong := tr("But every wrong guess takes away the same amount of points, so play it safe.") if wrong_multiplier == -1.0 \
+		else tr("But every wrong guess takes away %s times as many points, so play it safe.") % number(wrong_multiplier)
+	return tr("Every right guess gives %s points, plus some bonus points for speed!") % number(flat_points) \
+		+ " " + wrong
