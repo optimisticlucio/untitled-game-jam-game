@@ -6,7 +6,7 @@ extends Control
 
 const MAIN_MENU := "res://ui/main_menu.tscn"
 
-var _levels: Dictionary[String, LevelData]
+var _levels: Array[LevelData]
 
 @onready var _picker: OptionButton = %LevelPicker
 @onready var _rows: VBoxContainer = %Rows
@@ -16,11 +16,10 @@ func _ready() -> void:
 	(%BackButton as Button).pressed.connect(_back)
 	for button in find_children("*", "BaseButton", true, false):
 		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
-	_levels = ScoreBoard.levels()
-	for key in _levels:
-		_picker.add_item(ScoreBoard.level_title(key))
-		_picker.set_item_metadata(_picker.item_count - 1, key)
-		if key == ScoreBoard.focus_level_key:
+	_levels = LevelList.all()
+	for level in _levels:
+		_picker.add_item(level.display_title())
+		if ScoreBoard.level_key(level) == ScoreBoard.focus_level_key:
 			_picker.select(_picker.item_count - 1)
 	_picker.item_selected.connect(func(_index: int) -> void: _show_board())
 	_show_board()
@@ -41,7 +40,7 @@ func _show_board() -> void:
 		child.queue_free()
 	if _picker.item_count == 0:
 		return
-	var level := _levels[_picker.get_item_metadata(_picker.selected)]
+	var level := _levels[_picker.selected]
 	var scoring := ScoreBoard.scoring_for(level)
 	var you := ScoreBoard.last_name()
 	var rank := 0

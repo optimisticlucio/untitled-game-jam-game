@@ -52,6 +52,8 @@ func _ready() -> void:
 	_fit_camera()
 	for button in $UI.find_children("*", "BaseButton", true, false):
 		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
+	if LevelList.chosen:
+		level = LevelList.chosen
 	_scenes = SurgicalTool.scenes_by_id()
 	var problems := level.problems(_scenes.keys()) if level else PackedStringArray(["No LevelData set on the level scene."])
 	if not problems.is_empty():

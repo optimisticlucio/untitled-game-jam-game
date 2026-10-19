@@ -1,12 +1,14 @@
 class_name LevelData
 extends Resource
-## One level's settings. Make one .tres per level and give it to level.tscn.
+## One level's settings. Make one .tres per level and add it to levels/levels.tres (LevelList).
 ## Tools are referred to by their SurgicalTool id. Unknown ids are reported
 ## when the level starts.
 
 ## Names the level for good: the leaderboard saves scores under it, so changing
 ## it loses them. The file name doesn't matter.
 @export var id: StringName
+## Shown in the level selector and the leaderboard, through tr(). Empty = the id in words.
+@export var title := ""
 ## How runs are scored (gameplay/scoring/: points.tres or time.tres, tuned there). Empty =
 ## ScoreBoard.DEFAULT_SCORING. Switching starts a fresh leaderboard for the level; the old one
 ## comes back if you switch back.
@@ -59,6 +61,11 @@ func problems(known_ids: Array[StringName]) -> PackedStringArray:
 			if not known_ids.has(id):
 				found.append("%s: no tool has the id \"%s\"." % [list_name, id])
 	return found
+
+
+## title, or the id in words ("example_level" -> "Example Level").
+func display_title() -> String:
+	return tr(title) if not title.is_empty() else String(id).capitalize()
 
 
 func has_tutorial() -> bool:

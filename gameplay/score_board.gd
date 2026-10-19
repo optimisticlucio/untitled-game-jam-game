@@ -8,7 +8,6 @@ extends RefCounted
 ## Levels are keyed by their LevelData id.
 
 const PATH := "user://scores.cfg"
-const LEVELS_FOLDER := "res://levels/"
 ## For levels that don't set LevelData.scoring.
 const DEFAULT_SCORING := preload("res://gameplay/scoring/points.tres")
 const MAX_NAME_LENGTH := 16
@@ -27,11 +26,6 @@ static func level_key(level: LevelData) -> String:
 	return String(level.id)
 
 
-## "example_level" -> "Example Level".
-static func level_title(key: String) -> String:
-	return key.capitalize()
-
-
 static func scoring_for(level: LevelData) -> Scoring:
 	return level.scoring if level.scoring else DEFAULT_SCORING
 
@@ -47,30 +41,10 @@ static func last_name() -> String:
 	return _load().get_value("player", "name", "")
 
 
-## Every LevelData in LEVELS_FOLDER, by key, sorted by key.
-static func levels() -> Dictionary[String, LevelData]:
-	var found: Dictionary[String, LevelData] = {}
-	var keys: Array[String] = []
-	for file in DirAccess.get_files_at(LEVELS_FOLDER):
-		var path := LEVELS_FOLDER.path_join(file.trim_suffix(".remap"))
-		if path.get_extension() != "tres":
-			continue
-		var data := load(path) as LevelData
-		if data == null:
-			continue
-		var key := level_key(data)
-		if key.is_empty():
-			push_error("Level %s has no id, so it has no leaderboard." % path)
-		elif found.has(key):
-			push_error("Levels %s and %s share the id %s." % [found[key].resource_path, path, key])
-		else:
-			keys.append(key)
-			found[key] = data
-	keys.sort()
-	var sorted: Dictionary[String, LevelData] = {}
-	for key in keys:
-		sorted[key] = found[key]
-	return sorted
+## name's saved best on the level ({score, seconds, wrong, hints, date}), or {} if none.
+static func best(level: LevelData, name: String) -> Dictionary:
+	var runs: Dictionary = _load().get_value(_section(scoring_for(level)), level_key(level), {})
+	return runs.get(name, {})
 
 
 ## Saves a run under name; each name keeps only its best per level. Returns this run's

@@ -20,7 +20,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme = ExtResource("1_5klac")
 script = ExtResource("2_lsdqh")
-play_scene = "res://levels/level.tscn"
+play_scene = "res://ui/level_select.tscn"
 
 [node name="Background" type="TextureRect" parent="." unique_id=467392798]
 layout_mode = 0

@@ -1,0 +1,63 @@
+class_name LevelSelect
+extends Control
+## Level selector: every level in LevelList, in order, all open. Each card shows the level's
+## title and the best saved score of the name entered last (ScoreBoard). Tapping one plays it.
+
+const MAIN_MENU := "res://ui/main_menu.tscn"
+const LEVEL_SCENE := "res://levels/level.tscn"
+
+@onready var _cards: VBoxContainer = %Cards
+
+
+func _ready() -> void:
+	(%BackButton as Button).pressed.connect(_back)
+	var you := ScoreBoard.last_name()
+	for level in LevelList.all():
+		_cards.add_child(_card(level, you))
+	for button in find_children("*", "BaseButton", true, false):
+		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		_back()
+		get_viewport().set_input_as_handled()
+
+
+func _back() -> void:
+	get_tree().change_scene_to_file(MAIN_MENU)
+
+
+func _play(level: LevelData) -> void:
+	LevelList.chosen = level
+	get_tree().change_scene_to_file(LEVEL_SCENE)
+
+
+func _card(level: LevelData, you: String) -> Control:
+	var card := Button.new()
+	card.custom_minimum_size = Vector2(0, 160)
+	card.pressed.connect(_play.bind(level))
+	var column := VBoxContainer.new()
+	column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 24)
+	column.alignment = BoxContainer.ALIGNMENT_CENTER
+	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	card.add_child(column)
+	var title := Label.new()
+	title.text = level.display_title()
+	title.theme_type_variation = &"HeaderLabel"
+	# Trimmed, not wrapped, so a long title can't push the card past the screen edge.
+	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	column.add_child(title)
+	var best := Label.new()
+	best.text = _best_text(level, you)
+	best.theme_type_variation = &"SmallLabel"
+	column.add_child(best)
+	return card
+
+
+func _best_text(level: LevelData, you: String) -> String:
+	var run := ScoreBoard.best(level, you)
+	if run.is_empty():
+		return tr("Not played yet")
+	var scoring := ScoreBoard.scoring_for(level)
+	return tr("Best: %s · %s") % [scoring.format_score(run["score"]), ScoreBoard.format_time(run["seconds"])]

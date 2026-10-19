@@ -1,15 +1,15 @@
 class_name MainMenu
 extends Control
 ## Home screen: Play, Pocket Guide, Leaderboard, Settings. Placeholder art (ui/theme.tres,
-## ui/icons/). Level select isn't built yet: Play emits play_pressed and opens play_scene (set to
-## levels/level.tscn for now). Leaderboard opens ui/leaderboard.tscn.
+## ui/icons/). Play emits play_pressed and opens play_scene (the level selector,
+## ui/level_select.tscn). Leaderboard opens ui/leaderboard.tscn.
 
 signal play_pressed
 
 const POCKET_GUIDE := "res://ui/pocket_guide.tscn"
 const LEADERBOARD := "res://ui/leaderboard.tscn"
 
-## Scene Play opens, until level select exists. Empty: only play_pressed is emitted.
+## Scene Play opens. Empty: only play_pressed is emitted.
 @export_file("*.tscn") var play_scene := ""
 
 var _toast_tween: Tween
@@ -43,7 +43,7 @@ func _on_play() -> void:
 	if not play_scene.is_empty():
 		get_tree().change_scene_to_file(play_scene)
 	elif play_pressed.get_connections().is_empty():
-		_show_toast("Level select: coming soon")
+		_show_toast("Play: no scene set")
 
 
 func _show_toast(text: String) -> void:
