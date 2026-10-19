@@ -141,6 +141,47 @@ func _ready() -> void:
 	_glow.set_meta(&"glow", preload("res://gameplay/held_neon_glow.tres"))
 	_glow.set_shader_parameter("base_strength", 0.0)
 	_glow.set_shader_parameter("rim_strength", 0.15)
+	_warm_up_highlights.call_deferred()
+
+
+## Draws every highlight once, invisibly, so their shaders compile while the level loads.
+## Otherwise the first grab froze the game for about a quarter of a second.
+func _warm_up_highlights() -> void:
+	if camera == null:
+		return
+	var warm_up := Node3D.new()
+	warm_up.position = Vector3(0.0, 0.0, -1.0)
+	warm_up.scale = Vector3.ONE * 0.01
+	camera.add_child(warm_up)
+	for material in [
+			_invisible(_glow.get_meta(&"outline"), {"width": 0.0}),
+			_invisible(_glow.get_meta(&"glow"), {"strength": 0.0, "sparkle_density": 0.0}),
+			_invisible(_hint_glow.get_meta(&"outline"), {"width": 0.0})]:
+		var mesh_instance := MeshInstance3D.new()
+		mesh_instance.mesh = QuadMesh.new()
+		mesh_instance.material_override = material
+		warm_up.add_child(mesh_instance)
+	var overlay := MeshInstance3D.new()
+	overlay.mesh = QuadMesh.new()
+	overlay.material_overlay = _invisible(_glow, {"base_strength": 0.0, "rim_strength": 0.0})
+	warm_up.add_child(overlay)
+	var sparkles := HeldSparkles.SCENE.instantiate() as CPUParticles3D
+	sparkles.material_override = _invisible(sparkles.material_override, {"brightness": 0.0})
+	sparkles.emission_points = PackedVector3Array([Vector3.ZERO])
+	sparkles.emission_normals = PackedVector3Array([Vector3.UP])
+	warm_up.add_child(sparkles)
+	# Two frames, so it's surely drawn once.
+	for i in 2:
+		await get_tree().process_frame
+	warm_up.queue_free()
+
+
+## A copy of the material with these shader parameters, to draw it without it showing.
+static func _invisible(material: ShaderMaterial, parameters: Dictionary) -> ShaderMaterial:
+	var copy := material.duplicate() as ShaderMaterial
+	for parameter in parameters:
+		copy.set_shader_parameter(parameter, parameters[parameter])
+	return copy
 
 
 func _unhandled_input(event: InputEvent) -> void:
