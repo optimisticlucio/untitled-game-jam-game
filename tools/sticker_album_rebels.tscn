@@ -1,0 +1,34 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://tools/surgical_tool.tscn" id="base_tool"]
+[ext_resource type="AudioStream" path="res://assets/sounds/items/sticker_album_rebels.wav" id="2_8yehg"]
+[ext_resource type="PackedScene" path="res://assets/instruments/sticker_album_rebels.glb" id="3_uoe8s"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_473lj"]
+size = Vector3(0.11275, 0.004, 0.1381)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_v2ao7"]
+size = Vector3(0.12475, 0.02, 0.1501)
+
+[node name="StickerAlbumRebels" instance=ExtResource("base_tool")]
+mass = 0.03
+continuous_cd = true
+id = &"sticker_album_rebels"
+display_name = "Rebels Sticker Album"
+description = "A miniature sticker album from a 2000s teen drama. Half the stickers are still missing."
+specialities = Array[int]([3])
+drop_sound = ExtResource("2_8yehg")
+
+[node name="Model" type="Node3D" parent="." unique_id=1144140634 instance=ExtResource("3_uoe8s")]
+
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1731190281]
+shape = SubResource("BoxShape3D_473lj")
+
+[node name="Pick" type="Area3D" parent="." unique_id=19686166]
+collision_layer = 128
+collision_mask = 0
+monitoring = false
+monitorable = false
+
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=808170977]
+shape = SubResource("BoxShape3D_v2ao7")

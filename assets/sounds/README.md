@@ -59,6 +59,7 @@ Played when the item lands after being dropped (its `drop_sound`), instead of th
 | `butt_plug.wav` | metal hit | [Metal Hit](https://freesound.org/people/BenjaminNelan/sounds/410364/) by BenjaminNelan |
 | `oscar_statuette.wav` | hollow plastic drop (the Oscar is a light plastic replica) | [hollow plastic box, dropped](https://freesound.org/people/Lemato/sounds/697092/) by Lemato |
 | `crime_and_punishment.wav` | book drop | [Book Dropping 1.wav](https://freesound.org/people/LightDJ/sounds/267481/) by LightDJ |
+| `sticker_album_rebels.wav` | light paper booklet flop (the book drop, 25 percent higher and 4 dB quieter) | [Book Dropping 1.wav](https://freesound.org/people/LightDJ/sounds/267481/) by LightDJ |
 | `sock.wav` | cloth rustle | [Fabric_Foley_1](https://freesound.org/people/Mediasaur/sounds/789038/) by Mediasaur |
 | `dentures.wav` | teeth click | [Perc_Teeth_lo](https://freesound.org/people/LudwigMueller/sounds/548541/) by LudwigMueller |
 | `cat_head.wav` | meow | [cat meow](https://freesound.org/people/tuberatanka/sounds/110011/) by tuberatanka |
