@@ -56,11 +56,6 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 	set(value):
 		glow_color = value
 		_glow.set_shader_parameter("glow_color", value)
-## Highlight of tools marked with hint().
-@export var hint_color := Color(0.3, 0.8, 1.0):
-	set(value):
-		hint_color = value
-		_set_highlight_color(_hint_glow, value)
 ## Highlight of a tool handed over wrong, while it hovers before going back.
 @export var reject_color := Color(1.0, 0.2, 0.15):
 	set(value):
@@ -133,7 +128,6 @@ var _saved_layers: Dictionary[SurgicalTool, Vector2i] = {}
 
 func _ready() -> void:
 	_set_highlight_color(_glow, glow_color)
-	_set_highlight_color(_hint_glow, hint_color)
 	_set_highlight_color(_reject_glow, reject_color)
 	# The held tool: the neon outline and glow (their colours are their own), and the tool
 	# keeps its own colour.
@@ -141,6 +135,17 @@ func _ready() -> void:
 	_glow.set_meta(&"glow", preload("res://gameplay/held_neon_glow.tres"))
 	_glow.set_shader_parameter("base_strength", 0.0)
 	_glow.set_shader_parameter("rim_strength", 0.15)
+	# Hinted tools: the same neon line, with half the held glow, a quarter of its twinkles
+	# and no stars (Julia's call).
+	var hint_outline := (_glow.get_meta(&"outline") as ShaderMaterial).duplicate() as ShaderMaterial
+	var hint_neon_glow := (_glow.get_meta(&"glow") as ShaderMaterial).duplicate() as ShaderMaterial
+	hint_neon_glow.set_shader_parameter("strength", hint_neon_glow.get_shader_parameter("strength") * 0.5)
+	hint_neon_glow.set_shader_parameter("sparkle_density", hint_neon_glow.get_shader_parameter("sparkle_density") * 0.25)
+	_hint_glow.set_meta(&"outline", hint_outline)
+	_hint_glow.set_meta(&"glow", hint_neon_glow)
+	_hint_glow.set_shader_parameter("glow_color", glow_color)
+	_hint_glow.set_shader_parameter("base_strength", 0.0)
+	_hint_glow.set_shader_parameter("rim_strength", 0.04)
 	_warm_up_highlights.call_deferred()
 
 
@@ -370,7 +375,7 @@ func is_busy() -> bool:
 	return _held != null or _candidate != null or not _flying.is_empty()
 
 
-## Makes the tool glow in hint_color until clear_hints(). Holding it shows
+## Gives the tool a soft version of the held neon until clear_hints(). Holding it shows
 ## the held glow instead; letting go brings the hint back.
 func hint(tool: SurgicalTool) -> void:
 	_hinted[tool] = true
