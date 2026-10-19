@@ -20,6 +20,8 @@ var _toast_tween: Tween
 
 func _ready() -> void:
 	SettingsPanel.apply_saved()
+	if DisplayServer.is_touchscreen_available():
+		_drop_hover(theme)
 	(%PlayButton as Button).pressed.connect(_on_play)
 	(%GuideButton as Button).pressed.connect(func() -> void: get_tree().change_scene_to_file(POCKET_GUIDE))
 	(%LeaderboardButton as Button).pressed.connect(func() -> void:
@@ -30,6 +32,14 @@ func _ready() -> void:
 	for button in find_children("*", "BaseButton", true, false):
 		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
 	_toast.modulate.a = 0.0
+
+
+## Touch screens have no hover, but the last tapped button would stay "hovered" and keep looking
+## lighter. There, hover looks like normal. The theme is shared, so this covers every screen.
+static func _drop_hover(ui_theme: Theme) -> void:
+	for type in [&"Button", &"IconButton"]:
+		ui_theme.set_stylebox(&"hover", type, ui_theme.get_stylebox(&"normal", type))
+	ui_theme.set_color(&"icon_hover_color", &"BarButton", Color.WHITE)
 
 
 func _unhandled_input(event: InputEvent) -> void:
