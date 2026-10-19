@@ -147,6 +147,8 @@ var enabled := true:
 			if _held:
 				_set_glow(_held, false)
 				_held = null
+				if surgeon:
+					surgeon.player_holding = false
 
 var _glow := _make_highlight()
 var _hint_glow := _make_highlight()
@@ -364,7 +366,7 @@ func return_to_tray(tool: SurgicalTool, throw_velocity := Vector3.ZERO) -> void:
 	var spot := placement.origin + Vector3.UP * drop_height
 	var flat_rotation := Vector3(0.0, placement.basis.get_euler().y, 0.0)
 	var seconds := return_seconds
-	var tween := create_tween().set_parallel().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	var tween := _tool_tween().set_parallel().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	if throw_velocity == Vector3.ZERO:
 		tween.tween_property(tool, "global_position", spot, seconds)
 	else:
@@ -380,6 +382,13 @@ func return_to_tray(tool: SurgicalTool, throw_velocity := Vector3.ZERO) -> void:
 		_on_landing(tool))
 
 
+## A tween for moving a tool (a frozen body) along. It runs with the physics steps: moved between
+## them, the body's last physics transform was written back over the move for a frame, and a tool
+## riding on the surgeon's hand shook between the two places.
+func _tool_tween() -> Tween:
+	return create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+
+
 ## Starts a tween that drops a handed-over tool, lying flat, onto the
 ## surgeon's hand or the middle of the hand-off zone. Steps added to it run
 ## one after another, after the drop.
@@ -391,7 +400,7 @@ func _drop_onto_hand(tool: SurgicalTool) -> Tween:
 		var slanted := _across_yaw(tool) + _turn_for_slant(landing, on_hand_angle)
 		yaw += angle_difference(yaw, slanted)
 	var flat_rotation := Vector3(0.0, yaw, 0.0)
-	var tween := create_tween().set_parallel()
+	var tween := _tool_tween().set_parallel()
 	tween.tween_property(tool, "global_position", landing, consume_drop_seconds) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_property(tool, "global_rotation", flat_rotation, consume_drop_seconds)
@@ -431,6 +440,8 @@ static func _toss_point(from: Vector3, via: Vector3, to: Vector3, t: float) -> V
 
 func _grab(tool: SurgicalTool) -> void:
 	_held = tool
+	if surgeon:
+		surgeon.player_holding = true
 	_held_yaw = _across_yaw(tool)
 	_pointer_trail.clear()
 	_track_pointer(0.0)
@@ -466,6 +477,8 @@ func _across_yaw(tool: SurgicalTool) -> float:
 func _release() -> void:
 	var tool := _held
 	_held = null
+	if surgeon:
+		surgeon.player_holding = false
 	# The let-go comes in before this frame's _process, about a frame after the last sample.
 	_track_pointer(get_process_delta_time())
 	_released_over[tool] = _table_point_under(_pointer)

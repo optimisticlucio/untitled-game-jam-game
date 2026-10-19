@@ -6,14 +6,14 @@ and <name>_frames.json. The surgeon has two layers, drawn with a tool on his han
    python3 pack_surgeon.py .../frames_15fps_v18_front assets/surgeon surgeon_front
 Every frame is cut to the box that holds anything drawn in any frame of the layer (the fingers
 layer is mostly empty), recorded as "crop" so the frames keep their full size in Godot.
-The waiting loops keep every STEP-th frame at a slower speed (same length), and no sheet is
+The slow breathing loop (idle) keeps every STEP-th frame at a slower speed (same length), and no sheet is
 bigger than MAX_SHEET on a side, so they stay light in memory and fit older phones.
 scale (default 1) shrinks the frames; the Surgeon's pixel_size must grow by as much (both layers
 use the same scale), so he stays the same size on screen."""
 import json, os, re, sys
 from PIL import Image
 
-STEP = {"idle": 2, "impatient": 2}
+STEP = {"idle": 2}   # the snaps in impatient are fast, so it keeps every frame
 MAX_SHEET = 2048
 
 src, out = sys.argv[1], sys.argv[2]

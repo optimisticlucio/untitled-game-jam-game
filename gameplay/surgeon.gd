@@ -14,19 +14,15 @@ extends Node3D
 ## tool sits inside his fist. Both draw before other see-through things (render_priority -1),
 ## so the table art in front of him (Table/Art) always covers his lower body.
 
-## Which loop he waits with: idle, or impatient finger snaps. When it turns off mid-snap, he
-## finishes the snap first, so he doesn't jump back to rest.
+## Whether he waits impatiently, snapping his fingers, instead of idle. He changes loop only where
+## the two meet without a jump: the snapping starts once his breathing is back at rest (the end of
+## the idle loop), and stops as soon as a snap is over (snap_quiet_from), never mid-snap.
 @export var impatient := false:
 	set(value):
 		if value == impatient:
 			return
 		impatient = value
-		if not is_node_ready() or _taking:
-			return
-		if not value and _sprite.animation == &"impatient":
-			_calm_down_after_snap = true
-		else:
-			_play(_waiting())
+		_waiting_changed()
 ## How far in front of his drawing a tool on his hand sits, so it shows over the glove.
 @export var hand_front := 0.03
 ## How far in front of his drawing his fingers are drawn: in front of a tool on his hand.
@@ -48,7 +44,9 @@ extends Node3D
 @export var voices: Dictionary[StringName, AudioStream] = {}
 ## Frames of the impatient loop where his fingers snap (the hand jumps to the snapped drawing),
 ## for the Snap player. Check them when the loop is exported or packed again.
-@export var snap_frames := PackedInt32Array([4, 10])
+@export var snap_frames := PackedInt32Array([5, 9])
+## The first frame of the impatient loop where the snapping is over and his hand is back at rest.
+@export var snap_quiet_from := 16
 ## He clears his throat (Throat player) while he waits for a slow player: once he has waited
 ## throat_clear_after seconds, then every throat_clear_every, but never while snapping or taking.
 @export var throat_clear_after := 6.0
@@ -56,10 +54,16 @@ extends Node3D
 
 ## Seconds he has been waiting for the current tool; 0 when nothing is asked for. The level sets it.
 var waiting_seconds := 0.0
+## While the player holds a tool he stops snapping, so his hand is at rest when it lands on it.
+## ToolGrabber sets it.
+var player_holding := false:
+	set(value):
+		if value == player_holding:
+			return
+		player_holding = value
+		_waiting_changed()
 
 var _taking := false
-## Set while he finishes his snapping loop before going back to idle.
-var _calm_down_after_snap := false
 ## Counts take() calls, so an older one stops when a newer one starts.
 var _take_count := 0
 var _next_throat_clear := 0.0
@@ -80,14 +84,18 @@ func _ready() -> void:
 	_sprite.frame_changed.connect(_sync_front)
 	_sprite.frame_changed.connect(func() -> void:
 		if _sprite.animation == &"impatient" and _sprite.frame in snap_frames:
-			_snap.play())
+			_snap.play()
+		# Done snapping: back to idle once this snap is over.
+		if _sprite.animation == &"impatient" and _sprite.frame >= snap_quiet_from \
+				and _waiting() == &"idle" and not _taking:
+			_play(&"idle"))
 	# Only one-shots finish; the waiting loops never do. During take() it moves on by itself.
 	_sprite.animation_finished.connect(func() -> void:
 		if not _taking:
 			_play(_waiting()))
+	# The end of a loop is his rest pose, where any loop can start.
 	_sprite.animation_looped.connect(func() -> void:
-		if _calm_down_after_snap and _sprite.animation == &"impatient":
-			_calm_down_after_snap = false
+		if _sprite.animation != _waiting() and not _taking:
 			_play(_waiting()))
 	_play(_waiting())
 
@@ -105,7 +113,6 @@ func take(right: bool) -> void:
 	_take_count += 1
 	var count := _take_count
 	_taking = true
-	_calm_down_after_snap = false
 	# The right tool is what he was waiting for: no more impatience.
 	if right:
 		impatient = false
@@ -181,7 +188,16 @@ func _play(anim: StringName) -> void:
 
 
 func _waiting() -> StringName:
-	return &"impatient" if impatient else &"idle"
+	return &"impatient" if impatient and not player_holding else &"idle"
+
+
+## Switches to the waiting loop now wanted where it won't jump: right away if a snap is already
+## over, else when the snap ends or the idle loop comes back to rest (see _ready).
+func _waiting_changed() -> void:
+	if not is_node_ready() or _taking or _sprite.animation == _waiting():
+		return
+	if _sprite.animation == &"impatient" and _sprite.frame >= snap_quiet_from:
+		_play(_waiting())
 
 
 static func _is_wait(step: Variant) -> bool:
