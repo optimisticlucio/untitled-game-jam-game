@@ -37,46 +37,48 @@ mass = 0.08
 continuous_cd = true
 id = &"banana"
 display_name = "Banana"
-description = "A ripe banana. Curved, but not a retractor."
+description = "A ripe banana. Curved, but not a retractor.
+
+On the tray because someone skipped lunch. Again."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_i340t")
 
-[node name="Model" type="Node3D" parent="." unique_id=566078486 instance=ExtResource("3_hbkcj")]
+[node name="Model" type="Node3D" parent="." unique_id=1852416991 instance=ExtResource("3_hbkcj")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1734198130]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1265018068]
 transform = Transform3D(0.969434, 0, -0.245353, 0, 1, 0, 0.245353, 0, 0.969434, -0.000527, 0, 0.026891)
 shape = SubResource("BoxShape3D_yaunu")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1338545271]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1164776716]
 transform = Transform3D(0.972721, 0, 0.23198, 0, 1, 0, -0.23198, 0, 0.972721, -0.000303, -5e-06, -0.025582)
 shape = SubResource("BoxShape3D_jriqn")
 
-[node name="Collision02" type="CollisionShape3D" parent="." unique_id=271928109]
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=1243372611]
 transform = Transform3D(-0.859205, -0.511631, 0, 0, 0, 1, -0.511631, 0.859205, 0, -0.010597, -0.000472, 0.056232)
 shape = SubResource("CapsuleShape3D_boiyo")
 
-[node name="Collision03" type="CollisionShape3D" parent="." unique_id=94954493]
+[node name="Collision03" type="CollisionShape3D" parent="." unique_id=703851358]
 transform = Transform3D(0.87297, -0.487774, 0, 0, 0, 1, -0.487774, -0.87297, 0, -0.009609, -0.000472, -0.054795)
 shape = SubResource("CapsuleShape3D_o82l1")
 
-[node name="Pick" type="Area3D" parent="." unique_id=855728858]
+[node name="Pick" type="Area3D" parent="." unique_id=1154371616]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=952727052]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=477469823]
 transform = Transform3D(0.969434, 0, -0.245353, 0, 1, 0, 0.245353, 0, 0.969434, -0.000527, 0, 0.026891)
 shape = SubResource("BoxShape3D_7nyib")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1492869481]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1164272898]
 transform = Transform3D(0.972721, 0, 0.23198, 0, 1, 0, -0.23198, 0, 0.972721, -0.000303, -5e-06, -0.025582)
 shape = SubResource("BoxShape3D_h4wey")
 
-[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=787267901]
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=68600441]
 transform = Transform3D(-0.859205, -0.511631, 0, 0, 0, 1, -0.511631, 0.859205, 0, -0.010597, -0.000472, 0.056232)
 shape = SubResource("CapsuleShape3D_e5ouv")
 
-[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=636305244]
+[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=293455259]
 transform = Transform3D(0.87297, -0.487774, 0, 0, 0, 1, -0.487774, -0.87297, 0, -0.009609, -0.000472, -0.054795)
 shape = SubResource("CapsuleShape3D_e4r16")

@@ -27,38 +27,40 @@ mass = 0.09
 continuous_cd = true
 id = &"wing_corkscrew"
 display_name = "Wing Corkscrew"
-description = "Wine opener: two levers rise like wings as the worm screw turns into the cork. Wrong kind of extraction."
+description = "Wine opener: two levers rise like wings as the worm screw turns into the cork. Wrong kind of extraction.
+
+100% cork extraction rate. Wisdom teeth are another department."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_kngjv")
 
-[node name="Model" type="Node3D" parent="." unique_id=1383238327 instance=ExtResource("3_nc0ri")]
+[node name="Model" type="Node3D" parent="." unique_id=109000335 instance=ExtResource("3_nc0ri")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1648821368]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1106208567]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.003292)
 shape = SubResource("BoxShape3D_bfygk")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1969628009]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=647692578]
 transform = Transform3D(-0.856188, 0, -0.516665, 0, 1, 0, 0.516665, 0, -0.856188, 0.026457, 0, 0.056327)
 shape = SubResource("BoxShape3D_altfl")
 
-[node name="Collision02" type="CollisionShape3D" parent="." unique_id=573045375]
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=1022710361]
 transform = Transform3D(-0.856188, 0, 0.516665, 0, 1, 0, -0.516665, 0, -0.856188, -0.026457, 0, 0.056327)
 shape = SubResource("BoxShape3D_e6kqp")
 
-[node name="Pick" type="Area3D" parent="." unique_id=327334933]
+[node name="Pick" type="Area3D" parent="." unique_id=1544465406]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=666379049]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1903886606]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.003292)
 shape = SubResource("BoxShape3D_4dwfb")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=725607557]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=780478176]
 transform = Transform3D(-0.856188, 0, -0.516665, 0, 1, 0, 0.516665, 0, -0.856188, 0.026457, 0, 0.056327)
 shape = SubResource("BoxShape3D_b6fsr")
 
-[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=150071719]
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1400904480]
 transform = Transform3D(-0.856188, 0, 0.516665, 0, 1, 0, -0.516665, 0, -0.856188, -0.026457, 0, 0.056327)
 shape = SubResource("BoxShape3D_di7yy")

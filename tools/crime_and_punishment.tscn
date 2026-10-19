@@ -15,20 +15,22 @@ mass = 0.25
 continuous_cd = true
 id = &"crime_and_punishment"
 display_name = "Crime and Punishment"
-description = "Dostoevsky's novel, miniature pocket edition. Light reading for a long surgery."
+description = "Dostoevsky's novel, miniature pocket edition. Light reading for a long surgery.
+
+Around 600 pages. The surgeon said it would be a quick one."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_jyiav")
 
-[node name="Model" type="Node3D" parent="." unique_id=410892336 instance=ExtResource("3_u7vt5")]
+[node name="Model" type="Node3D" parent="." unique_id=2090225405 instance=ExtResource("3_u7vt5")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1223011854]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=131692467]
 shape = SubResource("BoxShape3D_5h2hd")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1606875476]
+[node name="Pick" type="Area3D" parent="." unique_id=575771287]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1837784540]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=691891950]
 shape = SubResource("BoxShape3D_8syea")

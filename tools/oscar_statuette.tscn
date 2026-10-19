@@ -25,30 +25,32 @@ mass = 0.08
 continuous_cd = true
 id = &"oscar_statuette"
 display_name = "Oscar Statuette"
-description = "A silver award statuette. Best Supporting Instrument, maybe."
+description = "A silver award statuette. Best Supporting Instrument, maybe.
+
+Awarded to the student who held the retractor for four hours without a word."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_ojqxw")
 
-[node name="Model" type="Node3D" parent="." unique_id=2108490222 instance=ExtResource("3_du8kp")]
+[node name="Model" type="Node3D" parent="." unique_id=1931496928 instance=ExtResource("3_du8kp")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=687242248]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=39519629]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.036563)
 shape = SubResource("CylinderShape3D_5e5et")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=80336237]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1488783262]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.012188)
 shape = SubResource("CapsuleShape3D_fxfch")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1754172625]
+[node name="Pick" type="Area3D" parent="." unique_id=1804305083]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1948302942]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1597019192]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0.036563)
 shape = SubResource("CylinderShape3D_16c3p")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1183344001]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1459842321]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, -0.012188)
 shape = SubResource("CapsuleShape3D_b6dx3")

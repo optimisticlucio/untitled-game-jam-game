@@ -15,20 +15,22 @@ mass = 0.04
 continuous_cd = true
 id = &"dentures"
 display_name = "Dentures"
-description = "A full set of false teeth. Someone will be looking for these."
+description = "A full set of false teeth. Someone will be looking for these.
+
+Taken out before induction, as per the checklist. Returned with a smile."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_gbwua")
 
-[node name="Model" type="Node3D" parent="." unique_id=1655576142 instance=ExtResource("3_2a4k3")]
+[node name="Model" type="Node3D" parent="." unique_id=212174171 instance=ExtResource("3_2a4k3")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1434458132]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=628523970]
 shape = SubResource("BoxShape3D_ooa8g")
 
-[node name="Pick" type="Area3D" parent="." unique_id=415720868]
+[node name="Pick" type="Area3D" parent="." unique_id=914447550]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=546102922]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1640198495]
 shape = SubResource("BoxShape3D_k1iwe")

@@ -20,29 +20,31 @@ mass = 0.012
 continuous_cd = true
 id = &"eyebrow_tweezers"
 display_name = "Eyebrow Tweezers"
-description = "Beauty tweezers with a slanted tip and a painted grip. For eyebrows, not for tissue."
+description = "Beauty tweezers with a slanted tip and a painted grip. For eyebrows, not for tissue.
+
+Precise enough for microsurgery, used only for eyebrows. A tragic waste of talent."
 specialities = Array[int]([3])
 
-[node name="Model" type="Node3D" parent="." unique_id=1533369003 instance=ExtResource("2_37n7w")]
+[node name="Model" type="Node3D" parent="." unique_id=490113112 instance=ExtResource("2_37n7w")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=801718629]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=401321830]
 transform = Transform3D(1, 0, 0, 0, 0.999304, -0.037307, 0, 0.037307, 0.999304, 0, 0.002045, -0.000241)
 shape = SubResource("BoxShape3D_caopr")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1143888724]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1346136267]
 transform = Transform3D(1, 0, 0, 0, 0.999304, 0.037307, 0, -0.037307, 0.999304, 0, -0.002045, -0.000241)
 shape = SubResource("BoxShape3D_1ma04")
 
-[node name="Pick" type="Area3D" parent="." unique_id=2025224717]
+[node name="Pick" type="Area3D" parent="." unique_id=1812834960]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1172271731]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1634699676]
 transform = Transform3D(1, 0, 0, 0, 0.999304, -0.037307, 0, 0.037307, 0.999304, 0, 0.002045, -0.000241)
 shape = SubResource("BoxShape3D_lc4ry")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=515997392]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=825625163]
 transform = Transform3D(1, 0, 0, 0, 0.999304, 0.037307, 0, -0.037307, 0.999304, 0, -0.002045, -0.000241)
 shape = SubResource("BoxShape3D_pf78n")

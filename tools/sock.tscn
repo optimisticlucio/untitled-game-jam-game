@@ -21,30 +21,32 @@ mass = 0.03
 continuous_cd = true
 id = &"sock"
 display_name = "Sock"
-description = "A single sock. Where is the other one?"
+description = "A single sock. Where is the other one?
+
+A comfort sock for a 12-hour shift. Its pair is still in the changing room."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_ywuhm")
 
-[node name="Model" type="Node3D" parent="." unique_id=1611164313 instance=ExtResource("3_0me0y")]
+[node name="Model" type="Node3D" parent="." unique_id=229906473 instance=ExtResource("3_0me0y")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=892022283]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=769920947]
 transform = Transform3D(0.422618, 0, -0.906308, 0, 1, 0, 0.906308, 0, 0.422618, -0.010301, 0, 0.036243)
 shape = SubResource("BoxShape3D_hdtrx")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1121271781]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=981627224]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02012, 0, -0.011811)
 shape = SubResource("BoxShape3D_v36xp")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1482872356]
+[node name="Pick" type="Area3D" parent="." unique_id=1246561580]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=304814468]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1498040995]
 transform = Transform3D(0.422618, 0, -0.906308, 0, 1, 0, 0.906308, 0, 0.422618, -0.010301, 0, 0.036243)
 shape = SubResource("BoxShape3D_7ysuc")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1733044225]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=267684930]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.02012, 0, -0.011811)
 shape = SubResource("BoxShape3D_h53iv")

@@ -25,30 +25,32 @@ mass = 0.06
 continuous_cd = true
 id = &"nose_hair_trimmer"
 display_name = "Nose Hair Trimmer"
-description = "Battery grooming trimmer with a slotted rotary head. For nostrils, not for sutures."
+description = "Battery grooming trimmer with a slotted rotary head. For nostrils, not for sutures.
+
+Battery at 3%, like everyone at the end of a night shift."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_2pojo")
 
-[node name="Model" type="Node3D" parent="." unique_id=1592729165 instance=ExtResource("3_hiblb")]
+[node name="Model" type="Node3D" parent="." unique_id=1925447848 instance=ExtResource("3_hiblb")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1712797475]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=538090047]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, -0.00025, 0.0198)
 shape = SubResource("CylinderShape3D_gh7ev")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1561433502]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1947203357]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, -0.00025, -0.0542)
 shape = SubResource("CylinderShape3D_crim0")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1214979781]
+[node name="Pick" type="Area3D" parent="." unique_id=807265940]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=71179334]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=944648512]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, -0.00025, 0.0198)
 shape = SubResource("CylinderShape3D_o5lnq")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=742072633]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=2029656679]
 transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, -0.00025, -0.0542)
 shape = SubResource("CylinderShape3D_o7a20")

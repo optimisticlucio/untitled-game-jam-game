@@ -33,46 +33,48 @@ mass = 0.025
 continuous_cd = true
 id = &"eyelash_curler"
 display_name = "Eyelash Curler"
-description = "Beauty tool: finger rings and a hinge like a clamp, but the jaws are a wide curved frame with a rubber pad."
+description = "Beauty tool: finger rings and a hinge like a clamp, but the jaws are a wide curved frame with a rubber pad.
+
+The only clamp in the room that has been to a wedding."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_xp8l5")
 
-[node name="Model" type="Node3D" parent="." unique_id=1822480182 instance=ExtResource("3_cgaj7")]
+[node name="Model" type="Node3D" parent="." unique_id=1903396253 instance=ExtResource("3_cgaj7")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1585249054]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1911903740]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.040294)
 shape = SubResource("BoxShape3D_a8w7j")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=715459372]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1215900075]
 transform = Transform3D(0.936329, 0, 0.351123, 0, 1, 0, -0.351123, 0, 0.936329, -0.001716, 0.0004, -0.002876)
 shape = SubResource("BoxShape3D_yofnl")
 
-[node name="Collision02" type="CollisionShape3D" parent="." unique_id=1191606181]
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=848802122]
 transform = Transform3D(0.936329, 0, -0.351123, 0, 1, 0, 0.351123, 0, 0.936329, 0.001716, -0.0004, -0.002876)
 shape = SubResource("BoxShape3D_fsuly")
 
-[node name="Collision03" type="CollisionShape3D" parent="." unique_id=2046939090]
+[node name="Collision03" type="CollisionShape3D" parent="." unique_id=480901359]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.042268)
 shape = SubResource("BoxShape3D_span7")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1519001822]
+[node name="Pick" type="Area3D" parent="." unique_id=520233038]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1923722053]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=989327733]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.040294)
 shape = SubResource("BoxShape3D_vbp8g")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=379213266]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=35265126]
 transform = Transform3D(0.936329, 0, 0.351123, 0, 1, 0, -0.351123, 0, 0.936329, -0.001716, 0.0004, -0.002876)
 shape = SubResource("BoxShape3D_vrq4p")
 
-[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1162675337]
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=394388679]
 transform = Transform3D(0.936329, 0, -0.351123, 0, 1, 0, 0.351123, 0, 0.936329, 0.001716, -0.0004, -0.002876)
 shape = SubResource("BoxShape3D_u3186")
 
-[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=1517484365]
+[node name="Collision03" type="CollisionShape3D" parent="Pick" unique_id=912586852]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.042268)
 shape = SubResource("BoxShape3D_lhxmf")

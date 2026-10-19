@@ -27,38 +27,40 @@ mass = 0.035
 continuous_cd = true
 id = &"rubber_duck"
 display_name = "Rubber Duck"
-description = "A yellow bath duck. It squeaks. Not sterile."
+description = "A yellow bath duck. It squeaks. Not sterile.
+
+Doctor, I think I'm a duck. How long have you felt like this? Since I was an egg."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_67ejw")
 
-[node name="Model" type="Node3D" parent="." unique_id=735812046 instance=ExtResource("3_skrf4")]
+[node name="Model" type="Node3D" parent="." unique_id=1680083051 instance=ExtResource("3_skrf4")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1791929215]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=1578591007]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01026, 0.003575)
 shape = SubResource("BoxShape3D_2uqb1")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1091421433]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1225406676]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.011591, -0.006663)
 shape = SubResource("BoxShape3D_wm6cf")
 
-[node name="Collision02" type="CollisionShape3D" parent="." unique_id=431347949]
+[node name="Collision02" type="CollisionShape3D" parent="." unique_id=202968523]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.009804, -0.02275)
 shape = SubResource("BoxShape3D_0oock")
 
-[node name="Pick" type="Area3D" parent="." unique_id=1793850376]
+[node name="Pick" type="Area3D" parent="." unique_id=710862342]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1937775534]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=1579496038]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01026, 0.003575)
 shape = SubResource("BoxShape3D_0a4tg")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1460526887]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=804220709]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.011591, -0.006663)
 shape = SubResource("BoxShape3D_7qkio")
 
-[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1164671276]
+[node name="Collision02" type="CollisionShape3D" parent="Pick" unique_id=1913675053]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.009804, -0.02275)
 shape = SubResource("BoxShape3D_4l3iy")

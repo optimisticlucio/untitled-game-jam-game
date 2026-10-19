@@ -21,30 +21,32 @@ mass = 0.07
 continuous_cd = true
 id = &"spatula"
 display_name = "Offset Spatula"
-description = "Kitchen spatula: a wooden handle, a step down and a long flat round-ended blade. For icing, not for retracting."
+description = "Kitchen spatula: a wooden handle, a step down and a long flat round-ended blade. For icing, not for retracting.
+
+Last seen on the birthday cake in the staff room. Still a bit sticky."
 specialities = Array[int]([3])
 drop_sound = ExtResource("2_ugmrc")
 
-[node name="Model" type="Node3D" parent="." unique_id=2045606488 instance=ExtResource("3_g8wc3")]
+[node name="Model" type="Node3D" parent="." unique_id=51085156 instance=ExtResource("3_g8wc3")]
 
-[node name="Collision00" type="CollisionShape3D" parent="." unique_id=398190376]
+[node name="Collision00" type="CollisionShape3D" parent="." unique_id=412456735]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0002, 0.059)
 shape = SubResource("BoxShape3D_u1rat")
 
-[node name="Collision01" type="CollisionShape3D" parent="." unique_id=147518677]
+[node name="Collision01" type="CollisionShape3D" parent="." unique_id=1705112062]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0029, -0.0515)
 shape = SubResource("BoxShape3D_abafi")
 
-[node name="Pick" type="Area3D" parent="." unique_id=374679577]
+[node name="Pick" type="Area3D" parent="." unique_id=184366969]
 collision_layer = 128
 collision_mask = 0
 monitoring = false
 monitorable = false
 
-[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=472239387]
+[node name="Collision00" type="CollisionShape3D" parent="Pick" unique_id=312763884]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0002, 0.059)
 shape = SubResource("BoxShape3D_btw8m")
 
-[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=569856856]
+[node name="Collision01" type="CollisionShape3D" parent="Pick" unique_id=1579609777]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0029, -0.0515)
 shape = SubResource("BoxShape3D_fn63t")
