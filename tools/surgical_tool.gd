@@ -26,6 +26,8 @@ const FOLDER := "res://tools/"
 @export var drop_sound: AudioStream
 
 static var _scenes_by_id: Dictionary[StringName, PackedScene] = {}
+static var _ids: Array[StringName] = []
+static var _ids_scanned_at := 0
 
 
 ## A new random look (tint, scratches, stains) every time a tool is set up.
@@ -59,14 +61,27 @@ func visual_bounds() -> AABB:
 ## base surgical_tool.tscn) are skipped. Scanned once, then cached.
 static func scenes_by_id() -> Dictionary[StringName, PackedScene]:
 	if _scenes_by_id.is_empty():
-		_scan(FOLDER)
+		_scan(FOLDER, _scenes_by_id, true)
 	return _scenes_by_id
 
 
-static func _scan(folder: String) -> void:
+## Every tool id under FOLDER, sorted. Unlike scenes_by_id(), rescanned (at
+## most once a second, no errors reported), so the editor sees tools added
+## since it started: LevelData's inspector dropdowns use this.
+static func ids() -> Array[StringName]:
+	if Time.get_ticks_msec() - _ids_scanned_at > 1000 or _ids.is_empty():
+		var found: Dictionary[StringName, PackedScene] = {}
+		_scan(FOLDER, found, false)
+		_ids.assign(found.keys())
+		_ids.sort_custom(func(a: StringName, b: StringName) -> bool: return String(a) < String(b))
+		_ids_scanned_at = Time.get_ticks_msec()
+	return _ids.duplicate()
+
+
+static func _scan(folder: String, found: Dictionary[StringName, PackedScene], report_errors: bool) -> void:
 	for dir in DirAccess.get_directories_at(folder):
 		if not dir.begins_with("."):
-			_scan(folder.path_join(dir))
+			_scan(folder.path_join(dir), found, report_errors)
 	for file in DirAccess.get_files_at(folder):
 		# Exported builds list scenes as .tscn.remap.
 		var path := folder.path_join(file.trim_suffix(".remap"))
@@ -74,11 +89,32 @@ static func _scan(folder: String) -> void:
 			continue
 		var scene := load(path) as PackedScene
 		if scene == null:
-			push_error("Skipping tool scene that failed to load: %s" % path)
+			if report_errors:
+				push_error("Skipping tool scene that failed to load: %s" % path)
 			continue
-		var node := scene.instantiate()
-		if node is SurgicalTool and node.id != &"":
-			if _scenes_by_id.has(node.id):
-				push_error("Two tool scenes share the id %s: %s and %s" % [node.id, _scenes_by_id[node.id].resource_path, path])
-			_scenes_by_id[node.id] = scene
-		node.free()
+		var id := _id_of(scene)
+		if id == &"":
+			continue
+		if found.has(id) and report_errors:
+			push_error("Two tool scenes share the id %s: %s and %s" % [id, found[id].resource_path, path])
+		found[id] = scene
+
+
+## The id a tool scene sets, read from the scene file without making the tool
+## (so it also works in the editor). Empty if the scene isn't a SurgicalTool or
+## sets no id.
+static func _id_of(scene: PackedScene) -> StringName:
+	var id := &""
+	var is_tool := false
+	# An inherited scene stores only what it changes; its base holds the rest.
+	var state := scene.get_state()
+	while state:
+		for i in state.get_node_property_count(0):
+			var property := state.get_node_property_name(0, i)
+			if property == &"id" and id == &"":
+				id = state.get_node_property_value(0, i)
+			elif property == &"script" and state.get_node_property_value(0, i) == SurgicalTool:
+				is_tool = true
+		var base := state.get_node_instance(0)
+		state = base.get_state() if base else null
+	return id if is_tool else &""
