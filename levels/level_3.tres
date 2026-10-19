@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="LevelData" format=3 uid="uid://d10pxerdvhiwq"]
+
+[ext_resource type="Script" uid="uid://oeja3x8hjwhl" path="res://levels/level_data.gd" id="1_3et5p"]
+[ext_resource type="Script" uid="uid://ce42vs36bypne" path="res://gameplay/scoring/point_scoring.gd" id="1_bhil5"]
+
+[sub_resource type="Resource" id="Resource_bhil5"]
+script = ExtResource("1_bhil5")
+metadata/_custom_type_script = "uid://ce42vs36bypne"
+
+[resource]
+script = ExtResource("1_3et5p")
+id = &"knives"
+title = "Knives"
+scoring = SubResource("Resource_bhil5")
+requested_ids = Dictionary[StringName, int]({
+&"beaver_handle": 2,
+&"crile_clamp": 1,
+&"kelly_clamp": 1,
+&"mayo_scissors": 1,
+&"metzenbaum_scissors": 1,
+&"scalpel_10": 3,
+&"scalpel_11": 3,
+&"scalpel_15": 3,
+&"vannas_scissors": 1
+})
+distractor_ids = Dictionary[StringName, int]({
+&"adson_forceps": 1,
+&"army_navy": 1,
+&"beaver_handle": 1,
+&"butt_plug": 2,
+&"crime_and_punishment": 1,
+&"lipstick": 1,
+&"micro_hook": 3,
+&"rubber_duck": 1,
+&"sock": 2,
+&"spatula": 3,
+&"wing_corkscrew": 2
+})
+tool_size_percent = 105.0
+tutorial_ids = Array[StringName]([&"beaver_handle", &"scalpel_10", &"scalpel_11", &"scalpel_15"])
+reshuffle_after = 3
+distractors_per_tray = 10
+name_only_ids = Array[StringName]([&"crile_clamp", &"kelly_clamp", &"mayo_scissors", &"metzenbaum_scissors", &"vannas_scissors"])
+hint_delay_seconds = 5.0
+hint_idle_seconds = 3.0
+metadata/_custom_type_script = "uid://oeja3x8hjwhl"

@@ -27,6 +27,7 @@ distractor_ids = Dictionary[StringName, int]({
 &"mayo_scissors": 1,
 &"metzenbaum_scissors": 1,
 &"nose_hair_trimmer": 1,
+&"oscar_statuette": 1,
 &"scalpel_10": 1,
 &"scalpel_11": 1,
 &"scalpel_15": 1,

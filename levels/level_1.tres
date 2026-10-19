@@ -18,12 +18,13 @@ requested_ids = Dictionary[StringName, int]({
 &"vannas_scissors": 3
 })
 distractor_ids = Dictionary[StringName, int]({
-&"crime_and_punishment": 1,
 &"dentures": 1,
 &"eyebrow_tweezers": 2,
 &"eyelash_curler": 1,
 &"rubber_duck": 1,
-&"sock": 2
+&"sock": 2,
+&"spatula": 1,
+&"wing_corkscrew": 1
 })
 tool_size_percent = 120.0
 tutorial_ids = Array[StringName]([&"mayo_scissors", &"metzenbaum_scissors", &"vannas_scissors"])

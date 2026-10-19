@@ -1,9 +1,11 @@
 [gd_resource type="Theme" format=3 uid="uid://crbae2nlsyykg"]
 
-[ext_resource type="Texture2D" path="res://ui/art/button.png" id="1_button"]
-[ext_resource type="Texture2D" path="res://ui/art/button_pressed.png" id="2_button_pressed"]
-[ext_resource type="FontFile" path="res://ui/fonts/Nunito-VariableFont_wght.ttf" id="3_nunito"]
-[ext_resource type="Texture2D" path="res://ui/art/button_off.png" id="4_button_off"]
+[ext_resource type="Texture2D" uid="uid://umip4abhluli" path="res://ui/art/button.png" id="1_button"]
+[ext_resource type="Texture2D" uid="uid://u8af6mveb6g" path="res://ui/art/button_pressed.png" id="2_button_pressed"]
+[ext_resource type="FontFile" uid="uid://d20qbw1vm454l" path="res://ui/fonts/Nunito-VariableFont_wght.ttf" id="3_nunito"]
+[ext_resource type="Texture2D" uid="uid://2kvc5gs13g57" path="res://ui/art/button_off.png" id="4_button_off"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bar_button"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_circle"]
 content_margin_left = 6.0
@@ -54,41 +56,11 @@ corner_radius_bottom_right = 46
 corner_radius_bottom_left = 46
 corner_detail = 12
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rqugq"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button"]
-content_margin_left = 38.0
-content_margin_top = 12.0
-content_margin_right = 30.0
-content_margin_bottom = 18.0
-texture = ExtResource("1_button")
-texture_margin_left = 30.0
-texture_margin_top = 30.0
-texture_margin_right = 30.0
-texture_margin_bottom = 30.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button_pressed"]
-content_margin_left = 38.0
-content_margin_top = 12.0
-content_margin_right = 30.0
-content_margin_bottom = 18.0
-texture = ExtResource("2_button_pressed")
-texture_margin_left = 30.0
-texture_margin_top = 30.0
-texture_margin_right = 30.0
-texture_margin_bottom = 30.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button_hover"]
-content_margin_left = 38.0
-content_margin_top = 12.0
-content_margin_right = 30.0
-content_margin_bottom = 18.0
-texture = ExtResource("1_button")
-texture_margin_left = 30.0
-texture_margin_top = 30.0
-texture_margin_right = 30.0
-texture_margin_bottom = 30.0
-modulate_color = Color(1.15, 1.15, 1.15, 1)
+[sub_resource type="FontVariation" id="FontVariation_button"]
+base_font = ExtResource("3_nunito")
+variation_opentype = {
+2003265652: 900
+}
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button_disabled"]
 content_margin_left = 38.0
@@ -102,21 +74,12 @@ texture_margin_right = 30.0
 texture_margin_bottom = 30.0
 modulate_color = Color(0.7, 0.7, 0.7, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_button"]
-content_margin_left = 16.0
-content_margin_top = 14.0
-content_margin_right = 16.0
-content_margin_bottom = 18.0
-texture = ExtResource("1_button")
-texture_margin_left = 30.0
-texture_margin_top = 30.0
-texture_margin_right = 30.0
-texture_margin_bottom = 30.0
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rqugq"]
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_button_hover"]
-content_margin_left = 16.0
-content_margin_top = 14.0
-content_margin_right = 16.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button_hover"]
+content_margin_left = 38.0
+content_margin_top = 12.0
+content_margin_right = 30.0
 content_margin_bottom = 18.0
 texture = ExtResource("1_button")
 texture_margin_left = 30.0
@@ -125,10 +88,10 @@ texture_margin_right = 30.0
 texture_margin_bottom = 30.0
 modulate_color = Color(1.15, 1.15, 1.15, 1)
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_button_pressed"]
-content_margin_left = 16.0
-content_margin_top = 14.0
-content_margin_right = 16.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button_pressed"]
+content_margin_left = 38.0
+content_margin_top = 12.0
+content_margin_right = 30.0
 content_margin_bottom = 18.0
 texture = ExtResource("2_button_pressed")
 texture_margin_left = 30.0
@@ -136,53 +99,16 @@ texture_margin_top = 30.0
 texture_margin_right = 30.0
 texture_margin_bottom = 30.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bar_button"]
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tab"]
-content_margin_left = 26.0
-content_margin_top = 10.0
-content_margin_right = 26.0
-content_margin_bottom = 16.0
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button"]
+content_margin_left = 38.0
+content_margin_top = 12.0
+content_margin_right = 30.0
+content_margin_bottom = 18.0
 texture = ExtResource("1_button")
 texture_margin_left = 30.0
 texture_margin_top = 30.0
 texture_margin_right = 30.0
 texture_margin_bottom = 30.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tab_off"]
-content_margin_left = 26.0
-content_margin_top = 10.0
-content_margin_right = 26.0
-content_margin_bottom = 16.0
-texture = ExtResource("4_button_off")
-texture_margin_left = 30.0
-texture_margin_top = 30.0
-texture_margin_right = 30.0
-texture_margin_bottom = 30.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tab_hover"]
-content_margin_left = 26.0
-content_margin_top = 10.0
-content_margin_right = 26.0
-content_margin_bottom = 16.0
-texture = ExtResource("1_button")
-texture_margin_left = 30.0
-texture_margin_top = 30.0
-texture_margin_right = 30.0
-texture_margin_bottom = 30.0
-modulate_color = Color(1.15, 1.15, 1.15, 1)
-
-[sub_resource type="FontVariation" id="FontVariation_button"]
-base_font = ExtResource("3_nunito")
-variation_opentype = {
-2003265652: 900
-}
-
-[sub_resource type="FontVariation" id="FontVariation_body"]
-base_font = ExtResource("3_nunito")
-variation_opentype = {
-2003265652: 700
-}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7any1"]
 content_margin_left = 10.0
@@ -221,6 +147,40 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_button_hover"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 18.0
+texture = ExtResource("1_button")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
+modulate_color = Color(1.15, 1.15, 1.15, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_button_pressed"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 18.0
+texture = ExtResource("2_button_pressed")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_button"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 18.0
+texture = ExtResource("1_button")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtqkv"]
 content_margin_left = 28.0
 content_margin_top = 28.0
@@ -235,6 +195,40 @@ corner_radius_top_left = 28
 corner_radius_top_right = 28
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_47c11"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tab_hover"]
+content_margin_left = 26.0
+content_margin_top = 10.0
+content_margin_right = 26.0
+content_margin_bottom = 16.0
+texture = ExtResource("1_button")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
+modulate_color = Color(1.15, 1.15, 1.15, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tab"]
+content_margin_left = 26.0
+content_margin_top = 10.0
+content_margin_right = 26.0
+content_margin_bottom = 16.0
+texture = ExtResource("1_button")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_tab_off"]
+content_margin_left = 26.0
+content_margin_top = 10.0
+content_margin_right = 26.0
+content_margin_bottom = 16.0
+texture = ExtResource("4_button_off")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_de4b7"]
 content_margin_left = 12.0
@@ -251,6 +245,12 @@ corner_radius_top_left = 18
 corner_radius_top_right = 18
 corner_radius_bottom_right = 18
 corner_radius_bottom_left = 18
+
+[sub_resource type="FontVariation" id="FontVariation_body"]
+base_font = ExtResource("3_nunito")
+variation_opentype = {
+2003265652: 700
+}
 
 [resource]
 default_font = SubResource("FontVariation_body")
@@ -274,11 +274,11 @@ BubbleLabel/font_sizes/font_size = 38
 BubbleLabel/fonts/font = SubResource("FontVariation_bold")
 BubblePanel/base_type = &"PanelContainer"
 BubblePanel/styles/panel = SubResource("StyleBoxFlat_bubble")
-Button/colors/font_color = Color(0.0, 0.13, 0.13, 1)
-Button/colors/font_focus_color = Color(0.0, 0.13, 0.13, 1)
-Button/colors/font_hover_color = Color(0.0, 0.13, 0.13, 1)
-Button/colors/font_hover_pressed_color = Color(0.0, 0.13, 0.13, 1)
-Button/colors/font_pressed_color = Color(0.0, 0.13, 0.13, 1)
+Button/colors/font_color = Color(0, 0.13, 0.13, 1)
+Button/colors/font_focus_color = Color(0, 0.13, 0.13, 1)
+Button/colors/font_hover_color = Color(0, 0.13, 0.13, 1)
+Button/colors/font_hover_pressed_color = Color(0, 0.13, 0.13, 1)
+Button/colors/font_pressed_color = Color(0, 0.13, 0.13, 1)
 Button/constants/h_separation = 24
 Button/constants/icon_max_width = 84
 Button/font_sizes/font_size = 31
@@ -290,17 +290,17 @@ Button/styles/hover_pressed = SubResource("StyleBoxTexture_button_pressed")
 Button/styles/normal = SubResource("StyleBoxTexture_button")
 Button/styles/pressed = SubResource("StyleBoxTexture_button_pressed")
 CardInfo/base_type = &"Label"
-CardInfo/colors/font_color = Color(0.0, 0.2, 0.2, 1)
+CardInfo/colors/font_color = Color(0, 0.2, 0.2, 1)
 CardInfo/font_sizes/font_size = 28
 CardInfo/fonts/font = SubResource("FontVariation_button")
 CardPanel/base_type = &"PanelContainer"
 CardPanel/styles/panel = SubResource("StyleBoxFlat_7any1")
 CardTitle/base_type = &"Label"
-CardTitle/colors/font_color = Color(0.0, 0.13, 0.13, 1)
+CardTitle/colors/font_color = Color(0, 0.13, 0.13, 1)
 CardTitle/font_sizes/font_size = 48
 CardTitle/fonts/font = SubResource("FontVariation_button")
 ClockLabel/base_type = &"Label"
-ClockLabel/colors/font_color = Color(0.0, 0.13, 0.13, 1)
+ClockLabel/colors/font_color = Color(0, 0.13, 0.13, 1)
 ClockLabel/font_sizes/font_size = 96
 ClockLabel/fonts/font = SubResource("FontVariation_button")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_3fgq6")
@@ -331,9 +331,9 @@ SheetPanel/styles/panel = SubResource("StyleBoxFlat_rtqkv")
 SmallLabel/base_type = &"Label"
 SmallLabel/colors/font_color = Color(0.43, 0.43, 0.43600002, 1)
 SmallLabel/font_sizes/font_size = 32
-TabBar/colors/font_hovered_color = Color(0.0, 0.13, 0.13, 1)
-TabBar/colors/font_selected_color = Color(0.0, 0.13, 0.13, 1)
-TabBar/colors/font_unselected_color = Color(0.0, 0.13, 0.13, 1)
+TabBar/colors/font_hovered_color = Color(0, 0.13, 0.13, 1)
+TabBar/colors/font_selected_color = Color(0, 0.13, 0.13, 1)
+TabBar/colors/font_unselected_color = Color(0, 0.13, 0.13, 1)
 TabBar/font_sizes/font_size = 36
 TabBar/fonts/font = SubResource("FontVariation_button")
 TabBar/styles/tab_focus = SubResource("StyleBoxEmpty_47c11")
