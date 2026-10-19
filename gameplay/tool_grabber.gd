@@ -30,6 +30,7 @@ const PICK_LAYER := 1 << 7
 const DROP_ZONE_LAYER := 1 << 8
 const RAY_LENGTH := 100.0
 const OUTLINE_NODE := &"HighlightOutline"
+const GLOW_NODE := &"HighlightGlow"
 
 ## Outline copies of each mesh, with smoothed normals, made once and shared.
 static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
@@ -47,11 +48,14 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 @export var hold_seconds := 0.15
 ## A press that moves further than this before hold_seconds is not a grab.
 @export var hold_slop_pixels := 24.0
-## Highlight of the held tool.
-@export var glow_color := Color(0.7, 1.0, 0.2):
+## Light glow on the held tool itself. Its outline is a moving rainbow neon with a soft
+## glow and twinkles, after Julia's reference video: the materials held_neon_outline.tres and
+## held_neon_glow.tres, plus little stars floating off it (HeldSparkles). Tune them all in
+## dev/neon_preview/neon_preview.tscn.
+@export var glow_color := Color(1.0, 0.99, 0.88):
 	set(value):
 		glow_color = value
-		_set_highlight_color(_glow, value)
+		_glow.set_shader_parameter("glow_color", value)
 ## Highlight of tools marked with hint().
 @export var hint_color := Color(0.3, 0.8, 1.0):
 	set(value):
@@ -131,6 +135,12 @@ func _ready() -> void:
 	_set_highlight_color(_glow, glow_color)
 	_set_highlight_color(_hint_glow, hint_color)
 	_set_highlight_color(_reject_glow, reject_color)
+	# The held tool: the neon outline and glow (their colours are their own), and the tool
+	# keeps its own colour.
+	_glow.set_meta(&"outline", preload("res://gameplay/held_neon_outline.tres"))
+	_glow.set_meta(&"glow", preload("res://gameplay/held_neon_glow.tres"))
+	_glow.set_shader_parameter("base_strength", 0.0)
+	_glow.set_shader_parameter("rim_strength", 0.15)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -345,10 +355,15 @@ func _set_glow(tool: SurgicalTool, on: bool) -> void:
 		glow = _reject_glow
 	elif _hinted.has(tool):
 		glow = _hint_glow
+	if on:
+		HeldSparkles.start(tool)
+	else:
+		HeldSparkles.stop(tool)
 	for node in tool.find_children("*", "MeshInstance3D", true, false):
 		var mesh_instance := node as MeshInstance3D
-		if mesh_instance.name == OUTLINE_NODE or mesh_instance.mesh == null:
+		if mesh_instance.name in [OUTLINE_NODE, GLOW_NODE] or mesh_instance.mesh == null:
 			continue
+		_set_outer_glow(mesh_instance, glow.get_meta(&"glow") if glow and glow.has_meta(&"glow") else null)
 		mesh_instance.material_overlay = glow
 		var outline := mesh_instance.get_node_or_null(NodePath(OUTLINE_NODE)) as MeshInstance3D
 		if glow == null:
@@ -363,6 +378,23 @@ func _set_glow(tool: SurgicalTool, on: bool) -> void:
 			mesh_instance.add_child(outline)
 		outline.material_override = glow.get_meta(&"outline")
 		outline.show()
+
+
+## The soft glow around an outline, for highlights that have one (the held tool's neon).
+func _set_outer_glow(mesh_instance: MeshInstance3D, material: Material) -> void:
+	var outer := mesh_instance.get_node_or_null(NodePath(GLOW_NODE)) as MeshInstance3D
+	if material == null:
+		if outer:
+			outer.hide()
+		return
+	if outer == null:
+		outer = MeshInstance3D.new()
+		outer.name = GLOW_NODE
+		outer.mesh = _outline_mesh(mesh_instance.mesh)
+		outer.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+		mesh_instance.add_child(outer)
+	outer.material_override = material
+	outer.show()
 
 
 ## The mesh with its normals averaged wherever corners share a position, so

@@ -1,0 +1,11 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dsqggct03v3fu"]
+
+[ext_resource type="Shader" uid="uid://djgwsx40f4gfh" path="res://gameplay/highlight_neon.gdshader" id="1"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1")
+shader_parameter/width = 0.006
+shader_parameter/band_px = 1470.0
+shader_parameter/speed = 0.39
+shader_parameter/whiteness = 1.0

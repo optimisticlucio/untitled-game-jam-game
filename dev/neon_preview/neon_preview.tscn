@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://dso0q7xyonf3t"]
+
+[ext_resource type="Script" uid="uid://nx02f0q374wr" path="res://dev/neon_preview/neon_preview.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://0vwy0j3257aj" path="res://assets/instruments/mayo_scissors.glb" id="2_tool"]
+[ext_resource type="ArrayMesh" path="res://dev/neon_preview/mayo_outline_mesh.res" id="3_mesh"]
+[ext_resource type="Material" uid="uid://dsqggct03v3fu" path="res://gameplay/held_neon_outline.tres" id="4_outline"]
+[ext_resource type="Material" uid="uid://bjvyo7k3n1xle" path="res://gameplay/held_neon_glow.tres" id="5_glow"]
+
+[sub_resource type="Environment" id="Environment_preview"]
+background_mode = 1
+background_color = Color(0.16, 0.2, 0.22, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.6, 0.7, 0.75, 1)
+
+[node name="NeonPreview" type="Node3D" unique_id=1234716245]
+script = ExtResource("1_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=702664090]
+environment = SubResource("Environment_preview")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=791150415]
+transform = Transform3D(-0.502136, 0.49469, -0.709325, 0, 0.820229, 0.572036, 0.864789, 0.28724, -0.411866, 0, 1, 0)
+light_color = Color(1, 0.97, 0.9, 1)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=205936434]
+transform = Transform3D(1, 0, 0, 0, 0.374, 0.9274, 0, -0.9274, 0.374, 0, 3, 1.2)
+keep_aspect = 0
+current = true
+fov = 40.0
+
+[node name="Tool" parent="." unique_id=1412583529 instance=ExtResource("2_tool")]
+transform = Transform3D(8, 0, 6, 0, 10, 0, -6, 0, 8, 0, 0, 0)
+
+[node name="HighlightOutline" type="MeshInstance3D" parent="Tool" unique_id=1625164060]
+material_override = ExtResource("4_outline")
+cast_shadow = 0
+mesh = ExtResource("3_mesh")
+
+[node name="HighlightGlow" type="MeshInstance3D" parent="Tool" unique_id=597915166]
+material_override = ExtResource("5_glow")
+cast_shadow = 0
+mesh = ExtResource("3_mesh")

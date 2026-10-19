@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://ci0it174lmc4v"]
+
+[ext_resource type="Material" uid="uid://c17wo02cb1gre" path="res://gameplay/held_sparkle.tres" id="1_star"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_star"]
+
+[sub_resource type="Gradient" id="Gradient_pastel"]
+offsets = PackedFloat32Array(0, 0.25, 0.5, 0.75, 1)
+colors = PackedColorArray(1, 0.62, 0.86, 1, 1, 0.94, 0.62, 1, 0.62, 1, 0.78, 1, 0.62, 0.88, 1, 1, 0.8, 0.7, 1, 1)
+
+[node name="HeldSparkles" type="CPUParticles3D" unique_id=983764024]
+material_override = ExtResource("1_star")
+cast_shadow = 0
+amount = 17
+lifetime = 0.8
+preprocess = 0.6
+randomness = 0.5
+mesh = SubResource("QuadMesh_star")
+emission_shape = 5
+emission_points = PackedVector3Array()
+emission_normals = PackedVector3Array()
+direction = Vector3(0, 0, 1)
+spread = 119.0
+gravity = Vector3(0, 0.014999999, 0)
+initial_velocity_min = 0.0033333334
+initial_velocity_max = 0.01
+angle_max = 360.0
+color_initial_ramp = SubResource("Gradient_pastel")
