@@ -121,8 +121,8 @@ func _build_room() -> void:
 	sun.shadow_enabled = true
 	sun.directional_shadow_mode = DirectionalLight3D.SHADOW_ORTHOGONAL
 	sun.directional_shadow_max_distance = 1.5
-	sun.shadow_bias = 0.01
-	sun.shadow_normal_bias = 1.0
+	sun.shadow_bias = 0.03
+	sun.shadow_normal_bias = 2.0
 	add_child(sun)
 
 	var ground := MeshInstance3D.new()
