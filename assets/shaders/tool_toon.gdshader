@@ -24,6 +24,9 @@ uniform float stain_amount = 0.0;
 group_uniforms look;
 // Overall lightness of the tools (Julia's "בהירות הכלים"); the tray isn't affected.
 uniform float tool_value : hint_range(0.3, 1.3) = 0.75;
+// How much of the textures' fine grain (brushed streaks) shows: 1 = all of it, 0 = smoothed
+// away; the larger shapes in the textures stay. Julia found the full grain too noisy.
+uniform float texture_detail : hint_range(0.0, 1.0) = 0.3;
 
 group_uniforms wear;
 uniform float scratch_scale = 22.0;
@@ -48,8 +51,10 @@ void vertex() {
 }
 
 void fragment() {
-	vec3 base = texture(albedo_tex, UV).rgb;
-	vec3 orm = texture(orm_tex, UV).rgb;
+	// The smooth version is a few mip levels softer than what the screen needs, so the grain goes
+	// at any distance.
+	vec3 base = mix(texture(albedo_tex, UV, 2.5).rgb, texture(albedo_tex, UV).rgb, texture_detail);
+	vec3 orm = mix(texture(orm_tex, UV, 2.5).rgb, texture(orm_tex, UV).rgb, texture_detail);
 	v_rough = orm.g;
 	v_metal = orm.b;
 	v_ao = orm.r;
