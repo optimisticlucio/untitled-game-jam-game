@@ -38,19 +38,25 @@ func _card(level: LevelData, you: String) -> Control:
 	card.custom_minimum_size = Vector2(0, 160)
 	card.pressed.connect(_play.bind(level))
 	var column := VBoxContainer.new()
-	column.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 24)
+	column.set_anchors_preset(Control.PRESET_FULL_RECT)
+	# Inside the painted button: clear of its outline, and of the dark band along its bottom.
+	column.offset_left = 34.0
+	column.offset_top = 14.0
+	column.offset_right = -34.0
+	column.offset_bottom = -26.0
 	column.alignment = BoxContainer.ALIGNMENT_CENTER
+	column.add_theme_constant_override(&"separation", 2)
 	column.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	card.add_child(column)
 	var title := Label.new()
 	title.text = level.display_title()
-	title.theme_type_variation = &"HeaderLabel"
+	title.theme_type_variation = &"CardTitle"
 	# Trimmed, not wrapped, so a long title can't push the card past the screen edge.
 	title.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	column.add_child(title)
 	var best := Label.new()
 	best.text = _best_text(level, you)
-	best.theme_type_variation = &"SmallLabel"
+	best.theme_type_variation = &"CardInfo"
 	column.add_child(best)
 	return card
 
