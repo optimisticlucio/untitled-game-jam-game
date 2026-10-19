@@ -21,6 +21,7 @@ Game jam project in Godot 4.7 (GDScript). Several people work on it with Claude.
 - Lookalike pairs will live in one central list, not on each tool (avoids out-of-sync data). Not built yet.
 - Instrument naming language: undecided. Refer to tools by `id` in code, and pass display names through `tr()`.
 - Tool pictures in dialogs: render the model at runtime (`ui/tool_preview.tscn`, slow spin). No PNGs from the artists.
+- The surgeon (`gameplay/surgeon.tscn`, Julia's Spine animation as frames) is an `AnimatedSprite3D` in the level's 3D world facing the camera, not UI, so held and handed tools show in front of him and the tray hides his lower body. He stands just behind the tray's far rim, below the table, so the table's material doesn't write depth (`render_priority` -1) and only the tray covers him. `Target` (with `HandOffZone`) sits on his hand: move them together. Handed tools ride his hand and he throws them (`ToolGrabber.surgeon`, timing in `Surgeon.correct_steps`/`wrong_steps`).
 
 ## Surgical tools
 

@@ -70,6 +70,9 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 @export var finger_offset_pixels := 90.0
 ## How quickly the held tool catches up with the finger.
 @export var follow_sharpness := 12.0
+## A held tool turns, at the same pace, to lie flat with its long side across the screen, so it
+## lands sideways on the surgeon's hand.
+@export var turn_held_across := true
 ## Height above the tray floor that returned tools are let go from.
 @export var drop_height := 0.16
 @export var return_seconds := 0.35
@@ -82,6 +85,26 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 ## How long a consumed tool takes to drop onto the hand-off zone, then to shrink away.
 @export var consume_drop_seconds := 0.3
 @export var consume_shrink_seconds := 0.2
+
+@export_group("Surgeon")
+## The surgeon who takes handed tools, or none. With him, a handed tool drops onto his hand and
+## rides on it through what he does with it (Surgeon.take(): the timing is his), and when his
+## animation lets go it flies off the way his hand moves: a right one off the screen, a wrong one
+## back onto the tray. Without him, consumed tools shrink away on hand_off_zone and rejected ones
+## hover for reject_seconds, then fly back.
+@export var surgeon: Surgeon
+## Where he throws a right tool, from his hand (metres): up and a little right, off the top of
+## the screen.
+@export var toss_away := Vector3(0.12, 0.09, -0.23)
+@export var toss_away_seconds := 0.7
+## How much of his hand's speed a right tool sets off with (1 = all of it).
+@export var toss_away_follow_hand := 1.0
+## A wrong tool thrown back onto the tray: how much of his hand's speed it sets off with, and how
+## long it flies.
+@export var throw_back_follow_hand := 1.0
+@export var throw_back_seconds := 0.55
+## Turns a tool thrown away spins in the air.
+@export var toss_spin_turns := 1.0
 
 @export_group("Sounds")
 ## Played when an instrument is picked up. Silly items play their own drop_sound instead.
@@ -116,6 +139,8 @@ var _press_time := 0.0
 var _is_touch := false
 var _candidate: SurgicalTool
 var _held: SurgicalTool
+## The heading the held tool turns to (see turn_held_across).
+var _held_yaw := 0.0
 ## Tools mid-flight back to the tray. They can't be grabbed until they land.
 var _flying: Dictionary[SurgicalTool, bool] = {}
 ## Where each released tool appeared to be let go: the point on the table
@@ -219,28 +244,38 @@ func _process(delta: float) -> void:
 		var target := _held_position()
 		var weight := 1.0 - exp(-follow_sharpness * delta)
 		_held.global_position = _held.global_position.lerp(target, weight)
+		if turn_held_across:
+			_held.global_basis = _held.global_basis.slerp(Basis(Vector3.UP, _held_yaw), weight)
 
 
 ## Drops a handed-over tool onto the middle of the hand-off zone, shrinks it
-## away and frees it. Await the returned signal to act once it's gone.
+## away and frees it. With a surgeon, it drops onto his hand instead, he nods
+## and throws it up off the screen. Await the returned signal to act once it's
+## gone.
 func consume(tool: SurgicalTool) -> Signal:
 	_released_over.erase(tool)
 	_make_intangible(tool)
 	_flying[tool] = true
-	var landing := hand_off_zone.global_transform * _first_shape(hand_off_zone).position
-	var flat_rotation := Vector3(0.0, tool.global_rotation.y, 0.0)
-	var tween := create_tween()
-	tween.set_parallel()
-	tween.tween_property(tool, "global_position", landing, consume_drop_seconds) \
-		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
-	tween.tween_property(tool, "global_rotation", flat_rotation, consume_drop_seconds)
-	tween.chain()
+	var tween := _drop_onto_hand(tool)
 	tween.tween_callback(_play.bind(receive_sound))
-	# Shrink the visuals, not the body: physics bodies don't scale well.
-	for child in tool.get_children():
-		if child is Node3D and not child is CollisionShape3D:
-			tween.tween_property(child, "scale", Vector3.ONE * 0.001, consume_shrink_seconds) \
-				.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	if surgeon:
+		_ride_hand(tween, tool, true)
+		# Where it's thrown from is only known once he lets go.
+		var flight := {}
+		tween.tween_callback(func() -> void:
+			flight.from = tool.global_position
+			flight.via = flight.from + surgeon.throw_velocity(true) * toss_away_follow_hand * toss_away_seconds / 2.0
+			flight.yaw = tool.global_rotation.y)
+		tween.tween_method(func(t: float) -> void:
+			tool.global_position = _toss_point(flight.from, flight.via, flight.from + toss_away, t)
+			tool.global_rotation.y = flight.yaw - t * toss_spin_turns * TAU, 0.0, 1.0, toss_away_seconds)
+	else:
+		tween.set_parallel()
+		# Shrink the visuals, not the body: physics bodies don't scale well.
+		for child in tool.get_children():
+			if child is Node3D and not child is CollisionShape3D:
+				tween.tween_property(child, "scale", Vector3.ONE * 0.001, consume_shrink_seconds) \
+					.set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	tween.chain().tween_callback(func() -> void:
 		_flying.erase(tool)
 		_saved_layers.erase(tool)
@@ -249,13 +284,24 @@ func consume(tool: SurgicalTool) -> Signal:
 
 
 ## For a tool handed over wrong: it hovers where it was let go, highlighted
-## in reject_color, for reject_seconds, then goes back to the tray.
+## in reject_color, for reject_seconds, then goes back to the tray. With a
+## surgeon, it drops onto his hand, still highlighted, and he says no and
+## throws it back onto the tray.
 func reject(tool: SurgicalTool) -> void:
 	_make_intangible(tool)
 	# Not grabbable while it hovers.
 	_flying[tool] = true
 	_rejecting[tool] = true
 	_set_glow(tool, false)
+	if surgeon:
+		var tween := _drop_onto_hand(tool)
+		_ride_hand(tween, tool, false)
+		tween.tween_callback(func() -> void:
+			_rejecting.erase(tool)
+			# Thrown, so anywhere on the tray rather than near where it was let go.
+			_released_over[tool] = tray.random_point()
+			return_to_tray(tool, surgeon.throw_velocity(false) * throw_back_follow_hand))
+		return
 	get_tree().create_timer(reject_seconds, false).timeout.connect(func() -> void:
 		_rejecting.erase(tool)
 		_flying.erase(tool)
@@ -266,7 +312,9 @@ func reject(tool: SurgicalTool) -> void:
 ## Flies a tool to the nearest spot on the tray where it fits (turning it
 ## only if that gets it closer), eases it to a stop drop_height above the
 ## floor, and lets it fall. The rest of the pile is nudged when it lands.
-func return_to_tray(tool: SurgicalTool) -> void:
+## With a throw_velocity it's thrown instead: it sets off that way and takes
+## throw_back_seconds.
+func return_to_tray(tool: SurgicalTool, throw_velocity := Vector3.ZERO) -> void:
 	_play(return_sound)
 	_make_intangible(tool)
 	_set_glow(tool, false)
@@ -276,17 +324,55 @@ func return_to_tray(tool: SurgicalTool) -> void:
 	var placement := tray.nearest_placement(tool, near, tool.global_rotation.y, return_margin)
 	var spot := placement.origin + Vector3.UP * drop_height
 	var flat_rotation := Vector3(0.0, placement.basis.get_euler().y, 0.0)
+	var seconds := return_seconds
 	var tween := create_tween().set_parallel().set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	tween.tween_property(tool, "global_position", spot, return_seconds)
-	tween.tween_property(tool, "global_rotation", flat_rotation, return_seconds)
+	if throw_velocity == Vector3.ZERO:
+		tween.tween_property(tool, "global_position", spot, seconds)
+	else:
+		seconds = throw_back_seconds
+		var from := tool.global_position
+		var via := from + throw_velocity * seconds / 2.0
+		tween.tween_method(func(t: float) -> void: tool.global_position = _toss_point(from, via, spot, t),
+			0.0, 1.0, seconds).set_trans(Tween.TRANS_LINEAR)
+	tween.tween_property(tool, "global_rotation", flat_rotation, seconds)
 	tween.chain().tween_callback(func() -> void:
 		_flying.erase(tool)
 		_drop(tool)
 		_on_landing(tool))
 
 
+## Starts a tween that drops a handed-over tool, lying flat, onto the
+## surgeon's hand or the middle of the hand-off zone. Steps added to it run
+## one after another, after the drop.
+func _drop_onto_hand(tool: SurgicalTool) -> Tween:
+	var landing := surgeon.hand_point() if surgeon \
+		else hand_off_zone.global_transform * _first_shape(hand_off_zone).position
+	var flat_rotation := Vector3(0.0, tool.global_rotation.y, 0.0)
+	var tween := create_tween().set_parallel()
+	tween.tween_property(tool, "global_position", landing, consume_drop_seconds) \
+		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
+	tween.tween_property(tool, "global_rotation", flat_rotation, consume_drop_seconds)
+	tween.set_parallel(false)
+	return tween
+
+
+## Adds to the tween: the surgeon takes the tool, and it rides on his hand
+## until his animation lets go of it.
+func _ride_hand(tween: Tween, tool: SurgicalTool, right: bool) -> void:
+	tween.tween_callback(surgeon.take.bind(right))
+	tween.tween_method(func(_t: float) -> void: tool.global_position = surgeon.hand_point(),
+		0.0, 1.0, surgeon.release_delay(right))
+
+
+## A point on a throw, t from 0 to 1: a curve that sets off towards via (at
+## the speed that would reach it halfway through) and ends at to.
+static func _toss_point(from: Vector3, via: Vector3, to: Vector3, t: float) -> Vector3:
+	return from.lerp(via, t).lerp(via.lerp(to, t), t)
+
+
 func _grab(tool: SurgicalTool) -> void:
 	_held = tool
+	_held_yaw = _across_yaw(tool)
 	_make_intangible(tool)
 	_set_glow(tool, true)
 	# Silly items sound like themselves when picked up too (the duck squeaks); instruments clink.
@@ -298,6 +384,22 @@ func _grab(tool: SurgicalTool) -> void:
 	for other in tray.tools():
 		other.sleeping = false
 	tool_grabbed.emit(tool)
+
+
+## The heading that lays the tool's long side across the screen (along world
+## X), whichever of the two ways round is nearer its heading now.
+func _across_yaw(tool: SurgicalTool) -> float:
+	var box := AABB()
+	for mesh_instance: MeshInstance3D in tool.find_children("*", "MeshInstance3D", true, false):
+		if mesh_instance.mesh == null or mesh_instance.name in [OUTLINE_NODE, GLOW_NODE]:
+			continue
+		var to_tool := tool.global_transform.affine_inverse() * mesh_instance.global_transform
+		box = box.merge(to_tool * mesh_instance.get_aabb())
+	var across := 0.0 if box.size.x >= box.size.z else PI / 2.0
+	var yaw := tool.global_rotation.y
+	if absf(angle_difference(yaw, across)) > absf(angle_difference(yaw, across + PI)):
+		across += PI
+	return across
 
 
 func _release() -> void:

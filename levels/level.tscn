@@ -17,6 +17,7 @@
 [ext_resource type="AudioStream" path="res://assets/sounds/gameplay/tray_slide.wav" id="13_tray_slide"]
 [ext_resource type="AudioStream" path="res://assets/sounds/gameplay/level_complete.wav" id="14_complete"]
 [ext_resource type="Script" path="res://gameplay/light_flicker.gd" id="flicker_script"]
+[ext_resource type="PackedScene" path="res://gameplay/surgeon.tscn" id="22_surgeon"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_main"]
 
@@ -30,6 +31,8 @@ ambient_light_source = 3
 reflected_light_source = 2
 
 [sub_resource type="StandardMaterial3D" id="Material_table"]
+render_priority = -1
+depth_draw_mode = 2
 albedo_color = Color(0.18, 0.2, 0.22, 1)
 
 [sub_resource type="StandardMaterial3D" id="Material_target"]
@@ -47,7 +50,7 @@ material = SubResource("Material_target")
 size = Vector3(0.1, 0.02, 0.1)
 
 [sub_resource type="BoxShape3D" id="Shape_hand_off_zone"]
-size = Vector3(0.12, 0.04, 0.12)
+size = Vector3(0.13, 0.04, 0.13)
 
 [sub_resource type="StyleBoxFlat" id="Style_popup"]
 content_margin_left = 40.0
@@ -102,9 +105,10 @@ shape = SubResource("Shape_table")
 [node name="Tray" parent="." instance=ExtResource("4_tray")]
 
 [node name="Target" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.06, 0, -0.3)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.006, 0.0332, -0.2726)
 
 [node name="Mesh" type="MeshInstance3D" parent="Target"]
+visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 mesh = SubResource("Mesh_target")
 
@@ -118,11 +122,15 @@ monitorable = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
 shape = SubResource("Shape_hand_off_zone")
 
-[node name="ToolGrabber" type="Node" parent="." node_paths=PackedStringArray("camera", "tray", "hand_off_zone")]
+[node name="Surgeon" parent="." instance=ExtResource("22_surgeon")]
+transform = Transform3D(1, 0, 0, 0, 0.374, 0.9274, 0, -0.9274, 0.374, -0.08362, 0.02922, -0.29338)
+
+[node name="ToolGrabber" type="Node" parent="." node_paths=PackedStringArray("camera", "tray", "hand_off_zone", "surgeon")]
 script = ExtResource("2_grabber")
 camera = NodePath("../Camera3D")
 tray = NodePath("../Tray")
 hand_off_zone = NodePath("../Target/HandOffZone")
+surgeon = NodePath("../Surgeon")
 
 [node name="Hud" parent="." instance=ExtResource("6_hud")]
 
@@ -131,9 +139,9 @@ hand_off_zone = NodePath("../Target/HandOffZone")
 [node name="Request" type="PanelContainer" parent="UI"]
 unique_name_in_owner = true
 anchor_right = 1.0
-offset_left = 200.0
+offset_left = 260.0
 offset_top = 16.0
-offset_right = -24.0
+offset_right = -30.0
 offset_bottom = 230.0
 grow_horizontal = 2
 mouse_filter = 2
@@ -160,11 +168,11 @@ theme_type_variation = &"BubbleInner"
 [node name="Content" type="HBoxContainer" parent="UI/Request/Inner"]
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 24
+theme_override_constants/separation = 16
 
 [node name="PreviewCircle" type="Control" parent="UI/Request/Inner/Content"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 150)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 2
 size_flags_vertical = 4
 mouse_filter = 2
@@ -176,10 +184,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -52.0
-offset_top = -52.0
-offset_right = 52.0
-offset_bottom = 52.0
+offset_left = -42.0
+offset_top = -42.0
+offset_right = 42.0
+offset_bottom = 42.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -188,17 +196,17 @@ theme_type_variation = &"BubbleCircle"
 [node name="ToolPreview" parent="UI/Request/Inner/Content/PreviewCircle" instance=ExtResource("3_preview")]
 unique_name_in_owner = true
 material = SubResource("Material_outline")
-custom_minimum_size = Vector2(150, 150)
+custom_minimum_size = Vector2(120, 120)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -75.0
-offset_top = -75.0
-offset_right = 75.0
-offset_bottom = 75.0
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -208,6 +216,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_type_variation = &"BubbleLabel"
+theme_override_font_sizes/font_size = 32
 vertical_alignment = 1
 autowrap_mode = 3
 

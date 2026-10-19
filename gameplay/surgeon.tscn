@@ -1,0 +1,13 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://gameplay/surgeon.gd" id="1_script"]
+[ext_resource type="SpriteFrames" path="res://assets/surgeon/surgeon_frames.tres" id="2_frames"]
+
+[node name="Surgeon" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Sprite" type="AnimatedSprite3D" parent="."]
+pixel_size = 0.0007367
+texture_filter = 1
+sprite_frames = ExtResource("2_frames")
+animation = &"idle"
