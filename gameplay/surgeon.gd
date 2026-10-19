@@ -34,6 +34,12 @@ extends Node3D
 ## The same for a wrong tool: it sits on his hand for a moment, then he says no with an open hand.
 @export var wrong_steps: Array = [0.5, &"wrong"]
 @export var wrong_release_frame := 1
+## What he says as an animation starts (on the Voice player): animation name → sound. Keep each
+## sound shorter than its animation, so he isn't still talking when he moves on.
+@export var voices: Dictionary[StringName, AudioStream] = {}
+## Frames of the impatient loop where his fingers snap (the hand jumps to the snapped drawing),
+## for the Snap player. Check them when the loop is exported or packed again.
+@export var snap_frames := PackedInt32Array([4, 10])
 
 var _taking := false
 ## Counts take() calls, so an older one stops when a newer one starts.
@@ -42,6 +48,8 @@ var _take_count := 0
 @onready var _sprite: AnimatedSprite3D = $Sprite
 ## His fingers, which follow Sprite's animation and frame.
 @onready var _front: AnimatedSprite3D = $Front
+@onready var _voice: AudioStreamPlayer = $Voice
+@onready var _snap: AudioStreamPlayer = $Snap
 ## Where his hand is in every frame of every animation (frame px, y down), from the Spine export.
 @onready var _hands: Dictionary = _sprite.sprite_frames.get_meta(&"hands")
 
@@ -50,6 +58,9 @@ func _ready() -> void:
 	_place_front()
 	_sprite.animation_changed.connect(_sync_front)
 	_sprite.frame_changed.connect(_sync_front)
+	_sprite.frame_changed.connect(func() -> void:
+		if _sprite.animation == &"impatient" and _sprite.frame in snap_frames:
+			_snap.play())
 	# Only one-shots finish; the waiting loops never do. During take() it moves on by itself.
 	_sprite.animation_finished.connect(func() -> void:
 		if not _taking:
@@ -126,6 +137,9 @@ func _play(anim: StringName) -> void:
 	_sprite.play(anim)
 	# play() carries on if it's already this animation; a second hand-off starts it over.
 	_sprite.set_frame_and_progress(0, 0.0)
+	if voices.has(anim):
+		_voice.stream = voices[anim]
+		_voice.play()
 
 
 func _waiting() -> StringName:

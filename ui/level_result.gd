@@ -18,11 +18,15 @@ var _run: RunRecord
 func _ready() -> void:
 	(%SaveButton as Button).pressed.connect(_save)
 	_name.text_submitted.connect(func(_text: String) -> void: _save())
+	_name.text_changed.connect(func(_text: String) -> void: get_node(^"/root/UiSounds/Key").play())
 	(%LeaderboardButton as Button).pressed.connect(_open_leaderboard)
 	(%PlayAgainButton as Button).pressed.connect(play_again_pressed.emit)
 	(%MenuButton as Button).pressed.connect(func() -> void: get_tree().change_scene_to_file(MAIN_MENU))
+	var sounds := {%SaveButton: ^"", %PlayAgainButton: ^"/root/UiSounds/Play", %MenuButton: ^"/root/UiSounds/Back"}
 	for button in find_children("*", "BaseButton", true, false):
-		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
+		var sound: NodePath = sounds.get(button, ^"/root/UiSounds/Click")
+		if not sound.is_empty():  # Save plays its own sound in _save(), Enter in the name field too.
+			button.pressed.connect(get_node(sound).play)
 	(%RankLabel as Label).hide()
 
 
@@ -41,6 +45,7 @@ func show_run(level: LevelData, run: RunRecord) -> void:
 func _save() -> void:
 	if not (%NameRow as Control).visible:
 		return
+	get_node(^"/root/UiSounds/Save").play()
 	var result := ScoreBoard.submit(_level, _name.text, _run)
 	(%NameRow as Control).hide()
 	(%SaveButton as Control).hide()

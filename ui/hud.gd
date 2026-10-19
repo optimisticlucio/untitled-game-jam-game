@@ -31,8 +31,8 @@ func _ready() -> void:
 	(%ExitButton as Button).pressed.connect(_on_exit_pressed)
 	_mute.set_pressed_no_signal(SettingsPanel.is_muted())
 	_mute.toggled.connect(_on_mute_toggled)
-	for button in find_children("*", "BaseButton", true, false):
-		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
+	(%SettingsButton as Button).pressed.connect(get_node(^"/root/UiSounds/Click").play)
+	(%ExitButton as Button).pressed.connect(get_node(^"/root/UiSounds/Back").play)
 	_update_mute_icon()
 	_update_clock()
 
@@ -67,8 +67,17 @@ func _update_clock() -> void:
 
 
 func _on_mute_toggled(muted: bool) -> void:
-	SettingsPanel.set_muted(muted)
 	_update_mute_icon()
+	if not muted:
+		SettingsPanel.set_muted(false)
+		get_node(^"/root/UiSounds/Unmute").play()
+		return
+	# Muting at once would cut off the "off" sound, so it mutes once that has played.
+	var off := get_node(^"/root/UiSounds/Mute") as AudioStreamPlayer
+	off.play()
+	await get_tree().create_timer(off.stream.get_length()).timeout
+	if _mute.button_pressed:
+		SettingsPanel.set_muted(true)
 
 
 func _update_mute_icon() -> void:

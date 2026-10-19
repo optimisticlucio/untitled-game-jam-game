@@ -9,7 +9,8 @@
 [ext_resource type="Theme" path="res://ui/theme.tres" id="7_theme"]
 [ext_resource type="Shader" path="res://ui/preview_outline.gdshader" id="8_outline"]
 [ext_resource type="AudioStream" path="res://assets/sounds/music/ambience_or_room.wav" id="8_ambience"]
-[ext_resource type="AudioStream" path="res://assets/sounds/music/heart_monitor.wav" id="21_monitor"]
+[ext_resource type="AudioStream" path="res://assets/sounds/music/monitor_beep.wav" id="21_monitor"]
+[ext_resource type="Script" path="res://gameplay/heart_monitor.gd" id="22_heart_monitor"]
 [ext_resource type="AudioStream" path="res://assets/sounds/gameplay/handoff_correct.wav" id="9_correct"]
 [ext_resource type="AudioStream" path="res://assets/sounds/gameplay/handoff_wrong.wav" id="10_wrong"]
 [ext_resource type="AudioStream" path="res://assets/sounds/gameplay/request_new.wav" id="11_request"]
@@ -297,8 +298,9 @@ bus = &"Music"
 [node name="Monitor" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("21_monitor")
 volume_db = -12.0
-autoplay = true
+max_polyphony = 2
 bus = &"Music"
+script = ExtResource("22_heart_monitor")
 
 [node name="Correct" type="AudioStreamPlayer" parent="Sounds"]
 stream = ExtResource("9_correct")

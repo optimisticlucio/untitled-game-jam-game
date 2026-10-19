@@ -3,9 +3,35 @@
 [ext_resource type="Script" path="res://gameplay/surgeon.gd" id="1_script"]
 [ext_resource type="SpriteFrames" path="res://assets/surgeon/surgeon_frames.tres" id="2_frames"]
 [ext_resource type="SpriteFrames" path="res://assets/surgeon/surgeon_front_frames.tres" id="3_front"]
+[ext_resource type="AudioStream" path="res://assets/sounds/gameplay/surgeon_yes_1.wav" id="6_yes_1"]
+[ext_resource type="AudioStream" path="res://assets/sounds/gameplay/surgeon_yes_2.wav" id="6_yes_2"]
+[ext_resource type="AudioStream" path="res://assets/sounds/gameplay/surgeon_yes_3.wav" id="6_yes_3"]
+[ext_resource type="AudioStream" path="res://assets/sounds/gameplay/surgeon_no_1.wav" id="7_no_1"]
+[ext_resource type="AudioStream" path="res://assets/sounds/gameplay/surgeon_no_2.wav" id="7_no_2"]
+[ext_resource type="AudioStream" path="res://assets/sounds/gameplay/surgeon_snap.wav" id="5_snap"]
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_yes"]
+streams_count = 3
+stream_0/stream = ExtResource("6_yes_1")
+stream_1/stream = ExtResource("6_yes_2")
+stream_2/stream = ExtResource("6_yes_3")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_no"]
+streams_count = 2
+stream_0/stream = ExtResource("7_no_1")
+stream_1/stream = ExtResource("7_no_2")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_snap"]
+random_pitch = 1.05
+streams_count = 1
+stream_0/stream = ExtResource("5_snap")
 
 [node name="Surgeon" type="Node3D"]
 script = ExtResource("1_script")
+voices = Dictionary[StringName, AudioStream]({
+&"correct": SubResource("AudioStreamRandomizer_yes"),
+&"wrong": SubResource("AudioStreamRandomizer_no")
+})
 
 [node name="Sprite" type="AnimatedSprite3D" parent="."]
 render_priority = -1
@@ -20,3 +46,12 @@ pixel_size = 0.0007367
 texture_filter = 1
 sprite_frames = ExtResource("3_front")
 animation = &"idle"
+
+[node name="Voice" type="AudioStreamPlayer" parent="."]
+bus = &"SFX"
+
+[node name="Snap" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_snap")
+volume_db = -8.0
+max_polyphony = 2
+bus = &"SFX"

@@ -36,6 +36,8 @@ var _run := RunRecord.new()
 ## Seconds the player has had for the next hand-off (see RunRecord): since the last one, only
 ## while a request is live and the tray can be picked from.
 var _pick_seconds := 0.0
+## Seconds the current request has waited for the right tool (for the heart monitor).
+var _request_wait := 0.0
 
 @onready var _camera: Camera3D = $Camera3D
 ## The camera's horizontal field of view at DESIGN_ASPECT, as set in the scene.
@@ -51,13 +53,14 @@ var _pick_seconds := 0.0
 @onready var _popup: Control = %Popup
 @onready var _message: Label = %Message
 @onready var _hud: Hud = $Hud
+@onready var _monitor: HeartMonitor = $Sounds/Monitor
 
 
 func _ready() -> void:
 	get_viewport().size_changed.connect(_fit_camera)
 	_fit_camera()
 	for button in $UI.find_children("*", "BaseButton", true, false):
-		button.pressed.connect(get_node(^"/root/UiSounds/Click").play)
+		button.pressed.connect(get_node(^"/root/UiSounds/Play").play)
 	if LevelList.chosen:
 		level = LevelList.chosen
 	_scenes = SurgicalTool.scenes_by_id()
@@ -79,6 +82,9 @@ func _process(delta: float) -> void:
 	_since_busy = 0.0 if _grabber.is_busy() else _since_busy + delta
 	if _requested != &"" and _grabber.enabled:
 		_pick_seconds += delta
+		_request_wait += delta
+	# Calm in the tutorial, and while nothing is asked for.
+	_monitor.waiting_seconds = _request_wait if _requested != &"" and not _in_tutorial() else 0.0
 	if _hint_shown:
 		_hint_elapsed += delta
 		if level.hint_duration_seconds > 0.0 and _hint_elapsed >= level.hint_duration_seconds:
@@ -127,6 +133,7 @@ func _request_next() -> void:
 		return
 	_requested = _queue.pop_front()
 	_since_request = 0.0
+	_request_wait = 0.0
 	_hinted_this_request = false
 	var example: SurgicalTool = _tray.tools().filter(func(t: SurgicalTool) -> bool: return t.id == _requested)[0]
 	_request_name.text = tr(example.display_name)
