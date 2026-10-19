@@ -3,7 +3,8 @@ extends CanvasLayer
 ## In-game HUD (portrait): a bottom bar with Settings (left), a clock counting up (middle) and a
 ## sound on/off button (right). Settings opens a sheet that slides up from behind the bar, with
 ## sound and music volume and Exit. The game never pauses.
-## Placeholder art: ui/theme.tres and ui/icons/.
+## Art: Julia's bar and separators (ui/art/hud_*.png) and icons (ui/icons/hud_*.png), from her
+## ui_menu_bottom.psd, laid out symmetrically. Muted = the speaker without its waves.
 ##
 ## For the game scene: instance ui/hud.tscn and call start_clock() when a round starts.
 ## Exit goes to the main menu unless something is connected to exit_requested.
@@ -12,8 +13,8 @@ extends CanvasLayer
 signal exit_requested
 
 const MAIN_MENU := "res://ui/main_menu.tscn"
-const SOUND_ICON := preload("res://ui/icons/sound.svg")
-const SOUND_OFF_ICON := preload("res://ui/icons/sound_off.svg")
+const SOUND_ICON := preload("res://ui/icons/hud_sound_on.png")
+const SOUND_OFF_ICON := preload("res://ui/icons/hud_sound_off.png")
 
 ## Seconds counted by the clock (only while running).
 var elapsed := 0.0

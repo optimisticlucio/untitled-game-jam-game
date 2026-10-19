@@ -2,12 +2,14 @@
 
 [ext_resource type="Script" path="res://ui/hud.gd" id="1_srpbi"]
 [ext_resource type="Theme" path="res://ui/theme.tres" id="2_spcu4"]
-[ext_resource type="Texture2D" path="res://ui/icons/sound.svg" id="3_sound"]
+[ext_resource type="Texture2D" path="res://ui/icons/hud_sound_on.png" id="3_sound"]
 [ext_resource type="Script" path="res://ui/bottom_sheet.gd" id="4_m0eg6"]
 [ext_resource type="PackedScene" path="res://ui/settings_panel.tscn" id="5_b00kl"]
 [ext_resource type="Script" path="res://ui/settings_panel.gd" id="6_so1yu"]
 [ext_resource type="Texture2D" path="res://ui/icons/exit.svg" id="7_65xic"]
-[ext_resource type="Texture2D" path="res://ui/icons/gear.svg" id="8_mp5xd"]
+[ext_resource type="Texture2D" path="res://ui/icons/hud_gear.png" id="8_mp5xd"]
+[ext_resource type="Texture2D" path="res://ui/art/hud_bar.png" id="9_bar"]
+[ext_resource type="Texture2D" path="res://ui/art/hud_separator.png" id="10_separator"]
 
 [node name="Hud" type="CanvasLayer" unique_id=970798869]
 layer = 10
@@ -49,51 +51,91 @@ text = "Exit"
 icon = ExtResource("7_65xic")
 
 [node name="BarRoom" type="Control" parent="Root/Sheet/Column" unique_id=1093384721]
-custom_minimum_size = Vector2(0, 90)
+custom_minimum_size = Vector2(0, 101)
 layout_mode = 2
 mouse_filter = 2
 
-[node name="BottomBar" type="PanelContainer" parent="Root" unique_id=1782204917]
+[node name="BottomBar" type="Control" parent="Root" unique_id=1782204917]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -116.0
+offset_top = -127.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_type_variation = &"BottomBar"
 
-[node name="Row" type="HBoxContainer" parent="Root/BottomBar" unique_id=340181257]
-layout_mode = 2
+[node name="Art" type="TextureRect" parent="Root/BottomBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+texture = ExtResource("9_bar")
+expand_mode = 1
 
-[node name="SettingsButton" type="Button" parent="Root/BottomBar/Row" unique_id=1433113420]
+[node name="SeparatorLeft" type="TextureRect" parent="Root/BottomBar"]
+layout_mode = 1
+anchor_left = 0.230278
+anchor_right = 0.230278
+anchor_bottom = 1.0
+offset_left = -7.5
+offset_top = 26.0
+offset_right = 7.5
+mouse_filter = 2
+texture = ExtResource("10_separator")
+expand_mode = 1
+
+[node name="SeparatorRight" type="TextureRect" parent="Root/BottomBar"]
+layout_mode = 1
+anchor_left = 0.769722
+anchor_right = 0.769722
+anchor_bottom = 1.0
+offset_left = -7.5
+offset_top = 26.0
+offset_right = 7.5
+mouse_filter = 2
+texture = ExtResource("10_separator")
+expand_mode = 1
+
+[node name="SettingsButton" type="Button" parent="Root/BottomBar" unique_id=1433113420]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(88, 88)
-layout_mode = 2
-size_flags_vertical = 4
-theme_type_variation = &"RoundButton"
+layout_mode = 1
+anchor_left = 0.097222
+anchor_right = 0.097222
+offset_left = -44.0
+offset_top = 29.0
+offset_right = 44.0
+offset_bottom = 117.0
+theme_type_variation = &"BarButton"
 icon = ExtResource("8_mp5xd")
 icon_alignment = 1
 expand_icon = true
 
-[node name="Clock" type="Label" parent="Root/BottomBar/Row" unique_id=848465814]
+[node name="Clock" type="Label" parent="Root/BottomBar" unique_id=848465814]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
+layout_mode = 1
+anchor_left = 0.3
+anchor_right = 0.7
+anchor_bottom = 1.0
+offset_top = 11.0
+offset_bottom = -14.0
 theme_type_variation = &"ClockLabel"
-theme_override_font_sizes/font_size = 52
 text = "00:00"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="MuteButton" type="Button" parent="Root/BottomBar/Row" unique_id=124914252]
+[node name="MuteButton" type="Button" parent="Root/BottomBar" unique_id=124914252]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(88, 88)
-layout_mode = 2
-size_flags_vertical = 4
-theme_type_variation = &"RoundButton"
+layout_mode = 1
+anchor_left = 0.902778
+anchor_right = 0.902778
+offset_left = -55.0
+offset_top = 28.5
+offset_right = 55.0
+offset_bottom = 117.5
+theme_type_variation = &"BarButton"
 toggle_mode = true
 icon = ExtResource("3_sound")
 icon_alignment = 1

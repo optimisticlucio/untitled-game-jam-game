@@ -4,20 +4,6 @@
 [ext_resource type="Texture2D" path="res://ui/art/button_pressed.png" id="2_button_pressed"]
 [ext_resource type="FontFile" path="res://ui/fonts/Nunito-VariableFont_wght.ttf" id="3_nunito"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
-content_margin_left = 30.0
-content_margin_top = 14.0
-content_margin_right = 30.0
-content_margin_bottom = 10.0
-bg_color = Color(0.3, 0.74, 0.8, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_color = Color(0.05, 0.05, 0.06, 1)
-corner_radius_top_left = 120
-corner_radius_top_right = 120
-corner_detail = 20
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_circle"]
 content_margin_left = 6.0
 content_margin_top = 6.0
@@ -125,6 +111,8 @@ texture_margin_top = 30.0
 texture_margin_right = 30.0
 texture_margin_bottom = 30.0
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bar_button"]
+
 [sub_resource type="FontVariation" id="FontVariation_button"]
 base_font = ExtResource("3_nunito")
 variation_opentype = {
@@ -164,40 +152,6 @@ corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_round"]
-content_margin_left = 18.0
-content_margin_top = 18.0
-content_margin_right = 18.0
-content_margin_bottom = 18.0
-bg_color = Color(0.96, 0.95, 0.93, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.05, 0.05, 0.06, 1)
-corner_radius_top_left = 80
-corner_radius_top_right = 80
-corner_radius_bottom_right = 80
-corner_radius_bottom_left = 80
-corner_detail = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_round_pressed"]
-content_margin_left = 18.0
-content_margin_top = 18.0
-content_margin_right = 18.0
-content_margin_bottom = 18.0
-bg_color = Color(0.82, 0.8, 0.77, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.05, 0.05, 0.06, 1)
-corner_radius_top_left = 80
-corner_radius_top_right = 80
-corner_radius_bottom_right = 80
-corner_radius_bottom_left = 80
-corner_detail = 16
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rtqkv"]
 content_margin_left = 28.0
@@ -280,8 +234,15 @@ corner_radius_bottom_left = 18
 
 [resource]
 default_font_size = 40
-BottomBar/base_type = &"PanelContainer"
-BottomBar/styles/panel = SubResource("StyleBoxFlat_bar")
+BarButton/base_type = &"Button"
+BarButton/colors/icon_hover_pressed_color = Color(0.72, 0.72, 0.72, 1)
+BarButton/colors/icon_pressed_color = Color(0.72, 0.72, 0.72, 1)
+BarButton/styles/disabled = SubResource("StyleBoxEmpty_bar_button")
+BarButton/styles/focus = SubResource("StyleBoxEmpty_bar_button")
+BarButton/styles/hover = SubResource("StyleBoxEmpty_bar_button")
+BarButton/styles/hover_pressed = SubResource("StyleBoxEmpty_bar_button")
+BarButton/styles/normal = SubResource("StyleBoxEmpty_bar_button")
+BarButton/styles/pressed = SubResource("StyleBoxEmpty_bar_button")
 BubbleCircle/base_type = &"PanelContainer"
 BubbleCircle/styles/panel = SubResource("StyleBoxFlat_circle")
 BubbleInner/base_type = &"PanelContainer"
@@ -309,7 +270,9 @@ Button/styles/pressed = SubResource("StyleBoxTexture_button_pressed")
 CardPanel/base_type = &"PanelContainer"
 CardPanel/styles/panel = SubResource("StyleBoxFlat_7any1")
 ClockLabel/base_type = &"Label"
-ClockLabel/font_sizes/font_size = 64
+ClockLabel/colors/font_color = Color(0.0, 0.13, 0.13, 1)
+ClockLabel/font_sizes/font_size = 96
+ClockLabel/fonts/font = SubResource("FontVariation_button")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_3fgq6")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_3fgq6")
 HSlider/styles/slider = SubResource("StyleBoxFlat_y5ki2")
@@ -321,11 +284,6 @@ IconButton/styles/hover_pressed = SubResource("StyleBoxTexture_icon_button_press
 IconButton/styles/normal = SubResource("StyleBoxTexture_icon_button")
 IconButton/styles/pressed = SubResource("StyleBoxTexture_icon_button_pressed")
 Label/colors/font_color = Color(0.05, 0.05, 0.06, 1)
-RoundButton/base_type = &"Button"
-RoundButton/styles/focus = SubResource("StyleBoxEmpty_rqugq")
-RoundButton/styles/hover = SubResource("StyleBoxFlat_round")
-RoundButton/styles/normal = SubResource("StyleBoxFlat_round")
-RoundButton/styles/pressed = SubResource("StyleBoxFlat_round_pressed")
 SheetPanel/base_type = &"PanelContainer"
 SheetPanel/styles/panel = SubResource("StyleBoxFlat_rtqkv")
 SmallLabel/base_type = &"Label"
