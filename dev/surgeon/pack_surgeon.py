@@ -1,19 +1,24 @@
-"""Packs one layer of the surgeon's Spine frame export into one sheet per animation for Godot.
+"""Packs one layer of the surgeon's Spine frame export into sheets for Godot.
    python3 pack_surgeon.py <frames dir> <out dir> [name]
-name is the layer's file prefix (default "surgeon"): <name>_<anim>.png and <name>_frames.json.
-The surgeon has two layers, drawn with a tool on his hand between them:
+name is the layer's file prefix (default "surgeon"): <name>_<anim>.png (more pages: _2, _3, ...)
+and <name>_frames.json. The surgeon has two layers, drawn with a tool on his hand between them:
    python3 pack_surgeon.py .../frames_15fps_v18_back  assets/surgeon surgeon
    python3 pack_surgeon.py .../frames_15fps_v18_front assets/surgeon surgeon_front
 Every frame is cut to the box that holds anything drawn in any frame of the layer (the fingers
-layer is mostly empty), recorded as "crop" so the frames keep their full size in Godot."""
-import json, os, sys
+layer is mostly empty), recorded as "crop" so the frames keep their full size in Godot.
+The waiting loops keep every STEP-th frame at a slower speed (same length), and no sheet is
+bigger than MAX_SHEET on a side, so they stay light in memory and fit older phones."""
+import json, os, re, sys
 from PIL import Image
+
+STEP = {"idle": 2, "impatient": 2}
+MAX_SHEET = 2048
 
 src, out = sys.argv[1], sys.argv[2]
 name = sys.argv[3] if len(sys.argv) > 3 else "surgeon"
-COLS = 8
 anchors = json.load(open(os.path.join(src, "anchors.json")))
 fw, fh = anchors["frame_size"]
+fps = anchors["fps"]
 
 frames = {}
 box = None
@@ -29,18 +34,28 @@ for anim in anchors["animations"]:
 x0, y0 = max(box[0] - 1, 0), max(box[1] - 1, 0)
 cw, ch = box[2] - x0 + 1, box[3] - y0 + 1
 cw, ch = (cw + 3) // 4 * 4, (ch + 3) // 4 * 4
+cols, rows = MAX_SHEET // cw, MAX_SHEET // ch
 
-meta = {"frame_size": [fw, fh], "crop": [x0, y0, cw, ch], "cell_size": [cw, ch], "columns": COLS,
-        "fps": anchors["fps"], "animations": {}}
+meta = {"frame_size": [fw, fh], "crop": [x0, y0, cw, ch], "cell_size": [cw, ch], "columns": cols,
+        "rows": rows, "fps": fps, "animations": {}}
+old = re.compile(r"^%s_(%s)(_\d+)?\.png$" % (re.escape(name), "|".join(map(re.escape, frames))))
+for f in [f for f in os.listdir(out) if old.match(f)]:
+    os.remove(os.path.join(out, f))   # this layer's old sheets and pages
 for anim, ims in frames.items():
-    rows = (len(ims) + COLS - 1) // COLS
-    sheet = Image.new("RGBA", (COLS * cw, rows * ch), (0, 0, 0, 0))
-    for i, im in enumerate(ims):
-        sheet.paste(im.crop((x0, y0, x0 + cw, y0 + ch)), ((i % COLS) * cw, (i // COLS) * ch))
-    path = os.path.join(out, f"{name}_{anim}.png")
-    sheet.save(path, optimize=True)
+    step = STEP.get(anim, 1)
+    keep = list(range(0, len(ims), step))
+    pages = (len(keep) + cols * rows - 1) // (cols * rows)
+    for p in range(pages):
+        page = keep[p * cols * rows:(p + 1) * cols * rows]
+        used_cols = min(cols, len(page))
+        sheet = Image.new("RGBA", (used_cols * cw, ((len(page) + cols - 1) // cols) * ch), (0, 0, 0, 0))
+        for i, k in enumerate(page):
+            sheet.paste(ims[k].crop((x0, y0, x0 + cw, y0 + ch)), ((i % cols) * cw, (i // cols) * ch))
+        path = os.path.join(out, f"{name}_{anim}.png" if p == 0 else f"{name}_{anim}_{p + 1}.png")
+        sheet.save(path, optimize=True)
+        print(name, anim, "page", p + 1, len(page), sheet.size, os.path.getsize(path) // 1024, "KB")
     a = anchors["animations"][anim]
-    meta["animations"][anim] = {"frames": len(ims), "loop": a["loop"], "hand": [f["hand"] for f in a["frames"]]}
-    print(name, anim, len(ims), sheet.size, os.path.getsize(path) // 1024, "KB")
+    meta["animations"][anim] = {"frames": len(keep), "pages": pages, "fps": fps / step, "loop": a["loop"],
+                                "hand": [a["frames"][k]["hand"] for k in keep]}
 json.dump(meta, open(os.path.join(out, f"{name}_frames.json"), "w"), indent=1)
-print(name, "crop", meta["crop"])
+print(name, "crop", meta["crop"], "cells", cols, "x", rows, "per sheet")
