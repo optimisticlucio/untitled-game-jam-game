@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" path="res://ui/art/menu_light.png" id="12_light"]
 [ext_resource type="Script" path="res://ui/menu_light.gd" id="13_light"]
 [ext_resource type="Texture2D" uid="uid://dyi4b5ux7plx" path="res://ui/icons/trophy.svg" id="5_kaxbk"]
-[ext_resource type="Texture2D" uid="uid://cx6htkq5geuim" path="res://ui/icons/gear.svg" id="6_0nobx"]
+[ext_resource type="Texture2D" path="res://ui/icons/hud_gear.png" id="6_0nobx"]
 [ext_resource type="Script" uid="uid://d0k8brkpc6rwk" path="res://ui/bottom_sheet.gd" id="7_iyrh0"]
 [ext_resource type="PackedScene" path="res://ui/settings_panel.tscn" id="8_8jgmr"]
 [ext_resource type="Texture2D" uid="uid://bbnt712jp1are" path="res://ui/icons/close.svg" id="10_0i0gl"]
