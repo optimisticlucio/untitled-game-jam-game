@@ -7,6 +7,10 @@ extends Resource
 ## Names the level for good: the leaderboard saves scores under it, so changing
 ## it loses them. The file name doesn't matter.
 @export var id: StringName
+## How runs are scored (gameplay/scoring/: points.tres or time.tres, tuned there). Empty =
+## ScoreBoard.DEFAULT_SCORING. Switching starts a fresh leaderboard for the level; the old one
+## comes back if you switch back.
+@export var scoring: Scoring
 ## What the doctor asks for. Repeats are fine. Asked in a random order each play.
 @export var requested_ids: Array[StringName] = []
 ## Put in the tray but never asked for. Repeats are fine.

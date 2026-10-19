@@ -106,6 +106,7 @@ text = "-"
 horizontal_alignment = 2
 
 [node name="ScoreHint" type="Label" parent="Root/Card/Margin/Column" unique_id=5939660]
+unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SmallLabel"
 text = "Time, plus 15 s per wrong tool and 5 s per hint. Lower is better."

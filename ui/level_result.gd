@@ -1,7 +1,7 @@
 class_name LevelResult
 extends CanvasLayer
-## End-of-level card: time, wrong hand-offs and hints, the score (ScoreBoard), and a name field
-## to save it. After saving it shows the rank, with buttons to the leaderboard, play again or menu.
+## End-of-level card: time, wrong hand-offs and hints, the score (the level's Scoring) and how
+## it's made, and a name field to save it (ScoreBoard). After saving it shows the rank, with buttons to the leaderboard, play again or menu.
 ## The level adds it with show_run() when the last tray is done.
 
 signal play_again_pressed
@@ -10,9 +10,7 @@ const MAIN_MENU := "res://ui/main_menu.tscn"
 const LEADERBOARD := "res://ui/leaderboard.tscn"
 
 var _level: LevelData
-var _seconds := 0.0
-var _wrong := 0
-var _hints := 0
+var _run: RunRecord
 
 @onready var _name: LineEdit = %NameEdit
 
@@ -28,22 +26,22 @@ func _ready() -> void:
 	(%RankLabel as Label).hide()
 
 
-func show_run(level: LevelData, seconds: float, wrong: int, hints: int) -> void:
+func show_run(level: LevelData, run: RunRecord) -> void:
 	_level = level
-	_seconds = seconds
-	_wrong = wrong
-	_hints = hints
-	(%TimeValue as Label).text = ScoreBoard.format_time(seconds)
-	(%WrongValue as Label).text = "%d  (+%d s)" % [wrong, int(wrong * ScoreBoard.WRONG_PENALTY)]
-	(%HintsValue as Label).text = "%d  (+%d s)" % [hints, int(hints * ScoreBoard.HINT_PENALTY)]
-	(%ScoreValue as Label).text = ScoreBoard.format_time(ScoreBoard.score(seconds, wrong, hints))
+	_run = run
+	var scoring := ScoreBoard.scoring_for(level)
+	(%TimeValue as Label).text = ScoreBoard.format_time(run.seconds)
+	(%WrongValue as Label).text = str(run.wrong_count())
+	(%HintsValue as Label).text = str(run.hints)
+	(%ScoreValue as Label).text = scoring.format_score(scoring.score(run))
+	(%ScoreHint as Label).text = scoring.explanation()
 	_name.text = ScoreBoard.last_name()
 
 
 func _save() -> void:
 	if not (%NameRow as Control).visible:
 		return
-	var result := ScoreBoard.submit(_level, _name.text, _seconds, _wrong, _hints)
+	var result := ScoreBoard.submit(_level, _name.text, _run)
 	(%NameRow as Control).hide()
 	(%SaveButton as Control).hide()
 	var rank := %RankLabel as Label

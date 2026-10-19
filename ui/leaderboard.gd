@@ -1,7 +1,8 @@
 class_name LeaderboardScreen
 extends Control
 ## Leaderboard: one board per level (picked at the top), best score first. Rows saved on this
-## device are highlighted; sample rivals are marked "sample". Scores: ScoreBoard.
+## device are highlighted; sample rivals are marked "sample". Each row shows the time too, but
+## the order is the level's Scoring. Scores: ScoreBoard.
 
 const MAIN_MENU := "res://ui/main_menu.tscn"
 
@@ -41,14 +42,15 @@ func _show_board() -> void:
 	if _picker.item_count == 0:
 		return
 	var level := _levels[_picker.get_item_metadata(_picker.selected)]
+	var scoring := ScoreBoard.scoring_for(level)
 	var you := ScoreBoard.last_name()
 	var rank := 0
 	for entry in ScoreBoard.entries(level):
 		rank += 1
-		_rows.add_child(_row(rank, entry, not entry["sample"] and entry["name"] == you))
+		_rows.add_child(_row(rank, entry, scoring, not entry["sample"] and entry["name"] == you))
 
 
-func _row(rank: int, entry: Dictionary, is_you: bool) -> Control:
+func _row(rank: int, entry: Dictionary, scoring: Scoring, is_you: bool) -> Control:
 	var row := PanelContainer.new()
 	row.theme_type_variation = &"TealPanel" if is_you else &"CardPanel"
 	var line := HBoxContainer.new()
@@ -83,7 +85,7 @@ func _row(rank: int, entry: Dictionary, is_you: bool) -> Control:
 	detail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	who.add_child(detail)
 	var score := Label.new()
-	score.text = ScoreBoard.format_time(entry["score"])
+	score.text = scoring.format_score(entry["score"])
 	score.theme_type_variation = &"HeaderLabel"
 	line.add_child(score)
 	return row

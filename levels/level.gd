@@ -26,9 +26,11 @@ var _hint_shown := false
 ## for a request comes at once).
 var _hinted_this_request := false
 var _hint_elapsed := 0.0
-## For the score (ScoreBoard); the tutorial tray doesn't count.
-var _wrong := 0
-var _hints_used := 0
+## For the score (Scoring); the tutorial tray isn't recorded.
+var _run := RunRecord.new()
+## Seconds the player has had for the next hand-off (see RunRecord): since the last one, only
+## while a request is live and the tray can be picked from.
+var _pick_seconds := 0.0
 
 @onready var _camera: Camera3D = $Camera3D
 ## The camera's horizontal field of view at DESIGN_ASPECT, as set in the scene.
@@ -68,6 +70,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_since_request += delta
 	_since_release += delta
+	if _requested != &"" and _grabber.enabled:
+		_pick_seconds += delta
 	if _hint_shown:
 		_hint_elapsed += delta
 		if level.hint_duration_seconds > 0.0 and _hint_elapsed >= level.hint_duration_seconds:
@@ -160,15 +164,17 @@ func _finish_tray() -> void:
 
 
 func _on_tool_handed(tool: SurgicalTool) -> void:
-	if tool.id == _requested:
+	var right := tool.id == _requested
+	if not _in_tutorial():
+		_run.add_pick(right, _pick_seconds)
+	_pick_seconds = 0.0
+	if right:
 		_requested = &""
 		$Sounds/Correct.play()
 		await _grabber.consume(tool)
 		_request_next()
 	else:
 		$Sounds/Wrong.play()
-		if not _in_tutorial():
-			_wrong += 1
 		_grabber.reject(tool)
 
 
@@ -197,7 +203,7 @@ func _show_hint() -> void:
 		_grabber.hint(best)
 		$Sounds/Hint.play()
 		if not _in_tutorial():
-			_hints_used += 1
+			_run.hints += 1
 		_hint_shown = true
 		_hinted_this_request = true
 		_hint_elapsed = 0.0
@@ -214,7 +220,8 @@ func _show_result() -> void:
 	_request.hide()
 	var result := LEVEL_RESULT.instantiate() as LevelResult
 	add_child(result)
-	result.show_run(level, _hud.elapsed, _wrong, _hints_used)
+	_run.seconds = _hud.elapsed
+	result.show_run(level, _run)
 	result.play_again_pressed.connect(_on_play_again_pressed)
 
 
