@@ -18,8 +18,9 @@ func toggle() -> void:
 
 
 func set_open(open: bool) -> void:
+	if open != is_open:  # Not on refit().
+		get_node(^"/root/UiSounds/Slide").play()
 	is_open = open
-	get_node(^"/root/UiSounds/Slide").play()
 	if _tween:
 		_tween.kill()
 	show()

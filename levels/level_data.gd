@@ -4,6 +4,9 @@ extends Resource
 ## Tools are referred to by their SurgicalTool id. Unknown ids are reported
 ## when the level starts.
 
+## Names the level for good: the leaderboard saves scores under it, so changing
+## it loses them. The file name doesn't matter.
+@export var id: StringName
 ## What the doctor asks for. Repeats are fine. Asked in a random order each play.
 @export var requested_ids: Array[StringName] = []
 ## Put in the tray but never asked for. Repeats are fine.
@@ -43,6 +46,8 @@ extends Resource
 ## Every problem that would stop this level from starting, as readable lines.
 func problems(known_ids: Array[StringName]) -> PackedStringArray:
 	var found := PackedStringArray()
+	if id == &"":
+		found.append("Has no id.")
 	if requested_ids.is_empty():
 		found.append("Requests nothing.")
 	for list_name in ["requested_ids", "distractor_ids", "tutorial_ids", "name_only_ids"]:

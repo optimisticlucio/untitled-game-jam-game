@@ -84,6 +84,14 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 @export var consume_drop_seconds := 0.3
 @export var consume_shrink_seconds := 0.2
 
+@export_group("Sounds")
+## Played when an instrument is picked up. Silly items play their own drop_sound instead.
+@export var grab_sound: AudioStream = preload("res://assets/sounds/gameplay/tool_grab.wav")
+## Played when a tool starts flying back to the tray.
+@export var return_sound: AudioStream = preload("res://assets/sounds/gameplay/tool_return_whoosh.wav")
+## Played when the surgeon takes a correct tool.
+@export var receive_sound: AudioStream = preload("res://assets/sounds/gameplay/surgeon_receive.wav")
+
 ## When false, presses are ignored and a held tool is let go where it is,
 ## frozen and intangible. Only for when the tray's tools are about to be
 ## cleared (reshuffle, level end): a tool let go this way is never dropped.
@@ -171,7 +179,7 @@ func consume(tool: SurgicalTool) -> Signal:
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_property(tool, "global_rotation", flat_rotation, consume_drop_seconds)
 	tween.chain()
-	tween.tween_callback(_play.bind(preload("res://assets/sounds/gameplay/surgeon_receive.wav")))
+	tween.tween_callback(_play.bind(receive_sound))
 	# Shrink the visuals, not the body: physics bodies don't scale well.
 	for child in tool.get_children():
 		if child is Node3D and not child is CollisionShape3D:
@@ -203,7 +211,7 @@ func reject(tool: SurgicalTool) -> void:
 ## only if that gets it closer), eases it to a stop drop_height above the
 ## floor, and lets it fall. The rest of the pile is nudged when it lands.
 func return_to_tray(tool: SurgicalTool) -> void:
-	_play(preload("res://assets/sounds/gameplay/tool_return_whoosh.wav"))
+	_play(return_sound)
 	_make_intangible(tool)
 	_set_glow(tool, false)
 	_flying[tool] = true
@@ -229,7 +237,7 @@ func _grab(tool: SurgicalTool) -> void:
 	if tool.specialities.has(SurgicalTool.Speciality.SILLY):
 		_play(tool.drop_sound)
 	else:
-		_play(preload("res://assets/sounds/gameplay/tool_grab.wav"))
+		_play(grab_sound)
 	# Tools resting on this one shouldn't hang in the air once it's gone.
 	for other in tray.tools():
 		other.sleeping = false

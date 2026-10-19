@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_data")
+id = &"example_level"
 requested_ids = Array[StringName]([&"kelly_clamp", &"crile_clamp", &"scalpel_10", &"scalpel_11", &"mayo_scissors", &"metzenbaum_scissors", &"kelly_clamp", &"adson_forceps", &"debakey_forceps"])
 distractor_ids = Array[StringName]([&"scalpel_15", &"mayo_hegar", &"vannas_scissors", &"army_navy", &"micro_hook", &"beaver_handle", &"micro_needle_holder", &"acland_clamp", &"eyebrow_tweezers", &"dental_explorer", &"rubber_duck", &"banana"])
 tool_size_percent = 120.0

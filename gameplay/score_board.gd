@@ -4,13 +4,17 @@ extends RefCounted
 ## (user://scores.cfg), plus sample rivals so a fresh install has something to beat.
 ## Score = seconds + WRONG_PENALTY per wrong hand-off + HINT_PENALTY per hint shown. Lower is
 ## better: a mistake costs more than being slow. Names only, no titles: players are any OR staff.
-## Levels are keyed by their LevelData file name (levels/example_level.tres -> "example_level").
+## Levels are keyed by their LevelData id.
 
 const PATH := "user://scores.cfg"
 const LEVELS_FOLDER := "res://levels/"
 const WRONG_PENALTY := 15.0
 const HINT_PENALTY := 5.0
 const MAX_NAME_LENGTH := 16
+## A rough good run, used to place the sample rivals: PAR_SECONDS_PER_REQUEST per request,
+## plus PAR_EXTRA_SECONDS (tray slides and such).
+const PAR_SECONDS_PER_REQUEST := 8.0
+const PAR_EXTRA_SECONDS := 10.0
 ## Sample rivals, and their scores as a multiple of the level's par time.
 const SAMPLE_NAMES: Array[String] = ["Noa", "Avi", "Maya", "Yoni", "Shira", "Eitan", "Dana", "Omer"]
 const SAMPLE_FACTORS: Array[float] = [0.85, 0.95, 1.05, 1.15, 1.3, 1.45, 1.7, 2.0]
@@ -20,7 +24,7 @@ static var focus_level_key := ""
 
 
 static func level_key(level: LevelData) -> String:
-	return level.resource_path.get_file().get_basename()
+	return String(level.id)
 
 
 ## "example_level" -> "Example Level".
@@ -38,9 +42,8 @@ static func format_time(seconds: float) -> String:
 	return "%d:%02d" % [s / 60, s % 60]
 
 
-## A rough good run, used to place the sample rivals: about 8 s per request.
 static func par_seconds(level: LevelData) -> float:
-	return 8.0 * level.requested_ids.size() + 10.0
+	return PAR_SECONDS_PER_REQUEST * level.requested_ids.size() + PAR_EXTRA_SECONDS
 
 
 ## The name entered last on this device ("" before the first save).
@@ -57,9 +60,16 @@ static func levels() -> Dictionary[String, LevelData]:
 		if path.get_extension() != "tres":
 			continue
 		var data := load(path) as LevelData
-		if data:
-			keys.append(level_key(data))
-			found[level_key(data)] = data
+		if data == null:
+			continue
+		var key := level_key(data)
+		if key.is_empty():
+			push_error("Level %s has no id, so it has no leaderboard." % path)
+		elif found.has(key):
+			push_error("Levels %s and %s share the id %s." % [found[key].resource_path, path, key])
+		else:
+			keys.append(key)
+			found[key] = data
 	keys.sort()
 	var sorted: Dictionary[String, LevelData] = {}
 	for key in keys:

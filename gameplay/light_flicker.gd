@@ -53,8 +53,12 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
-	# Leave the room light normal for whatever comes next (menus, tool viewers).
+	# Leave the room light normal for whatever comes next (menus, tool viewers). The
+	# environment is shared with the next copy of the scene (Play again), which would
+	# otherwise read a mid-flicker sky energy as its normal one.
 	RenderingServer.global_shader_parameter_set(&"room_light", 1.0)
+	if _environment:
+		_environment.background_energy_multiplier = _sky_energy
 
 
 func _process(delta: float) -> void:

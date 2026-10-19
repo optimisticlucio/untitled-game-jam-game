@@ -77,8 +77,8 @@ func _row(rank: int, entry: Dictionary, is_you: bool) -> Control:
 		top.add_child(tag)
 	var detail := Label.new()
 	detail.theme_type_variation = &"SmallLabel"
-	detail.text = "%s · %d wrong · %d %s%s" % [ScoreBoard.format_time(entry["seconds"]), entry["wrong"],
-		entry["hints"], "hint" if entry["hints"] == 1 else "hints", ""]
+	detail.text = "%s · %d wrong · %d %s" % [ScoreBoard.format_time(entry["seconds"]), entry["wrong"],
+		entry["hints"], "hint" if entry["hints"] == 1 else "hints"]
 	# Trimmed, not wrapped, so a long line can't push the row past the screen edge.
 	detail.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	who.add_child(detail)
