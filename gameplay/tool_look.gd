@@ -21,7 +21,8 @@ const STAIN_STRENGTH := 0.24
 
 
 ## Gives the tool's meshes the tool shader with a new random look. Meshes without an albedo
-## texture keep their own material.
+## texture keep their own material. The wear is sized to the length of each mesh (in the mesh's
+## own space, like the wear itself).
 static func apply_to_tool(tool: Node3D) -> void:
 	var hue := Color.from_hsv(randf(), 0.5, 1.0)
 	var look := {
@@ -43,6 +44,8 @@ static func apply_to_tool(tool: Node3D) -> void:
 			material.set_shader_parameter("albedo_tex", textures[0])
 			material.set_shader_parameter("orm_tex", textures[1])
 			material.set_shader_parameter("wear_tex", WEAR)
+			var size := mesh_instance.mesh.get_aabb().size
+			material.set_shader_parameter("tool_length", maxf(size.x, maxf(size.y, size.z)))
 			for key in look:
 				material.set_shader_parameter(key, look[key])
 			mesh_instance.set_surface_override_material(surface, material)

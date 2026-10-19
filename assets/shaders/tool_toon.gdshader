@@ -20,6 +20,9 @@ uniform float wear_angle = 0.0;
 uniform vec2 patch_offset = vec2(0.0);
 uniform float scratch_amount = 0.0;
 uniform float stain_amount = 0.0;
+// The tool's length in metres (its longest side). The wear is sized to it: the scales below are
+// for a 14 cm tool, so a big tool isn't covered in fine noise and a tiny one isn't one smudge.
+uniform float tool_length = 0.14;
 
 group_uniforms look;
 // Overall lightness of the tools (Julia's "בהירות הכלים"); the tray isn't affected.
@@ -60,7 +63,7 @@ void fragment() {
 	v_ao = orm.r;
 
 	// Wear, projected from above in the tool's own space (tools lie flat), so it ignores UV seams.
-	vec2 p = rot2(v_local.xz, wear_angle);
+	vec2 p = rot2(v_local.xz, wear_angle) * (0.14 / max(tool_length, 0.005));
 	float scratch = clamp(texture(wear_tex, p * scratch_scale + wear_offset).r * scratch_amount, 0.0, 1.0);
 	float stain = clamp(texture(wear_tex, p * stain_scale + wear_offset * 1.7).g * stain_amount, 0.0, 1.0);
 	float patchv = texture(wear_tex, p * patch_scale / 8.0 + patch_offset).b;
@@ -81,11 +84,13 @@ void fragment() {
 	SPECULAR = 0.0;
 
 	vec3 n_w = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
+	v_aa = normal_aa(n_w);
 	vec3 v_w = normalize((INV_VIEW_MATRIX * vec4(VIEW, 0.0)).xyz);
 	vec3 r = reflect(-v_w, n_w);
 	v_env = room_reflection(r, base);
 	float gc = mix(glint_cos, glint_cos - 0.002, v_rough);
-	v_glint = smoothstep(gc, mix(gc, 1.0, 0.5), dot(r, normalize(glint_dir))) * glint_strength * pow(1.0 - v_rough, 3.0) * v_metal;
+	float rg = dot(r, normalize(glint_dir));
+	v_glint = aa_highlight(gc, mix(gc, 1.0, 0.5), rg, dot_aa(rg, 2.0 * v_aa)) * glint_strength * pow(1.0 - v_rough, 3.0) * v_metal;
 
 	EMISSION = rim_color * rim_light(NORMAL, VIEW);
 }

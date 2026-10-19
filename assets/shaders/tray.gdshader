@@ -56,6 +56,13 @@ float vnoise(vec2 p) {
 	return mix(mix(hash2(i), hash2(i + vec2(1.0, 0.0)), u.x), mix(hash2(i + vec2(0.0, 1.0)), hash2(i + vec2(1.0, 1.0)), u.x), u.y);
 }
 
+// vnoise at p, where fw is how much p changes across one pixel: it fades to its average where its
+// cells get smaller than a few pixels (a small screen, or seen from far away), so the fine grain
+// stays a grain instead of turning into pixel noise.
+float vnoise_aa(vec2 p, vec2 fw) {
+	return mix(vnoise(p), 0.5, smoothstep(0.2, 0.7, length(fw)));
+}
+
 float cloth_height(vec2 q) {
 	return 0.7 * vnoise(q * vec2(1.0, 2.5)) + 0.3 * vnoise(q * 2.3 + 7.0);
 }
@@ -65,6 +72,9 @@ void vertex() {
 }
 
 void fragment() {
+	// How far one pixel spans on the tray, taken here: derivatives are unreliable inside the
+	// per-pixel branches below.
+	vec2 px = fwidth(v_local.xz);
 	vec3 n_w = normalize((INV_VIEW_MATRIX * vec4(NORMAL, 0.0)).xyz);
 	float on_floor = step(0.8, n_w.y) * (1.0 - step(tray_min.y + 0.012, v_local.y));
 	vec3 base;
@@ -84,7 +94,7 @@ void fragment() {
 			vec2 g = vec2(cloth_height(q + vec2(e, 0.0)) - cloth_height(q - vec2(e, 0.0)),
 					cloth_height(q + vec2(0.0, e)) - cloth_height(q - vec2(0.0, e))) / (2.0 * e);
 			n_w = normalize(vec3(-g.x * cloth_wrinkles * 0.25, 1.0, -g.y * cloth_wrinkles * 0.25));
-			float mottle = vnoise(v_local.xz * 400.0) * 0.6 + vnoise(v_local.xz * 90.0) * 0.4;
+			float mottle = vnoise_aa(v_local.xz * 400.0, px * 400.0) * 0.6 + vnoise_aa(v_local.xz * 90.0, px * 90.0) * 0.4;
 			base = cloth_color * (0.88 + 0.24 * h) * (1.0 - cloth_mottle * mottle);
 			v_rough = 1.0;
 			v_metal = 0.0;
@@ -94,9 +104,12 @@ void fragment() {
 	} else {
 		vec2 q = v_local.xz;
 		float warp = (vnoise(q * vec2(6.0, 1.5)) + 0.3 * vnoise(q * vec2(22.0, 4.0))) * wood_warp;
-		float rings = fract(q.x * wood_grain + warp);
+		float ring_pos = q.x * wood_grain + warp;
+		float rings = fract(ring_pos);
 		float band = smoothstep(0.0, 0.12, rings) * (1.0 - smoothstep(0.5, 0.7, rings));
-		float fine = vnoise(q * vec2(160.0, 10.0));
+		// Rings closer than a few pixels fade to their average, like the noise.
+		band = mix(band, 0.54, smoothstep(0.2, 0.7, fwidth(ring_pos)));
+		float fine = vnoise_aa(q * vec2(160.0, 10.0), px * vec2(160.0, 10.0));
 		base = mix(wood_dark, wood_light, clamp(band * 0.8 + fine * 0.25, 0.0, 1.0));
 		v_rough = 0.55;
 		v_metal = 0.0;
@@ -124,6 +137,7 @@ void fragment() {
 	}
 
 	NORMAL = normalize((VIEW_MATRIX * vec4(n_w, 0.0)).xyz);
+	v_aa = normal_aa(n_w);
 	ALBEDO = base;
 	ROUGHNESS = v_rough;
 	METALLIC = 0.0;

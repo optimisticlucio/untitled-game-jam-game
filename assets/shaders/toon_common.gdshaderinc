@@ -1,5 +1,8 @@
 // Shared light model for the lab's tool and tray shaders (mirrors Julia's browser shader lab).
 // The including shader's fragment() must fill the varyings below.
+// Highlights keep their look at any size: where the surface turns a lot within one pixel (a small
+// or far tool, a low-resolution screen) they soften and dim to match, instead of flickering or
+// lighting a whole pixel white (v_aa, aa_highlight).
 // Use render_mode ambient_light_disabled: the room light is added here, so the shade colour tints it.
 // Brightness matches the browser lab: light terms are LIGHT_COLOR (which already includes PI) times
 // light_scale, measured against the page on 2026-10-18.
@@ -47,6 +50,7 @@ varying float v_gloss;  // highlight multiplier
 varying float v_blood;  // plastic blood mask (tray only)
 varying float v_edges;  // 1 = draw the white edge line
 varying float v_sheen;  // soft grazing light on cloth
+varying float v_aa;     // how much the normal turns across one pixel: set it with normal_aa()
 
 vec2 rot2(vec2 p, float a) {
 	float c = cos(a);
@@ -54,11 +58,31 @@ vec2 rot2(vec2 p, float a) {
 	return vec2(c * p.x - s * p.y, s * p.x + c * p.y);
 }
 
+// Call in fragment() with the normal the light uses.
+float normal_aa(vec3 normal) {
+	return min(length(fwidth(normal)), 1.0);
+}
+
+// smoothstep(lo, hi, x) for a highlight that peaks where x reaches 1. aa is how much x changes
+// across one pixel: the soft edge widens by it and the peak drops so the light stays about the
+// same in total, the way the highlight would average out over the pixel.
+float aa_highlight(float lo, float hi, float x, float aa) {
+	float area = max(1.0 - lo, 1e-4);
+	return smoothstep(lo - aa, hi, x) * area / (area + aa);
+}
+
+// How much dot(v, d) changes across one pixel, for unit vectors v and d, when v turns by turn.
+float dot_aa(float cos_angle, float turn) {
+	return sqrt(max(1.0 - cos_angle * cos_angle, 0.0)) * turn;
+}
+
 vec3 room_reflection(vec3 r, vec3 base) {
-	float s = mix(0.03, 0.4, v_rough);
+	// The reflection turns twice as fast as the normal.
+	float s = mix(0.03, 0.4, v_rough) + 2.0 * v_aa;
 	vec3 env = mix(room_floor, room_drape, smoothstep(-0.25 - s, -0.25 + s, r.y));
 	env = mix(env, room_ceiling * mix(mirror_dark, 1.0, v_rough), smoothstep(0.35 - s, 0.35 + s, r.y));
-	env += vec3(lamp_strength) * smoothstep(lamp_size - s * 0.3, lamp_size + s * 0.3, r.y) * (1.0 - 0.7 * v_rough);
+	float ls = mix(0.03, 0.4, v_rough) * 0.3;
+	env += vec3(lamp_strength) * aa_highlight(lamp_size - ls, lamp_size + ls, r.y, dot_aa(r.y, 2.0 * v_aa)) * (1.0 - 0.7 * v_rough);
 	return env * mix(vec3(1.0), base, v_metal) * v_metal * v_ao * env_strength;
 }
 
@@ -77,8 +101,9 @@ void light() {
 	float ndh = clamp(dot(NORMAL, h), 0.0, 1.0);
 	float size = mix(0.993, 0.955, v_rough);
 	float edge = mix(0.002, 0.02, v_rough);
-	float spec = smoothstep(size - edge, size + edge, ndh) * spec_strength * ATTENUATION * mix(0.35, 1.0, v_metal) * v_gloss;
-	spec += v_blood * ATTENUATION * v_gloss * (0.25 * smoothstep(0.9, 0.97, ndh) + smoothstep(0.985, 0.99, ndh));
+	float ndh_aa = dot_aa(ndh, v_aa);
+	float spec = aa_highlight(size - edge, size + edge, ndh, ndh_aa) * spec_strength * ATTENUATION * mix(0.35, 1.0, v_metal) * v_gloss;
+	spec += v_blood * ATTENUATION * v_gloss * (0.25 * aa_highlight(0.9, 0.97, ndh, ndh_aa) + aa_highlight(0.985, 0.99, ndh, ndh_aa));
 	float fres = 1.0 - clamp(dot(NORMAL, VIEW), 0.0, 1.0);
 	spec += smoothstep(1.0 - edge_width, 1.0, fres) * clamp(dot(NORMAL, LIGHT), 0.0, 1.0) * ATTENUATION * edge_strength * v_edges;
 	spec += v_sheen * fres * fres * clamp(dot(NORMAL, LIGHT) + 0.3, 0.0, 1.0) * ATTENUATION;
