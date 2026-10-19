@@ -9,6 +9,12 @@ extends Node3D
 ## Zone shapes together. Zone shapes can be any number of boxes and
 ## cylinders, each with its bottom face on the floor.
 
+## The camera the tray is seen through. The tray can be wider than the screen, and a tiny tool
+## past its edge couldn't be reached, so with a camera tools are only laid out and put back where
+## their middle is on screen (see on_screen). Large tools may still stick out. Empty = no limit.
+@export var camera: Camera3D
+## How far inside the screen's edge a tool's middle must be when it's laid out or put back.
+@export var screen_margin_pixels := 40.0
 ## Random spots tried per tool when laying out; the most open one wins.
 @export var placement_tries := 40
 ## Space kept between a laid-out tool and the tray's edge, on top of the
@@ -71,12 +77,27 @@ func floor_height(point: Vector3) -> float:
 	return lowest
 
 
-## A random point on the tray floor.
+## True if the point is on screen, at least margin_pixels inside its edge, as seen with the tray
+## at rest (it's filled off screen, so where it is now doesn't matter). Always true without a
+## camera.
+func on_screen(point: Vector3, margin_pixels := screen_margin_pixels) -> bool:
+	if camera == null:
+		return true
+	var parent := get_parent_node_3d()
+	var rest := parent.global_transform * _rest_position if parent else _rest_position
+	var at_rest := point + rest - global_position
+	if camera.is_position_behind(at_rest):
+		return false
+	var screen := camera.get_viewport().get_visible_rect().grow(-margin_pixels)
+	return screen.has_point(camera.unproject_position(at_rest))
+
+
+## A random point on the tray floor, on screen (see on_screen).
 func random_point() -> Vector3:
 	var bounds := _bounds()
 	for i in 100:
 		var point := bounds.position + bounds.size * Vector3(randf(), 0.0, randf())
-		if contains(point):
+		if contains(point) and on_screen(point):
 			point.y = floor_height(point)
 			return point
 	push_warning("Tray: couldn't find a point inside the Zone shapes")
@@ -100,7 +121,7 @@ func nearest_placement(tool: SurgicalTool, point: Vector3, yaw: float, margin :=
 		var spot := start
 		for i in 50:
 			var footprint := _Footprint.new(spot, turn, bounds)
-			if _fits(footprint, margin):
+			if _fits(footprint, margin) and on_screen(footprint.center):
 				break
 			spot = spot.move_toward(Vector3(middle.x, spot.y, middle.z), 0.01)
 		var distance := Vector2(spot.x - point.x, spot.z - point.z).length()
@@ -200,7 +221,7 @@ func fill(new_tools: Array[SurgicalTool]) -> void:
 		var best: _Footprint
 		for i in placement_tries:
 			var candidate := _Footprint.new(random_point(), randf() * TAU, bounds)
-			if not _fits(candidate, edge_clearance):
+			if not _fits(candidate, edge_clearance) or not on_screen(candidate.center):
 				continue
 			candidate.clearance = INF
 			for other in placed:

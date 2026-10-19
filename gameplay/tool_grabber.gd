@@ -12,8 +12,8 @@ extends Node
 ## - over hand_off_zone: tool_handed is emitted, and the listener decides.
 ## - anywhere else: flown back to the nearest spot on the tray, and the pile
 ##   gets a small nudge.
-## A loose tool that leaves the tray by itself (see off_tray_margin) is flown
-## back the same way.
+## A loose tool that leaves the tray by itself (see off_tray_margin), or whose
+## middle goes off screen (Tray.on_screen), is flown back the same way.
 ## Works with mouse and touch (Godot turns single touches into mouse events).
 ## It also owns every highlight on the tools (held, hint() and reject()), so
 ## they never fight over a tool's look. A highlight is a light glow (the
@@ -248,7 +248,8 @@ func _physics_process(_delta: float) -> void:
 	for tool in tray.tools():
 		if tool.freeze or _flying.has(tool) or not tool.can_process():
 			continue
-		if not tray.contains(tool.global_position, -off_tray_margin):
+		# Off screen only past the very edge, so one put back just inside the margin stays put.
+		if not tray.contains(tool.global_position, -off_tray_margin) or not tray.on_screen(tool.global_position, 0.0):
 			return_to_tray(tool)
 
 
