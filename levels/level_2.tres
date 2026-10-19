@@ -12,5 +12,5 @@ script = ExtResource("1_2c610")
 id = &"clamps"
 title = "Clamps"
 scoring = SubResource("Resource_uno3a")
-tutorial_ids = Array[StringName]([&"acland_clamp", &"crile_clamp", &"kelly_clamp"])
+tutorial_ids = Array[StringName]([&"crile_clamp", &"kelly_clamp"])
 metadata/_custom_type_script = "uid://oeja3x8hjwhl"

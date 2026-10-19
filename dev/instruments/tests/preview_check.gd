@@ -4,7 +4,7 @@ extends Control
 ## SNAPSHOT=/abs/path.png Godot --path <repo> res://dev/instruments/tests/preview_check.tscn
 
 const SLUGS := ["scalpel_10", "scalpel_11", "scalpel_15", "kelly_clamp", "crile_clamp", "mayo_hegar",
-	"mayo_scissors", "adson_forceps", "micro_needle_holder", "vannas_scissors", "acland_clamp"]
+	"mayo_scissors", "adson_forceps", "micro_needle_holder", "vannas_scissors"]
 
 var frames := 0
 

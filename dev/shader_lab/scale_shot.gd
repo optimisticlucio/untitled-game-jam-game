@@ -32,7 +32,7 @@ func _ready() -> void:
 	var tray := level.get("_tray") as Node3D
 	# The level's own tools plus a tiny one, a long one and a silly one, to compare sizes.
 	var scenes := SurgicalTool.scenes_by_id()
-	for id in [&"acland_clamp", &"army_navy", &"rubber_duck"]:
+	for id in [&"vannas_scissors", &"army_navy", &"rubber_duck"]:
 		if scenes.has(id) and not tray.get_node("Tools").get_children().any(func(t: SurgicalTool) -> bool: return t.id == id):
 			tray.get_node("Tools").add_child(scenes[id].instantiate())
 	var tools: Array = tray.get_node("Tools").get_children()
