@@ -17,6 +17,11 @@ extends Node3D
 ## Where the tray goes when it slides away, relative to where it rests.
 @export var away_offset := Vector3(0.0, 0.0, 0.7)
 @export var slide_seconds := 0.6
+## How far (m) the tray swings past where it rests, towards the doctor, as it slides in (and
+## winds up the same way before sliding out). Too far and it passes into him.
+@export var slide_overshoot := 0.02
+## Share of slide_seconds spent on the overshoot (coming back from it, or winding up).
+@export_range(0.0, 0.5, 0.05) var overshoot_share := 0.25
 ## How long a freshly filled tray settles off screen before sliding in. The
 ## player doesn't see it, so the tools fall with settle_gravity times their
 ## gravity and settle_damping extra drag to get down fast. Whatever slight
@@ -121,8 +126,11 @@ func slide_away() -> Signal:
 	# their previous position.) They're cleared afterwards anyway.
 	for tool in tools():
 		tool.process_mode = Node.PROCESS_MODE_DISABLED
-	var tween := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
-	tween.tween_property(self, "position", _rest_position + away_offset, slide_seconds)
+	var tween := create_tween()
+	tween.tween_property(self, "position", _overshoot_position(), slide_seconds * overshoot_share) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(self, "position", _rest_position + away_offset, slide_seconds * (1.0 - overshoot_share)) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN)
 	return tween.finished
 
 
@@ -132,12 +140,21 @@ func slide_away() -> Signal:
 func slide_back() -> Signal:
 	for tool in tools():
 		tool.process_mode = Node.PROCESS_MODE_DISABLED
-	var tween := create_tween().set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
-	tween.tween_property(self, "position", _rest_position, slide_seconds)
+	var tween := create_tween()
+	tween.tween_property(self, "position", _overshoot_position(), slide_seconds * (1.0 - overshoot_share)) \
+		.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "position", _rest_position, slide_seconds * overshoot_share) \
+		.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 	tween.tween_callback(func() -> void:
 		for tool in tools():
 			tool.process_mode = Node.PROCESS_MODE_INHERIT)
 	return tween.finished
+
+
+## slide_overshoot past the resting spot, away from where the tray slides out to. Tween's
+## TRANS_BACK can't be told how far it goes (a tenth of the trip: 7 cm, into the doctor).
+func _overshoot_position() -> Vector3:
+	return _rest_position - away_offset.normalized() * slide_overshoot
 
 
 ## Jumps to where slide_away leaves it, without animating.
