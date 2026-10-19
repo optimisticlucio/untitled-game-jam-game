@@ -19,8 +19,9 @@ var _queue: Array[StringName] = []
 ## Empty while no request is live (between requests and during reshuffles).
 var _requested: StringName
 var _since_request := 0.0
-## Starts at infinity: before the first let-go there's nothing to wait for.
-var _since_release := INF
+## Seconds since the grabber was last busy: holding a tool, or one flying (back to the tray after
+## a drop or a wrong hand-off). Starts at infinity: before the first grab there's nothing to wait for.
+var _since_busy := INF
 ## Whether a hint glows now. The surgeon waits impatiently (finger snaps) for as long.
 var _hint_shown := false:
 	set(value):
@@ -67,7 +68,6 @@ func _ready() -> void:
 		_show_message("This level can't start:\n" + "\n".join(problems))
 		return
 	_grabber.tool_handed.connect(_on_tool_handed)
-	_grabber.tool_released.connect(func(_tool: SurgicalTool) -> void: _since_release = 0.0)
 	_trays = level.plan_trays()
 	_request.hide()
 	_tray.place_away()
@@ -76,7 +76,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_since_request += delta
-	_since_release += delta
+	_since_busy = 0.0 if _grabber.is_busy() else _since_busy + delta
 	if _requested != &"" and _grabber.enabled:
 		_pick_seconds += delta
 	if _hint_shown:
@@ -177,6 +177,8 @@ func _on_tool_handed(tool: SurgicalTool) -> void:
 	_pick_seconds = 0.0
 	if right:
 		_requested = &""
+		# Gone until the next request shows it.
+		_request.hide()
 		$Sounds/Correct.play()
 		await _grabber.consume(tool)
 		_request_next()
@@ -186,7 +188,8 @@ func _on_tool_handed(tool: SurgicalTool) -> void:
 
 
 ## A hint waits for both the request delay and a quiet spell after the last
-## let-go, and never starts mid-grab, so it can't light up something else
+## let-go (or a wrong tool landing back on the tray), and never starts
+## mid-grab, so it can't light up something else
 ## just as the player reaches for a tool. It lasts hint_duration_seconds,
 ## then the request delay starts over. In the tutorial each request's first
 ## hint comes at once, so the tool is easy to spot; after that, the same rules.
@@ -196,7 +199,7 @@ func _hint_due() -> bool:
 	return (_requested != &"" and not _hint_shown
 		and level.hint_delay_seconds > 0.0
 		and _since_request >= level.hint_delay_seconds
-		and _since_release >= level.hint_idle_seconds
+		and _since_busy >= level.hint_idle_seconds
 		and _grabber.enabled and not _grabber.is_busy())
 
 
