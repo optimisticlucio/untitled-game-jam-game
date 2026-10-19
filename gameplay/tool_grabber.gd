@@ -69,7 +69,7 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 ## How long a rejected tool hovers before it flies back to the tray.
 @export var reject_seconds := 0.5
 ## Height above the tray's tools the held tool floats at. Higher is closer to the camera.
-@export var lift_height := 0.3
+@export var lift_height := 0.25
 ## On touch screens the held tool sits this far above the finger, so the finger
 ## doesn't hide it. Mice get no offset.
 @export var finger_offset_pixels := 90.0
