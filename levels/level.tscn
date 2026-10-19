@@ -87,7 +87,7 @@ directional_shadow_max_distance = 1.5
 script = ExtResource("flicker_script")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.374, 0.9274, 0, -0.9274, 0.374, 0, 0.6387, 0.17363)
+transform = Transform3D(1, 0, 0, 0, 0.62923, 0.77722, 0, -0.77722, 0.62923, 0, 0.5387, 0.37363)
 keep_aspect = 0
 fov = 32.0
 near = 0.02
@@ -105,7 +105,7 @@ shape = SubResource("Shape_table")
 [node name="Tray" parent="." instance=ExtResource("4_tray")]
 
 [node name="Target" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.006, 0.0332, -0.2726)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00644, 0.05789, -0.27423)
 
 [node name="Mesh" type="MeshInstance3D" parent="Target"]
 visible = false
@@ -123,7 +123,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
 shape = SubResource("Shape_hand_off_zone")
 
 [node name="Surgeon" parent="." instance=ExtResource("22_surgeon")]
-transform = Transform3D(1, 0, 0, 0, 0.374, 0.9274, 0, -0.9274, 0.374, -0.08362, 0.02922, -0.29338)
+transform = Transform3D(1.07262, 0, 0, 0, 0.67491, 0.83364, 0, -0.83364, 0.67491, -0.08969, 0.06033, -0.2968)
 
 [node name="ToolGrabber" type="Node" parent="." node_paths=PackedStringArray("camera", "tray", "hand_off_zone", "surgeon")]
 script = ExtResource("2_grabber")
