@@ -84,11 +84,39 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 theme_type_variation = &"CardPanel"
 
-[node name="Column" type="VBoxContainer" parent="Detail" unique_id=1972955758]
+[node name="Margin" type="MarginContainer" parent="Detail"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 44
+
+[node name="Column" type="VBoxContainer" parent="Detail/Margin" unique_id=1972955758]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="TopRow" type="HBoxContainer" parent="Detail/Margin/Column"]
 layout_mode = 2
 theme_override_constants/separation = 16
 
-[node name="Viewer" type="SubViewportContainer" parent="Detail/Column" unique_id=1491332098 instance=ExtResource("4_dqnyn")]
+[node name="Hint" type="Label" parent="Detail/Margin/Column/TopRow" unique_id=1040696941]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_type_variation = &"SmallLabel"
+theme_override_font_sizes/font_size = 26
+text = "Drag to turn it"
+vertical_alignment = 1
+
+[node name="ResetButton" type="Button" parent="Detail/Margin/Column/TopRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 76)
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+theme_override_constants/icon_max_width = 50
+text = "Reset"
+icon = ExtResource("10_reset")
+
+[node name="Viewer" type="SubViewportContainer" parent="Detail/Margin/Column" unique_id=1491332098 instance=ExtResource("4_dqnyn")]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
@@ -96,44 +124,34 @@ size_flags_vertical = 3
 stretch = true
 script = ExtResource("5_rqxye")
 
-[node name="HintRow" type="HBoxContainer" parent="Detail/Column"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="Hint" type="Label" parent="Detail/Column/HintRow" unique_id=1040696941]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_type_variation = &"SmallLabel"
-text = "Drag to turn it"
-vertical_alignment = 1
-
-[node name="ResetButton" type="Button" parent="Detail/Column/HintRow"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(230, 84)
-layout_mode = 2
-text = "Reset"
-icon = ExtResource("10_reset")
-
-[node name="DetailName" type="Label" parent="Detail/Column" unique_id=1064309022]
+[node name="DetailName" type="Label" parent="Detail/Margin/Column" unique_id=1064309022]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"CardTitle"
+theme_override_font_sizes/font_size = 42
 autowrap_mode = 3
 
-[node name="DetailTags" type="Label" parent="Detail/Column" unique_id=671523616]
+[node name="DetailTags" type="Label" parent="Detail/Margin/Column" unique_id=671523616]
 unique_name_in_owner = true
 layout_mode = 2
 theme_type_variation = &"SmallLabel"
+theme_override_font_sizes/font_size = 26
 autowrap_mode = 3
 
-[node name="DetailText" type="Label" parent="Detail/Column" unique_id=251941070]
+[node name="DetailText" type="Label" parent="Detail/Margin/Column" unique_id=251941070]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 30
 autowrap_mode = 3
 
-[node name="CloseDetailButton" type="Button" parent="Detail/Column" unique_id=306524810]
+[node name="Gap" type="Control" parent="Detail/Margin/Column"]
+custom_minimum_size = Vector2(0, 26)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="CloseDetailButton" type="Button" parent="Detail/Margin/Column" unique_id=306524810]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 110)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Close"
