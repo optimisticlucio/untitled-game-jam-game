@@ -1,25 +1,27 @@
 class_name LightFlicker
 extends Node
 ## The room's light as a tired fluorescent tube in a dodgy hospital. Put it under a Light3D.
-## All the time: a restless hum, the light trembling a little. Every few seconds: a flicker,
-## one to four sharp dips; now and then the tube nearly goes out for a moment. Dim light turns
-## a cold green. The world's sky and the shaders' own room light (the room_light shader global)
+## All the time: a restless hum, the light trembling a little. Every several seconds: a soft
+## flicker, one or two dips (rarely a stutter of four), easing in and out so it reads as the
+## light, not a glitch. Dim light turns a cold green. The world's sky and the shaders' own room light (the room_light shader global)
 ## follow, so the whole scene flickers together.
 
 ## Strength of the constant trembling (0.04 = up to 4 % dimmer).
-@export_range(0.0, 0.5, 0.01) var hum := 0.04
+@export_range(0.0, 0.5, 0.01) var hum := 0.025
 ## How fast it trembles.
 @export var hum_speed := 18.0
 ## Seconds between flickers (a random time in this range).
-@export var gap_seconds := Vector2(2.0, 6.0)
-## How much darker a flicker's dip gets at most (0.3 = 30 %).
-@export_range(0.0, 1.0, 0.01) var dip := 0.3
+@export var gap_seconds := Vector2(5.0, 12.0)
+## How much darker a flicker's dip gets at most (0.15 = 15 %).
+@export_range(0.0, 1.0, 0.01) var dip := 0.15
 ## How long one dip lasts, in seconds (a random time in this range).
-@export var dip_seconds := Vector2(0.03, 0.1)
+@export var dip_seconds := Vector2(0.06, 0.15)
 ## Chance that a flicker is a double dip, a stutter of four, or the tube nearly going out.
-@export_range(0.0, 1.0, 0.05) var double_chance := 0.35
-@export_range(0.0, 1.0, 0.05) var stutter_chance := 0.2
-@export_range(0.0, 1.0, 0.05) var blackout_chance := 0.05
+@export_range(0.0, 1.0, 0.05) var double_chance := 0.2
+@export_range(0.0, 1.0, 0.05) var stutter_chance := 0.05
+@export_range(0.0, 1.0, 0.05) var blackout_chance := 0.0
+## How quickly the light follows a dip (higher = sharper). Low values ease it in and out.
+@export var smoothing := 30.0
 ## The light's colour when it's dim.
 @export var dim_color := Color(0.78, 1.0, 0.86)
 
@@ -32,6 +34,8 @@ var _noise := FastNoiseLite.new()
 var _time := 0.0
 var _time_left := 0.0
 var _level := 1.0
+## The brightness shown, easing toward _level.
+var _shown := 1.0
 ## Steps still to play: x = brightness (1 = normal), y = seconds.
 var _steps: Array[Vector2] = []
 
@@ -70,8 +74,9 @@ func _process(delta: float) -> void:
 		var step: Vector2 = _steps.pop_front()
 		_level = step.x
 		_time_left = step.y
+	_shown = lerpf(_shown, _level, 1.0 - exp(-smoothing * delta))
 	var trembling := 1.0 - hum * (0.5 + 0.5 * _noise.get_noise_1d(_time * hum_speed))
-	_set_brightness(_level * trembling)
+	_set_brightness(_shown * trembling)
 
 
 ## One flicker, then the steady (humming) light until the next one.
