@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="LevelData" format=3 uid="uid://dkqdjt6qoy524"]
+
+[ext_resource type="Script" uid="uid://oeja3x8hjwhl" path="res://levels/level_data.gd" id="1_8g6tw"]
+[ext_resource type="Script" uid="uid://ce42vs36bypne" path="res://gameplay/scoring/point_scoring.gd" id="1_fwm1l"]
+
+[sub_resource type="Resource" id="Resource_fwm1l"]
+script = ExtResource("1_fwm1l")
+metadata/_custom_type_script = "uid://ce42vs36bypne"
+
+[resource]
+script = ExtResource("1_8g6tw")
+id = &"scissors"
+title = "Scissors"
+scoring = SubResource("Resource_fwm1l")
+requested_ids = Dictionary[StringName, int]({
+&"mayo_scissors": 3,
+&"metzenbaum_scissors": 3,
+&"vannas_scissors": 3
+})
+distractor_ids = Dictionary[StringName, int]({
+&"crime_and_punishment": 1,
+&"dentures": 1,
+&"eyebrow_tweezers": 2,
+&"eyelash_curler": 1,
+&"rubber_duck": 1,
+&"sock": 2
+})
+tool_size_percent = 140.0
+tutorial_ids = Array[StringName]([&"mayo_scissors", &"metzenbaum_scissors", &"vannas_scissors"])
+reshuffle_after = 4
+distractors_per_tray = 6
+hint_delay_seconds = 4.0
+hint_idle_seconds = 2.0
+hint_duration_seconds = 1.0
+metadata/_custom_type_script = "uid://oeja3x8hjwhl"

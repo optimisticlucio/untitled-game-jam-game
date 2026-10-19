@@ -5,8 +5,8 @@
 [resource]
 script = ExtResource("1_data")
 id = &"example_level"
-requested_ids = Array[StringName]([&"kelly_clamp", &"crile_clamp", &"scalpel_10", &"scalpel_11", &"mayo_scissors", &"metzenbaum_scissors", &"kelly_clamp", &"adson_forceps", &"debakey_forceps"])
-distractor_ids = Array[StringName]([&"scalpel_15", &"mayo_hegar", &"vannas_scissors", &"army_navy", &"micro_hook", &"beaver_handle", &"micro_needle_holder", &"acland_clamp", &"eyebrow_tweezers", &"dental_explorer", &"rubber_duck", &"banana"])
+requested_ids = Dictionary[StringName, int]({&"kelly_clamp": 2, &"crile_clamp": 1, &"scalpel_10": 1, &"scalpel_11": 1, &"mayo_scissors": 1, &"metzenbaum_scissors": 1, &"adson_forceps": 1, &"debakey_forceps": 1})
+distractor_ids = Dictionary[StringName, int]({&"scalpel_15": 1, &"mayo_hegar": 1, &"vannas_scissors": 1, &"army_navy": 1, &"micro_hook": 1, &"beaver_handle": 1, &"micro_needle_holder": 1, &"acland_clamp": 1, &"eyebrow_tweezers": 1, &"dental_explorer": 1, &"rubber_duck": 1, &"banana": 1})
 tool_size_percent = 120.0
 tutorial_ids = Array[StringName]([&"scalpel_10", &"kelly_clamp", &"mayo_scissors"])
 reshuffle_after = 8

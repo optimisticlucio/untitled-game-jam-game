@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="LevelData" format=3 uid="uid://betnnoxvswgau"]
+
+[ext_resource type="Script" uid="uid://oeja3x8hjwhl" path="res://levels/level_data.gd" id="1_2c610"]
+[ext_resource type="Script" uid="uid://ce42vs36bypne" path="res://gameplay/scoring/point_scoring.gd" id="1_uno3a"]
+
+[sub_resource type="Resource" id="Resource_uno3a"]
+script = ExtResource("1_uno3a")
+metadata/_custom_type_script = "uid://ce42vs36bypne"
+
+[resource]
+script = ExtResource("1_2c610")
+id = &"clamps"
+title = "Clamps"
+scoring = SubResource("Resource_uno3a")
+tutorial_ids = Array[StringName]([&"acland_clamp", &"crile_clamp", &"kelly_clamp"])
+metadata/_custom_type_script = "uid://oeja3x8hjwhl"

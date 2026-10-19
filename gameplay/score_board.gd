@@ -97,7 +97,7 @@ static func _sample_row(level: LevelData, scoring: Scoring, i: int, rng: RandomN
 	var run := RunRecord.new()
 	var wrong := rng.randi_range(0, 1 + i / 3)
 	var total := 0.0
-	for pick in wrong + level.requested_ids.size():
+	for pick in wrong + level.request_count():
 		var took := PAR_SECONDS_PER_PICK * SAMPLE_FACTORS[i] * rng.randf_range(0.8, 1.2)
 		run.add_pick(pick >= wrong, took)
 		total += took
