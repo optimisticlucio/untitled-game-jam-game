@@ -9,7 +9,8 @@ extends Node
 ## floats above a finger.)
 ## - over the tray's zone: dropped with physics from where it is; the pile
 ##   gets a small nudge when it lands.
-## - over hand_off_zone: tool_handed is emitted, and the listener decides.
+## - over hand_off_zone, or flicked toward it (see the Flick exports):
+##   tool_handed is emitted, and the listener decides.
 ## - anywhere else: flown back to the nearest spot on the tray, and the pile
 ##   gets a small nudge.
 ## A loose tool that leaves the tray by itself (see off_tray_margin), or whose
@@ -92,6 +93,19 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 @export var consume_drop_seconds := 0.3
 @export var consume_shrink_seconds := 0.2
 
+@export_group("Flick")
+## A tool let go short of hand_off_zone still counts as handed when it's flicked at it. Pixels
+## are the 720-wide design screen's. The pointer must be moving at least this fast (pixels a
+## second) as it lets go, so a slow let-go is judged where it is, as before.
+@export var flick_min_speed := 900.0
+## How far from the pointer the zone may be, along the flick (pixels to its nearest edge).
+@export var flick_reach_pixels := 450.0
+## How far the flick's heading may point beside the zone (degrees either way).
+@export_range(1.0, 90.0) var flick_angle_degrees := 20.0
+## How far back the flick's speed and heading are measured. Short, so a finger that stops before
+## it lifts isn't a flick.
+@export var flick_window_seconds := 0.1
+
 @export_group("Surgeon")
 ## The surgeon who takes handed tools, or none. With him, a handed tool drops onto his hand and
 ## rides on it through what he does with it (Surgeon.take(): the timing is his), and when his
@@ -147,6 +161,9 @@ var _candidate: SurgicalTool
 var _held: SurgicalTool
 ## The heading the held tool turns to (see turn_held_across).
 var _held_yaw := 0.0
+## The pointer's recent path while a tool is held, for flicks: x and y are its position, z the
+## seconds since the grab. Oldest first, reaching just past flick_window_seconds back.
+var _pointer_trail := PackedVector3Array()
 ## Tools mid-flight back to the tray. They can't be grabbed until they land.
 var _flying: Dictionary[SurgicalTool, bool] = {}
 ## Where each released tool appeared to be let go: the point on the table
@@ -260,6 +277,7 @@ func _process(delta: float) -> void:
 			_grab(_candidate)
 			_candidate = null
 	if _held:
+		_track_pointer(delta)
 		var target := _held_position()
 		var weight := 1.0 - exp(-follow_sharpness * delta)
 		_held.global_position = _held.global_position.lerp(target, weight)
@@ -392,6 +410,8 @@ static func _toss_point(from: Vector3, via: Vector3, to: Vector3, t: float) -> V
 func _grab(tool: SurgicalTool) -> void:
 	_held = tool
 	_held_yaw = _across_yaw(tool)
+	_pointer_trail.clear()
+	_track_pointer(0.0)
 	_make_intangible(tool)
 	_set_glow(tool, true)
 	# Silly items sound like themselves when picked up too (the duck squeaks); instruments clink.
@@ -424,10 +444,12 @@ func _across_yaw(tool: SurgicalTool) -> float:
 func _release() -> void:
 	var tool := _held
 	_held = null
+	# The let-go comes in before this frame's _process, about a frame after the last sample.
+	_track_pointer(get_process_delta_time())
 	_released_over[tool] = _table_point_under(_pointer)
 	tool_released.emit(tool)
 	var zone := _zone_under(_pointer)
-	if zone == hand_off_zone:
+	if zone == hand_off_zone or _flicked_at(hand_off_zone):
 		_set_glow(tool, false)
 		tool_handed.emit(tool)
 	elif zone == tray.zone:
@@ -658,6 +680,59 @@ func _zone_under(screen: Vector2) -> Area3D:
 	query.collide_with_bodies = false
 	var hit := camera.get_world_3d().direct_space_state.intersect_ray(query)
 	return hit.get("collider") as Area3D
+
+
+## Adds the pointer to _pointer_trail, this many seconds after the last sample.
+func _track_pointer(seconds: float) -> void:
+	var now := (_pointer_trail[-1].z if not _pointer_trail.is_empty() else 0.0) + seconds
+	_pointer_trail.append(Vector3(_pointer.x, _pointer.y, now))
+	while _pointer_trail.size() > 2 and now - _pointer_trail[1].z >= flick_window_seconds:
+		_pointer_trail.remove_at(0)
+
+
+## The pointer's velocity (pixels a second) over the last flick_window_seconds of _pointer_trail.
+func _pointer_velocity() -> Vector2:
+	var first := _pointer_trail[0]
+	var last := _pointer_trail[-1]
+	# Too short a stretch (a let-go right after the grab) would make a twitch look fast.
+	if last.z - first.z < flick_window_seconds / 4.0:
+		return Vector2.ZERO
+	return Vector2(last.x - first.x, last.y - first.y) / (last.z - first.z)
+
+
+## Whether the pointer let go flicking at the zone: at least flick_min_speed, with the zone's
+## outline on screen inside the fan flick_angle_degrees either side of the flick's heading,
+## flick_reach_pixels long.
+func _flicked_at(zone: Area3D) -> bool:
+	var velocity := _pointer_velocity()
+	if velocity.length() < flick_min_speed:
+		return false
+	var outline := _screen_outline(zone)
+	if outline.is_empty():
+		return false
+	const FAN_STEPS := 8
+	var half_angle := deg_to_rad(flick_angle_degrees)
+	var fan := PackedVector2Array([_pointer])
+	for i in FAN_STEPS + 1:
+		var angle := velocity.angle() + lerpf(-half_angle, half_angle, float(i) / FAN_STEPS)
+		fan.append(_pointer + Vector2.from_angle(angle) * flick_reach_pixels)
+	return not Geometry2D.intersect_polygons(fan, outline).is_empty()
+
+
+## The outline on screen of the zone's box, or nothing if it's behind the camera.
+func _screen_outline(zone: Area3D) -> PackedVector2Array:
+	var shape := _first_shape(zone)
+	var size := (shape.shape as BoxShape3D).size
+	var corners := PackedVector2Array()
+	for i in 8:
+		var corner := shape.global_transform * AABB(-size / 2.0, size).get_endpoint(i)
+		if camera.is_position_behind(corner):
+			return PackedVector2Array()
+		corners.append(camera.unproject_position(corner))
+	var outline := Geometry2D.convex_hull(corners)
+	# The hull comes closed, its first point repeated at the end.
+	outline.resize(outline.size() - 1)
+	return outline
 
 
 func _first_shape(zone: Area3D) -> CollisionShape3D:
