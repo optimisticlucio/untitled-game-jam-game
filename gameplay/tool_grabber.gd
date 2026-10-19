@@ -12,6 +12,8 @@ extends Node
 ## - over hand_off_zone: tool_handed is emitted, and the listener decides.
 ## - anywhere else: flown back to the nearest spot on the tray, and the pile
 ##   gets a small nudge.
+## A loose tool that leaves the tray by itself (see off_tray_margin) is flown
+## back the same way.
 ## Works with mouse and touch (Godot turns single touches into mouse events).
 ## It also owns every highlight on the tools (held, hint() and reject()), so
 ## they never fight over a tool's look. A highlight is a light glow (the
@@ -79,6 +81,10 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 ## Returned tools land at least this far inside the tray's edge (on top of
 ## their own width), so they don't catch the rim.
 @export var return_margin := 0.01
+## A loose tool whose middle gets this far past the edge of the tray floor (over the wall, pushed
+## by the pile or bouncing out) is returned like one let go off the tray. A little past the edge
+## lets a long tool rest propped on the rim.
+@export var off_tray_margin := 0.01
 ## Speed (m/s) of the random nudge the other tray tools get when a dropped
 ## or returned tool lands.
 @export var jumble_speed := 0.1
@@ -232,6 +238,18 @@ func _unhandled_input(event: InputEvent) -> void:
 		_pointer = event.position
 		if _candidate and _pointer.distance_to(_press_position) > hold_slop_pixels:
 			_candidate = null
+
+
+## Returns loose tools that are leaving the tray. Held and flying tools are frozen or in
+## _flying, and a sliding tray's tools don't process, so only ones lying in the pile are checked.
+func _physics_process(_delta: float) -> void:
+	if not enabled:
+		return
+	for tool in tray.tools():
+		if tool.freeze or _flying.has(tool) or not tool.can_process():
+			continue
+		if not tray.contains(tool.global_position, -off_tray_margin):
+			return_to_tray(tool)
 
 
 func _process(delta: float) -> void:
