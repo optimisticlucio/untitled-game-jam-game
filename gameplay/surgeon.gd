@@ -8,8 +8,10 @@ extends Node3D
 ## with throw_velocity().
 ##
 ## He stands in the 3D world, not the UI, so held and handed tools show in front of him and the
-## tray's far rim hides the bottom of his coat. The level turns him to face the camera and puts
-## Target/HandOffZone on his hand.
+## tray hides his lower body. The level turns him to face the camera and puts Target/HandOffZone
+## on his hand. He's drawn in two layers that play together: Sprite (all but the fingers) and
+## Front (the fingers of his fist), drawn closer to the camera than a tool on his hand, so the
+## tool sits inside his fist.
 
 ## Which loop he waits with: idle, or impatient finger snaps.
 @export var impatient := false:
@@ -21,6 +23,8 @@ extends Node3D
 			_play(_waiting())
 ## How far in front of his drawing a tool on his hand sits, so it shows over the glove.
 @export var hand_front := 0.03
+## How far in front of his drawing his fingers are drawn: in front of a tool on his hand.
+@export var fingers_front := 0.05
 ## What he does with a right tool, in order: an animation's name, or seconds of idle. The tool
 ## leaves his hand at correct_release_frame of the last animation (check it when that changes).
 ## Julia's timing: the hand gives a little under the tool, a nod, a second's wait, the throw.
@@ -35,11 +39,16 @@ var _taking := false
 var _take_count := 0
 
 @onready var _sprite: AnimatedSprite3D = $Sprite
+## His fingers, which follow Sprite's animation and frame.
+@onready var _front: AnimatedSprite3D = $Front
 ## Where his hand is in every frame of every animation (frame px, y down), from the Spine export.
 @onready var _hands: Dictionary = _sprite.sprite_frames.get_meta(&"hands")
 
 
 func _ready() -> void:
+	_place_front()
+	_sprite.animation_changed.connect(_sync_front)
+	_sprite.frame_changed.connect(_sync_front)
 	# Only one-shots finish; the waiting loops never do. During take() it moves on by itself.
 	_sprite.animation_finished.connect(func() -> void:
 		if not _taking:
@@ -92,6 +101,24 @@ func hand_point() -> Vector3:
 	var size := _sprite.sprite_frames.get_frame_texture(_sprite.animation, _sprite.frame).get_size()
 	var local := Vector3(pixel.x - size.x / 2.0, size.y / 2.0 - pixel.y, 0.0) * _sprite.pixel_size
 	return _sprite.global_transform * (local + Vector3.BACK * hand_front)
+
+
+## Puts the fingers fingers_front closer to the camera, made as much smaller as that brings them
+## closer, so on screen they sit exactly on his hand.
+func _place_front() -> void:
+	var camera := get_viewport().get_camera_3d()
+	if camera == null:
+		return
+	var depth := (global_position - camera.global_position).dot(-camera.global_basis.z)
+	var closer := 1.0 - fingers_front / depth
+	_front.global_position = camera.global_position.lerp(global_position, closer)
+	_front.pixel_size = _sprite.pixel_size * closer
+
+
+func _sync_front() -> void:
+	if _front.animation != _sprite.animation:
+		_front.animation = _sprite.animation
+	_front.frame = _sprite.frame
 
 
 func _play(anim: StringName) -> void:

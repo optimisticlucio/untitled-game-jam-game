@@ -1,9 +1,13 @@
 extends SceneTree
-## Builds assets/surgeon/surgeon_frames.tres (SpriteFrames) from Julia's surgeon sheets. Never edit it by hand.
-## Inputs: assets/surgeon/surgeon_<anim>.png, one sheet per animation, and surgeon_frames.json (cell
-## size, columns, fps, frame count, loop, hand point per frame). Julia's Spine 4.3 frame export
-## (~/Desktop/spine-practice/surgeon/export/frames_<fps>fps_<version>, with anchors.json) becomes those
-## sheets with:  python3 dev/surgeon/pack_surgeon.py <export folder> assets/surgeon
+## Builds the surgeon's SpriteFrames from Julia's sheets. Never edit them by hand.
+##   assets/surgeon/surgeon_frames.tres        everything but the fingers (the Surgeon's Sprite)
+##   assets/surgeon/surgeon_front_frames.tres  the fingers only, drawn over a tool on his hand (Front)
+## Inputs, per layer: assets/surgeon/<layer>_<anim>.png, one sheet per animation, and
+## <layer>_frames.json (frame size, crop, cell size, columns, fps, frame count, loop, hand point per
+## frame). Julia's Spine 4.3 frame export (~/Desktop/spine-practice/surgeon/export/
+## frames_<fps>fps_<version>_back and _front, with anchors.json) becomes those sheets with:
+##   python3 dev/surgeon/pack_surgeon.py <export>_back assets/surgeon surgeon
+##   python3 dev/surgeon/pack_surgeon.py <export>_front assets/surgeon surgeon_front
 ## Then run: Godot --headless --path <repo> --script res://dev/surgeon/build_surgeon_frames.gd
 ## The level places him for a 485 x 483 frame; a new frame size needs Surgeon and Target moved.
 
@@ -11,8 +15,17 @@ const FOLDER := "res://assets/surgeon/"
 
 
 func _init() -> void:
-	var meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(FOLDER + "surgeon_frames.json"))
+	var error := OK
+	for layer in ["surgeon", "surgeon_front"]:
+		error = maxi(error, _build(layer))
+	quit(error)
+
+
+func _build(layer: String) -> Error:
+	var meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(FOLDER + layer + "_frames.json"))
 	var frame_size := Vector2(meta.frame_size[0], meta.frame_size[1])
+	# The sheets hold only the box that anything is drawn in; the margin puts it back in place.
+	var crop := Rect2(meta.crop[0], meta.crop[1], meta.crop[2], meta.crop[3])
 	var cell := Vector2(meta.cell_size[0], meta.cell_size[1])
 	var columns: int = meta.columns
 	var frames := SpriteFrames.new()
@@ -25,16 +38,17 @@ func _init() -> void:
 		for point: Array in anim.hand:
 			points.append(Vector2(point[0], point[1]))
 		hands[StringName(anim_name)] = points
-		var sheet: Texture2D = load(FOLDER + "surgeon_%s.png" % anim_name)
+		var sheet: Texture2D = load(FOLDER + "%s_%s.png" % [layer, anim_name])
 		frames.add_animation(anim_name)
 		frames.set_animation_speed(anim_name, meta.fps)
 		frames.set_animation_loop(anim_name, anim.loop)
 		for i in int(anim.frames):
 			var frame := AtlasTexture.new()
 			frame.atlas = sheet
-			frame.region = Rect2(Vector2(i % columns, i / columns) * cell, frame_size)
+			frame.region = Rect2(Vector2(i % columns, i / columns) * cell, crop.size)
+			frame.margin = Rect2(crop.position, frame_size - crop.size)
 			frames.add_frame(anim_name, frame)
 	frames.set_meta(&"hands", hands)
-	var error := ResourceSaver.save(frames, FOLDER + "surgeon_frames.tres")
-	print("build_surgeon_frames: ", error_string(error), " ", frames.get_animation_names())
-	quit(error)
+	var error := ResourceSaver.save(frames, FOLDER + layer + "_frames.tres")
+	print("build_surgeon_frames: ", layer, " ", error_string(error), " ", frames.get_animation_names())
+	return error
