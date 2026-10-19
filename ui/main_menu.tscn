@@ -99,6 +99,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Play"
 icon = ExtResource("3_jiymt")
+metadata/icon_motion = &"nudge"
 
 [node name="GuideButton" type="Button" parent="Column" unique_id=1033447825]
 unique_name_in_owner = true
@@ -107,6 +108,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Pocket Guide"
 icon = ExtResource("4_bgtsx")
+metadata/icon_motion = &"open"
 
 [node name="LeaderboardButton" type="Button" parent="Column" unique_id=1172933317]
 unique_name_in_owner = true
@@ -115,6 +117,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Leaderboard"
 icon = ExtResource("5_kaxbk")
+metadata/icon_motion = &"sway"
 
 [node name="SettingsButton" type="Button" parent="Column" unique_id=1311967200]
 unique_name_in_owner = true
@@ -123,6 +126,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Settings"
 icon = ExtResource("6_0nobx")
+metadata/icon_motion = &"spin"
 
 [node name="Toast" type="PanelContainer" parent="." unique_id=700282481]
 unique_name_in_owner = true
