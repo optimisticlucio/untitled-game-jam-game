@@ -40,16 +40,25 @@ extends Node3D
 ## Frames of the impatient loop where his fingers snap (the hand jumps to the snapped drawing),
 ## for the Snap player. Check them when the loop is exported or packed again.
 @export var snap_frames := PackedInt32Array([4, 10])
+## He clears his throat (Throat player) while he waits for a slow player: once he has waited
+## throat_clear_after seconds, then every throat_clear_every, but never while snapping or taking.
+@export var throat_clear_after := 6.0
+@export var throat_clear_every := 7.0
+
+## Seconds he has been waiting for the current tool; 0 when nothing is asked for. The level sets it.
+var waiting_seconds := 0.0
 
 var _taking := false
 ## Counts take() calls, so an older one stops when a newer one starts.
 var _take_count := 0
+var _next_throat_clear := 0.0
 
 @onready var _sprite: AnimatedSprite3D = $Sprite
 ## His fingers, which follow Sprite's animation and frame.
 @onready var _front: AnimatedSprite3D = $Front
 @onready var _voice: AudioStreamPlayer = $Voice
 @onready var _snap: AudioStreamPlayer = $Snap
+@onready var _throat: AudioStreamPlayer = $Throat
 ## Where his hand is in every frame of every animation (frame px, y down), from the Spine export.
 @onready var _hands: Dictionary = _sprite.sprite_frames.get_meta(&"hands")
 
@@ -66,6 +75,14 @@ func _ready() -> void:
 		if not _taking:
 			_play(_waiting()))
 	_play(_waiting())
+
+
+func _process(_delta: float) -> void:
+	if waiting_seconds <= 0.0:
+		_next_throat_clear = throat_clear_after
+	elif waiting_seconds >= _next_throat_clear and not impatient and not _taking:
+		_throat.play()
+		_next_throat_clear = waiting_seconds + throat_clear_every
 
 
 ## Plays what he does with a handed tool (correct_steps or wrong_steps), then he waits again.

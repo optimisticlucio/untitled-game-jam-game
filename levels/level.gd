@@ -85,6 +85,7 @@ func _process(delta: float) -> void:
 		_request_wait += delta
 	# Calm in the tutorial, and while nothing is asked for.
 	_monitor.waiting_seconds = _request_wait if _requested != &"" and not _in_tutorial() else 0.0
+	_surgeon.waiting_seconds = _monitor.waiting_seconds
 	if _hint_shown:
 		_hint_elapsed += delta
 		if level.hint_duration_seconds > 0.0 and _hint_elapsed >= level.hint_duration_seconds:
