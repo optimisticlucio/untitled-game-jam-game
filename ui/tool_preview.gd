@@ -9,6 +9,7 @@ extends SubViewportContainer
 
 @onready var _pivot: Node3D = %Pivot
 @onready var _camera: Camera3D = %Camera3D
+@onready var _viewport: SubViewport = $SubViewport
 
 
 func show_tool(scene: PackedScene) -> void:
@@ -23,7 +24,27 @@ func show_tool(scene: PackedScene) -> void:
 
 
 func _process(delta: float) -> void:
+	_update_rendering()
 	_pivot.rotate_y(deg_to_rad(degrees_per_second) * delta)
+
+
+## Renders only while some of it shows: not while hidden, scrolled out of view or off screen
+## (a whole 3D render each frame, and the Pocket Guide has one per tool). It keeps its last
+## frame for when it comes back.
+func _update_rendering() -> void:
+	var showing := is_visible_in_tree() and _shown_rect().has_area()
+	_viewport.render_target_update_mode = SubViewport.UPDATE_ALWAYS if showing else SubViewport.UPDATE_DISABLED
+
+
+## The part of it on screen and inside every clipping parent (like a ScrollContainer).
+func _shown_rect() -> Rect2:
+	var rect := get_global_rect().intersection(get_viewport_rect())
+	var parent := get_parent() as Control
+	while parent:
+		if parent.clip_contents:
+			rect = rect.intersection(parent.get_global_rect())
+		parent = parent.get_parent() as Control
+	return rect
 
 
 ## Centers the tool on the pivot and pulls the camera back until it fits.

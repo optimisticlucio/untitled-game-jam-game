@@ -22,3 +22,5 @@ func _process(delta: float) -> void:
 	_idle += delta
 	if _idle >= resume_seconds:
 		super._process(delta)
+	else:
+		_update_rendering()
