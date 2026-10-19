@@ -113,9 +113,8 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 ## back onto the tray. Without him, consumed tools shrink away on hand_off_zone and rejected ones
 ## hover for reject_seconds, then fly back.
 @export var surgeon: Surgeon
-## Where he throws a right tool, from his hand (metres): up and a little right, off the top of
-## the screen.
-@export var toss_away := Vector3(0.12, 0.09, -0.23)
+## Where he throws a right tool, from his hand (metres): straight up, off the top of the screen.
+@export var toss_away := Vector3(-0.02, 0.09, -0.23)
 @export var toss_away_seconds := 0.7
 ## How much of his hand's speed a right tool sets off with (1 = all of it).
 @export var toss_away_follow_hand := 1.0
@@ -125,6 +124,9 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 @export var throw_back_seconds := 0.55
 ## Turns a tool thrown away spins in the air.
 @export var toss_spin_turns := 1.0
+## The slant of a tool lying in his fist, in degrees on screen (rising to the right), like the
+## drawn hand. 0 = straight across.
+@export_range(-80.0, 80.0, 1.0) var on_hand_angle := 20.0
 
 @export_group("Sounds")
 ## Played when an instrument is picked up. Silly items play their own drop_sound instead.
@@ -384,13 +386,33 @@ func return_to_tray(tool: SurgicalTool, throw_velocity := Vector3.ZERO) -> void:
 func _drop_onto_hand(tool: SurgicalTool) -> Tween:
 	var landing := surgeon.hand_point() if surgeon \
 		else hand_off_zone.global_transform * _first_shape(hand_off_zone).position
-	var flat_rotation := Vector3(0.0, tool.global_rotation.y, 0.0)
+	var yaw := tool.global_rotation.y
+	if surgeon:
+		var slanted := _across_yaw(tool) + _turn_for_slant(landing, on_hand_angle)
+		yaw += angle_difference(yaw, slanted)
+	var flat_rotation := Vector3(0.0, yaw, 0.0)
 	var tween := create_tween().set_parallel()
 	tween.tween_property(tool, "global_position", landing, consume_drop_seconds) \
 		.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN)
 	tween.tween_property(tool, "global_rotation", flat_rotation, consume_drop_seconds)
 	tween.set_parallel(false)
 	return tween
+
+
+## The turn about the vertical that slants a flat line along world X by
+## degrees on screen (rising to the right) where it lies at point.
+func _turn_for_slant(point: Vector3, degrees: float) -> float:
+	var at := camera.unproject_position(point)
+	var best := 0.0
+	var best_error := INF
+	for whole_degrees in range(-89, 90):
+		var turn := deg_to_rad(whole_degrees)
+		var along := camera.unproject_position(point + Vector3.RIGHT.rotated(Vector3.UP, turn) * 0.05) - at
+		var error := absf(angle_difference(atan2(-along.y, along.x), deg_to_rad(degrees)))
+		if error < best_error:
+			best = turn
+			best_error = error
+	return best
 
 
 ## Adds to the tween: the surgeon takes the tool, and it rides on his hand

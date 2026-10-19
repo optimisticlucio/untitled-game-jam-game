@@ -183,7 +183,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
 shape = SubResource("Shape_hand_off_zone")
 
 [node name="Surgeon" parent="." instance=ExtResource("22_surgeon")]
-transform = Transform3D(1.07262, 0, 0, 0, 0.67491, 0.83364, 0, -0.83364, 0.67491, -0.08969, 0.06033, -0.2968)
+transform = Transform3D(1.07262, 0, 0, 0, 0.67491, 0.83364, 0, -0.83364, 0.67491, -0.07389, 0.0658, -0.30356)
 
 [node name="ToolGrabber" type="Node" parent="." node_paths=PackedStringArray("camera", "tray", "hand_off_zone", "surgeon")]
 script = ExtResource("2_grabber")
