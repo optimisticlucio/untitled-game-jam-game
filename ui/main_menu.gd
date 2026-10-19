@@ -11,8 +11,12 @@ const LEADERBOARD := "res://ui/leaderboard.tscn"
 
 ## Scene Play opens. Empty: only play_pressed is emitted.
 @export_file("*.tscn") var play_scene := ""
+## Seconds between a tap and the next screen, so the press and the icon's move can be seen (on a
+## phone a tap is over in a moment and the screen would change at once).
+@export var leave_delay := 0.22
 
 var _toast_tween: Tween
+var _leaving := false
 
 @onready var _settings_sheet: BottomSheet = %SettingsSheet
 @onready var _toast: Control = %Toast
@@ -24,10 +28,10 @@ func _ready() -> void:
 		_drop_hover(theme)
 	ButtonFx.install(get_tree())
 	(%PlayButton as Button).pressed.connect(_on_play)
-	(%GuideButton as Button).pressed.connect(func() -> void: get_tree().change_scene_to_file(POCKET_GUIDE))
+	(%GuideButton as Button).pressed.connect(_go.bind(POCKET_GUIDE))
 	(%LeaderboardButton as Button).pressed.connect(func() -> void:
 		ScoreBoard.focus_level_key = ""
-		get_tree().change_scene_to_file(LEADERBOARD))
+		_go(LEADERBOARD))
 	(%SettingsButton as Button).pressed.connect(_settings_sheet.toggle)
 	(%CloseSettingsButton as Button).pressed.connect(_settings_sheet.toggle)
 	for button in find_children("*", "BaseButton", true, false):
@@ -52,9 +56,19 @@ func _unhandled_input(event: InputEvent) -> void:
 func _on_play() -> void:
 	play_pressed.emit()
 	if not play_scene.is_empty():
-		get_tree().change_scene_to_file(play_scene)
+		_go(play_scene)
 	elif play_pressed.get_connections().is_empty():
 		_show_toast("Play: no scene set")
+
+
+## Opens another screen after leave_delay. Taps in the meantime are ignored, so a double tap can't
+## open it twice.
+func _go(scene: String) -> void:
+	if _leaving:
+		return
+	_leaving = true
+	await get_tree().create_timer(leave_delay).timeout
+	get_tree().change_scene_to_file(scene)
 
 
 func _show_toast(text: String) -> void:
