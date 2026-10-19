@@ -21,7 +21,11 @@ var _requested: StringName
 var _since_request := 0.0
 ## Starts at infinity: before the first let-go there's nothing to wait for.
 var _since_release := INF
-var _hint_shown := false
+## Whether a hint glows now. The surgeon waits impatiently (finger snaps) for as long.
+var _hint_shown := false:
+	set(value):
+		_hint_shown = value
+		_surgeon.impatient = value
 ## Whether the current request has been hinted yet (the tutorial's first hint
 ## for a request comes at once).
 var _hinted_this_request := false
@@ -37,6 +41,7 @@ var _pick_seconds := 0.0
 @onready var _design_fov := _camera.fov
 @onready var _tray: Tray = $Tray
 @onready var _grabber: ToolGrabber = $ToolGrabber
+@onready var _surgeon: Surgeon = $Surgeon
 @onready var _request: Control = %Request
 @onready var _preview: ToolPreview = %ToolPreview
 @onready var _preview_circle: Control = %PreviewCircle
@@ -116,12 +121,12 @@ func _bring_in_tray() -> void:
 
 func _request_next() -> void:
 	_grabber.clear_hints()
+	_hint_shown = false
 	if _queue.is_empty():
 		_finish_tray()
 		return
 	_requested = _queue.pop_front()
 	_since_request = 0.0
-	_hint_shown = false
 	_hinted_this_request = false
 	var example: SurgicalTool = _tray.tools().filter(func(t: SurgicalTool) -> bool: return t.id == _requested)[0]
 	_request_name.text = tr(example.display_name)
