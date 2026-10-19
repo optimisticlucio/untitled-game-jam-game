@@ -1,23 +1,25 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://wy5eshoe7clq"]
 
-[ext_resource type="Theme" path="res://ui/theme.tres" id="1_5klac"]
-[ext_resource type="Script" path="res://ui/main_menu.gd" id="2_lsdqh"]
-[ext_resource type="Texture2D" path="res://ui/icons/play.svg" id="3_jiymt"]
-[ext_resource type="Texture2D" path="res://ui/art/menu_background_mockup.png" id="3_lsdqh"]
-[ext_resource type="Texture2D" path="res://ui/icons/book.svg" id="4_bgtsx"]
-[ext_resource type="Texture2D" path="res://ui/art/logo.png" id="4_jiymt"]
-[ext_resource type="Texture2D" path="res://ui/icons/trophy.svg" id="5_kaxbk"]
-[ext_resource type="Texture2D" path="res://ui/icons/gear.svg" id="6_0nobx"]
-[ext_resource type="Script" path="res://ui/bottom_sheet.gd" id="7_iyrh0"]
+[ext_resource type="Theme" uid="uid://crbae2nlsyykg" path="res://ui/theme.tres" id="1_5klac"]
+[ext_resource type="Script" uid="uid://dwmirgnlxaeph" path="res://ui/main_menu.gd" id="2_lsdqh"]
+[ext_resource type="Texture2D" uid="uid://bsn402gv5kmbd" path="res://ui/icons/play.svg" id="3_jiymt"]
+[ext_resource type="Texture2D" uid="uid://c1pknrk3oenjt" path="res://ui/art/menu_background_mockup.png" id="3_lsdqh"]
+[ext_resource type="Texture2D" uid="uid://bjswrfey12wwm" path="res://ui/icons/book.svg" id="4_bgtsx"]
+[ext_resource type="Texture2D" uid="uid://bloh5pxfrudkq" path="res://ui/art/logo.png" id="4_jiymt"]
+[ext_resource type="Texture2D" uid="uid://dyi4b5ux7plx" path="res://ui/icons/trophy.svg" id="5_kaxbk"]
+[ext_resource type="Texture2D" uid="uid://cx6htkq5geuim" path="res://ui/icons/gear.svg" id="6_0nobx"]
+[ext_resource type="Script" uid="uid://d0k8brkpc6rwk" path="res://ui/bottom_sheet.gd" id="7_iyrh0"]
 [ext_resource type="PackedScene" path="res://ui/settings_panel.tscn" id="8_8jgmr"]
-[ext_resource type="Texture2D" path="res://ui/icons/close.svg" id="10_0i0gl"]
-[ext_resource type="AudioStream" path="res://assets/sounds/music/music_menu.ogg" id="11_music"]
+[ext_resource type="Texture2D" uid="uid://bbnt712jp1are" path="res://ui/icons/close.svg" id="10_0i0gl"]
+[ext_resource type="AudioStream" uid="uid://dem7wxr45jg2d" path="res://assets/sounds/music/music_menu.ogg" id="11_music"]
 
 [node name="MainMenu" type="Control" unique_id=247834141]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme = ExtResource("1_5klac")
 script = ExtResource("2_lsdqh")
 play_scene = "res://ui/level_select.tscn"
@@ -37,14 +39,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-theme_override_constants/separation = 28
-alignment = 1
 offset_left = -300.0
 offset_top = -540.0
 offset_right = 300.0
 offset_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 28
+alignment = 1
 
 [node name="Logo" type="TextureRect" parent="Column" unique_id=356136271]
 custom_minimum_size = Vector2(600, 312)
