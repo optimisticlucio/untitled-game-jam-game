@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dwas6ib61ghay"
 path.s3tc="res://.godot/imported/vannas_scissors_m2_albedo.png-9183254be62b1270c532fcdb8b6dcd95.s3tc.ctex"
+path.etc2="res://.godot/imported/vannas_scissors_m2_albedo.png-9183254be62b1270c532fcdb8b6dcd95.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/vannas_scissors_m2_albedo.png"
-dest_files=["res://.godot/imported/vannas_scissors_m2_albedo.png-9183254be62b1270c532fcdb8b6dcd95.s3tc.ctex"]
+dest_files=["res://.godot/imported/vannas_scissors_m2_albedo.png-9183254be62b1270c532fcdb8b6dcd95.s3tc.ctex", "res://.godot/imported/vannas_scissors_m2_albedo.png-9183254be62b1270c532fcdb8b6dcd95.etc2.ctex"]
 
 [params]
 

@@ -2,18 +2,18 @@
 
 [ext_resource type="Theme" uid="uid://crbae2nlsyykg" path="res://ui/theme.tres" id="1_5klac"]
 [ext_resource type="Script" uid="uid://dwmirgnlxaeph" path="res://ui/main_menu.gd" id="2_lsdqh"]
-[ext_resource type="Texture2D" path="res://ui/icons/play_painted.png" id="3_jiymt"]
-[ext_resource type="Texture2D" path="res://ui/art/menu_background.png" id="3_lsdqh"]
-[ext_resource type="Texture2D" path="res://ui/icons/book_painted.png" id="4_bgtsx"]
-[ext_resource type="Texture2D" path="res://ui/art/menu_logo.png" id="4_jiymt"]
-[ext_resource type="Texture2D" path="res://ui/art/menu_light.png" id="12_light"]
-[ext_resource type="Script" path="res://ui/menu_light.gd" id="13_light"]
-[ext_resource type="Texture2D" path="res://ui/icons/trophy_painted.png" id="5_kaxbk"]
-[ext_resource type="Texture2D" path="res://ui/icons/gear_painted.png" id="6_0nobx"]
+[ext_resource type="Texture2D" uid="uid://so50ux1epnuh" path="res://ui/icons/play_painted.png" id="3_jiymt"]
+[ext_resource type="Texture2D" uid="uid://dyfvcmt6agbn" path="res://ui/art/menu_background.png" id="3_lsdqh"]
+[ext_resource type="Texture2D" uid="uid://pt71g24qda51" path="res://ui/icons/book_painted.png" id="4_bgtsx"]
+[ext_resource type="Texture2D" uid="uid://bblrcx61s51wq" path="res://ui/art/menu_logo.png" id="4_jiymt"]
+[ext_resource type="Texture2D" uid="uid://bti45ddnohak2" path="res://ui/icons/trophy_painted.png" id="5_kaxbk"]
+[ext_resource type="Texture2D" uid="uid://b54a1df3trklt" path="res://ui/icons/gear_painted.png" id="6_0nobx"]
 [ext_resource type="Script" uid="uid://d0k8brkpc6rwk" path="res://ui/bottom_sheet.gd" id="7_iyrh0"]
 [ext_resource type="PackedScene" path="res://ui/settings_panel.tscn" id="8_8jgmr"]
 [ext_resource type="Texture2D" uid="uid://bbnt712jp1are" path="res://ui/icons/close.svg" id="10_0i0gl"]
 [ext_resource type="AudioStream" uid="uid://dem7wxr45jg2d" path="res://assets/sounds/music/music_menu.ogg" id="11_music"]
+[ext_resource type="Texture2D" uid="uid://c3y7qnc2n3wxn" path="res://ui/art/menu_light.png" id="12_light"]
+[ext_resource type="Script" uid="uid://c0k3cdwjalhju" path="res://ui/menu_light.gd" id="13_light"]
 
 [node name="MainMenu" type="Control" unique_id=247834141]
 layout_mode = 3
@@ -26,7 +26,7 @@ theme = ExtResource("1_5klac")
 script = ExtResource("2_lsdqh")
 play_scene = "res://ui/level_select.tscn"
 
-[node name="Art" type="AspectRatioContainer" parent="."]
+[node name="Art" type="AspectRatioContainer" parent="." unique_id=1577698886]
 layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -34,7 +34,7 @@ mouse_filter = 2
 ratio = 0.5625
 stretch_mode = 3
 
-[node name="Board" type="Control" parent="Art"]
+[node name="Board" type="Control" parent="Art" unique_id=665137212]
 layout_mode = 2
 mouse_filter = 2
 
@@ -43,12 +43,15 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("3_lsdqh")
 expand_mode = 1
 
-[node name="Light" type="TextureRect" parent="Art/Board"]
+[node name="Light" type="TextureRect" parent="Art/Board" unique_id=1647261579]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.085417
 anchor_top = 0.014453
 anchor_right = 0.938889
@@ -58,8 +61,9 @@ texture = ExtResource("12_light")
 expand_mode = 1
 script = ExtResource("13_light")
 
-[node name="Logo" type="TextureRect" parent="Art/Board"]
+[node name="Logo" type="TextureRect" parent="Art/Board" unique_id=33902519]
 layout_mode = 1
+anchors_preset = -1
 anchor_left = 0.225694
 anchor_top = 0.119922
 anchor_right = 0.854167

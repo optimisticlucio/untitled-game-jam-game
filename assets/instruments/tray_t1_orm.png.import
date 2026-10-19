@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://0s8dsb4lyxlq"
 path.s3tc="res://.godot/imported/tray_t1_orm.png-e72444893fd9062f21746dd77874b76f.s3tc.ctex"
+path.etc2="res://.godot/imported/tray_t1_orm.png-e72444893fd9062f21746dd77874b76f.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/tray_t1_orm.png"
-dest_files=["res://.godot/imported/tray_t1_orm.png-e72444893fd9062f21746dd77874b76f.s3tc.ctex"]
+dest_files=["res://.godot/imported/tray_t1_orm.png-e72444893fd9062f21746dd77874b76f.s3tc.ctex", "res://.godot/imported/tray_t1_orm.png-e72444893fd9062f21746dd77874b76f.etc2.ctex"]
 
 [params]
 

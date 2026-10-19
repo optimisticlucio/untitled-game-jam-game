@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bhbbkuhxnjlfj"
 path.s3tc="res://.godot/imported/surgeon_impatient.png-25cd522bfcc0f2867364708d5c7386d1.s3tc.ctex"
+path.etc2="res://.godot/imported/surgeon_impatient.png-25cd522bfcc0f2867364708d5c7386d1.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/surgeon/surgeon_impatient.png"
-dest_files=["res://.godot/imported/surgeon_impatient.png-25cd522bfcc0f2867364708d5c7386d1.s3tc.ctex"]
+dest_files=["res://.godot/imported/surgeon_impatient.png-25cd522bfcc0f2867364708d5c7386d1.s3tc.ctex", "res://.godot/imported/surgeon_impatient.png-25cd522bfcc0f2867364708d5c7386d1.etc2.ctex"]
 
 [params]
 

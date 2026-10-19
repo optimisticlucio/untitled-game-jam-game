@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dcootjq57hxrj"
 path.s3tc="res://.godot/imported/dental_explorer_d2_albedo.png-a35859a06cdafb13025e41f1039ea79e.s3tc.ctex"
+path.etc2="res://.godot/imported/dental_explorer_d2_albedo.png-a35859a06cdafb13025e41f1039ea79e.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/dental_explorer_d2_albedo.png"
-dest_files=["res://.godot/imported/dental_explorer_d2_albedo.png-a35859a06cdafb13025e41f1039ea79e.s3tc.ctex"]
+dest_files=["res://.godot/imported/dental_explorer_d2_albedo.png-a35859a06cdafb13025e41f1039ea79e.s3tc.ctex", "res://.godot/imported/dental_explorer_d2_albedo.png-a35859a06cdafb13025e41f1039ea79e.etc2.ctex"]
 
 [params]
 

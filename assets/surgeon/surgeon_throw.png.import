@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://uje8dm5igmaq"
 path.s3tc="res://.godot/imported/surgeon_throw.png-29a14123c73599ce1a8e1d8ed503d07f.s3tc.ctex"
+path.etc2="res://.godot/imported/surgeon_throw.png-29a14123c73599ce1a8e1d8ed503d07f.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/surgeon/surgeon_throw.png"
-dest_files=["res://.godot/imported/surgeon_throw.png-29a14123c73599ce1a8e1d8ed503d07f.s3tc.ctex"]
+dest_files=["res://.godot/imported/surgeon_throw.png-29a14123c73599ce1a8e1d8ed503d07f.s3tc.ctex", "res://.godot/imported/surgeon_throw.png-29a14123c73599ce1a8e1d8ed503d07f.etc2.ctex"]
 
 [params]
 

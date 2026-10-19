@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://d2t23wgmtbssl"
 path.s3tc="res://.godot/imported/rubber_duck_x1_albedo.png-d94a4d4068b4fde7d7c7ff3189d36655.s3tc.ctex"
+path.etc2="res://.godot/imported/rubber_duck_x1_albedo.png-d94a4d4068b4fde7d7c7ff3189d36655.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/rubber_duck_x1_albedo.png"
-dest_files=["res://.godot/imported/rubber_duck_x1_albedo.png-d94a4d4068b4fde7d7c7ff3189d36655.s3tc.ctex"]
+dest_files=["res://.godot/imported/rubber_duck_x1_albedo.png-d94a4d4068b4fde7d7c7ff3189d36655.s3tc.ctex", "res://.godot/imported/rubber_duck_x1_albedo.png-d94a4d4068b4fde7d7c7ff3189d36655.etc2.ctex"]
 
 [params]
 

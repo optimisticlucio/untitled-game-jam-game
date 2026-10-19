@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dxoklqrfi7p15"
 path.s3tc="res://.godot/imported/surgeon_idle_2.png-6ba6d95ac4c91a939d0a783e5db0d1ee.s3tc.ctex"
+path.etc2="res://.godot/imported/surgeon_idle_2.png-6ba6d95ac4c91a939d0a783e5db0d1ee.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/surgeon/surgeon_idle_2.png"
-dest_files=["res://.godot/imported/surgeon_idle_2.png-6ba6d95ac4c91a939d0a783e5db0d1ee.s3tc.ctex"]
+dest_files=["res://.godot/imported/surgeon_idle_2.png-6ba6d95ac4c91a939d0a783e5db0d1ee.s3tc.ctex", "res://.godot/imported/surgeon_idle_2.png-6ba6d95ac4c91a939d0a783e5db0d1ee.etc2.ctex"]
 
 [params]
 

@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b01yubi1fcjt1"
 path.s3tc="res://.godot/imported/butt_plug_x3_orm.png-679c27673eec66d832d3c88eed64ffcd.s3tc.ctex"
+path.etc2="res://.godot/imported/butt_plug_x3_orm.png-679c27673eec66d832d3c88eed64ffcd.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/butt_plug_x3_orm.png"
-dest_files=["res://.godot/imported/butt_plug_x3_orm.png-679c27673eec66d832d3c88eed64ffcd.s3tc.ctex"]
+dest_files=["res://.godot/imported/butt_plug_x3_orm.png-679c27673eec66d832d3c88eed64ffcd.s3tc.ctex", "res://.godot/imported/butt_plug_x3_orm.png-679c27673eec66d832d3c88eed64ffcd.etc2.ctex"]
 
 [params]
 

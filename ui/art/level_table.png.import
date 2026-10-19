@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://jolu6llk2gu0"
 path.s3tc="res://.godot/imported/level_table.png-89397ed1fbc8e257ea236ffd578b2417.s3tc.ctex"
+path.etc2="res://.godot/imported/level_table.png-89397ed1fbc8e257ea236ffd578b2417.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://ui/art/level_table.png"
-dest_files=["res://.godot/imported/level_table.png-89397ed1fbc8e257ea236ffd578b2417.s3tc.ctex"]
+dest_files=["res://.godot/imported/level_table.png-89397ed1fbc8e257ea236ffd578b2417.s3tc.ctex", "res://.godot/imported/level_table.png-89397ed1fbc8e257ea236ffd578b2417.etc2.ctex"]
 
 [params]
 

@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bp8q73h8vmb3u"
 path.s3tc="res://.godot/imported/micro_hook_m5_albedo.png-5e56c0a52520d564a6f323dc309dd7be.s3tc.ctex"
+path.etc2="res://.godot/imported/micro_hook_m5_albedo.png-5e56c0a52520d564a6f323dc309dd7be.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/micro_hook_m5_albedo.png"
-dest_files=["res://.godot/imported/micro_hook_m5_albedo.png-5e56c0a52520d564a6f323dc309dd7be.s3tc.ctex"]
+dest_files=["res://.godot/imported/micro_hook_m5_albedo.png-5e56c0a52520d564a6f323dc309dd7be.s3tc.ctex", "res://.godot/imported/micro_hook_m5_albedo.png-5e56c0a52520d564a6f323dc309dd7be.etc2.ctex"]
 
 [params]
 

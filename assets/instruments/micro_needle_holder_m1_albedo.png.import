@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://duug4k5s28e7e"
 path.s3tc="res://.godot/imported/micro_needle_holder_m1_albedo.png-c3e819c99ec0670b73a9e50612f47f57.s3tc.ctex"
+path.etc2="res://.godot/imported/micro_needle_holder_m1_albedo.png-c3e819c99ec0670b73a9e50612f47f57.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/micro_needle_holder_m1_albedo.png"
-dest_files=["res://.godot/imported/micro_needle_holder_m1_albedo.png-c3e819c99ec0670b73a9e50612f47f57.s3tc.ctex"]
+dest_files=["res://.godot/imported/micro_needle_holder_m1_albedo.png-c3e819c99ec0670b73a9e50612f47f57.s3tc.ctex", "res://.godot/imported/micro_needle_holder_m1_albedo.png-c3e819c99ec0670b73a9e50612f47f57.etc2.ctex"]
 
 [params]
 

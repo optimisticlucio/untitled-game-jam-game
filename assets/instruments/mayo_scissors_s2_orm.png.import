@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://bk8gfj45qna2i"
 path.s3tc="res://.godot/imported/mayo_scissors_s2_orm.png-39df05ef0e6de917b60f880d09e1c385.s3tc.ctex"
+path.etc2="res://.godot/imported/mayo_scissors_s2_orm.png-39df05ef0e6de917b60f880d09e1c385.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/mayo_scissors_s2_orm.png"
-dest_files=["res://.godot/imported/mayo_scissors_s2_orm.png-39df05ef0e6de917b60f880d09e1c385.s3tc.ctex"]
+dest_files=["res://.godot/imported/mayo_scissors_s2_orm.png-39df05ef0e6de917b60f880d09e1c385.s3tc.ctex", "res://.godot/imported/mayo_scissors_s2_orm.png-39df05ef0e6de917b60f880d09e1c385.etc2.ctex"]
 
 [params]
 

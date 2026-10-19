@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://ckisf86c2nq7o"
 path.s3tc="res://.godot/imported/kidney_dish_t2_albedo.png-6ced1677cc54d1ca9086ec5f62af861c.s3tc.ctex"
+path.etc2="res://.godot/imported/kidney_dish_t2_albedo.png-6ced1677cc54d1ca9086ec5f62af861c.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/kidney_dish_t2_albedo.png"
-dest_files=["res://.godot/imported/kidney_dish_t2_albedo.png-6ced1677cc54d1ca9086ec5f62af861c.s3tc.ctex"]
+dest_files=["res://.godot/imported/kidney_dish_t2_albedo.png-6ced1677cc54d1ca9086ec5f62af861c.s3tc.ctex", "res://.godot/imported/kidney_dish_t2_albedo.png-6ced1677cc54d1ca9086ec5f62af861c.etc2.ctex"]
 
 [params]
 

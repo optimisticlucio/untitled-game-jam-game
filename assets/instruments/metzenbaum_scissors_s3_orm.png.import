@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dbv0npoe0nxiw"
 path.s3tc="res://.godot/imported/metzenbaum_scissors_s3_orm.png-25923377cec0cc13fca9804bf1ee4b05.s3tc.ctex"
+path.etc2="res://.godot/imported/metzenbaum_scissors_s3_orm.png-25923377cec0cc13fca9804bf1ee4b05.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/metzenbaum_scissors_s3_orm.png"
-dest_files=["res://.godot/imported/metzenbaum_scissors_s3_orm.png-25923377cec0cc13fca9804bf1ee4b05.s3tc.ctex"]
+dest_files=["res://.godot/imported/metzenbaum_scissors_s3_orm.png-25923377cec0cc13fca9804bf1ee4b05.s3tc.ctex", "res://.godot/imported/metzenbaum_scissors_s3_orm.png-25923377cec0cc13fca9804bf1ee4b05.etc2.ctex"]
 
 [params]
 

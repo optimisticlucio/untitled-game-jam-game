@@ -31,5 +31,4 @@ reshuffle_after = 4
 distractors_per_tray = 4
 hint_delay_seconds = 4.0
 hint_idle_seconds = 2.0
-hint_duration_seconds = 1.0
 metadata/_custom_type_script = "uid://oeja3x8hjwhl"

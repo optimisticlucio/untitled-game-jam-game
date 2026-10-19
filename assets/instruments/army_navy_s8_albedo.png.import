@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://b6nkmf1p8pu5y"
 path.s3tc="res://.godot/imported/army_navy_s8_albedo.png-e5c19d9b3975fdbef4954190267eff76.s3tc.ctex"
+path.etc2="res://.godot/imported/army_navy_s8_albedo.png-e5c19d9b3975fdbef4954190267eff76.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/army_navy_s8_albedo.png"
-dest_files=["res://.godot/imported/army_navy_s8_albedo.png-e5c19d9b3975fdbef4954190267eff76.s3tc.ctex"]
+dest_files=["res://.godot/imported/army_navy_s8_albedo.png-e5c19d9b3975fdbef4954190267eff76.s3tc.ctex", "res://.godot/imported/army_navy_s8_albedo.png-e5c19d9b3975fdbef4954190267eff76.etc2.ctex"]
 
 [params]
 

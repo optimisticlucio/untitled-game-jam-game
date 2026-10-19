@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://crdvvfaxe2b0q"
 path.s3tc="res://.godot/imported/kelly_clamp_s6_albedo.png-c8182882abef1856520120b93f66475a.s3tc.ctex"
+path.etc2="res://.godot/imported/kelly_clamp_s6_albedo.png-c8182882abef1856520120b93f66475a.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/kelly_clamp_s6_albedo.png"
-dest_files=["res://.godot/imported/kelly_clamp_s6_albedo.png-c8182882abef1856520120b93f66475a.s3tc.ctex"]
+dest_files=["res://.godot/imported/kelly_clamp_s6_albedo.png-c8182882abef1856520120b93f66475a.s3tc.ctex", "res://.godot/imported/kelly_clamp_s6_albedo.png-c8182882abef1856520120b93f66475a.etc2.ctex"]
 
 [params]
 

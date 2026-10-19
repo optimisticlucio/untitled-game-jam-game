@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://cldh1mysspf53"
 path.s3tc="res://.godot/imported/tray_shadow.png-dabfb6fcce221b041d057834fc08d6a9.s3tc.ctex"
+path.etc2="res://.godot/imported/tray_shadow.png-dabfb6fcce221b041d057834fc08d6a9.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://ui/art/tray_shadow.png"
-dest_files=["res://.godot/imported/tray_shadow.png-dabfb6fcce221b041d057834fc08d6a9.s3tc.ctex"]
+dest_files=["res://.godot/imported/tray_shadow.png-dabfb6fcce221b041d057834fc08d6a9.s3tc.ctex", "res://.godot/imported/tray_shadow.png-dabfb6fcce221b041d057834fc08d6a9.etc2.ctex"]
 
 [params]
 

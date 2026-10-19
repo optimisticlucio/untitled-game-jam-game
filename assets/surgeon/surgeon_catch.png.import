@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://f3iltslpfff4"
 path.s3tc="res://.godot/imported/surgeon_catch.png-7da6f36290dc212f592ec84935edb2de.s3tc.ctex"
+path.etc2="res://.godot/imported/surgeon_catch.png-7da6f36290dc212f592ec84935edb2de.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/surgeon/surgeon_catch.png"
-dest_files=["res://.godot/imported/surgeon_catch.png-7da6f36290dc212f592ec84935edb2de.s3tc.ctex"]
+dest_files=["res://.godot/imported/surgeon_catch.png-7da6f36290dc212f592ec84935edb2de.s3tc.ctex", "res://.godot/imported/surgeon_catch.png-7da6f36290dc212f592ec84935edb2de.etc2.ctex"]
 
 [params]
 

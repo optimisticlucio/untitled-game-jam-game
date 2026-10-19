@@ -4,8 +4,9 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://dwvq58ecuombe"
 path.s3tc="res://.godot/imported/wing_corkscrew_d6_albedo.png-9e6f1066d9eb7581a4dd38237a996d45.s3tc.ctex"
+path.etc2="res://.godot/imported/wing_corkscrew_d6_albedo.png-9e6f1066d9eb7581a4dd38237a996d45.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 generator_parameters={
@@ -15,7 +16,7 @@ generator_parameters={
 [deps]
 
 source_file="res://assets/instruments/wing_corkscrew_d6_albedo.png"
-dest_files=["res://.godot/imported/wing_corkscrew_d6_albedo.png-9e6f1066d9eb7581a4dd38237a996d45.s3tc.ctex"]
+dest_files=["res://.godot/imported/wing_corkscrew_d6_albedo.png-9e6f1066d9eb7581a4dd38237a996d45.s3tc.ctex", "res://.godot/imported/wing_corkscrew_d6_albedo.png-9e6f1066d9eb7581a4dd38237a996d45.etc2.ctex"]
 
 [params]
 
