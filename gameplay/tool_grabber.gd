@@ -74,9 +74,9 @@ static var _outline_meshes: Dictionary[Mesh, ArrayMesh] = {}
 ## Height above the tray floor that returned tools are let go from.
 @export var drop_height := 0.16
 @export var return_seconds := 0.35
-## Returned tools land at least this far inside the tray's edge, so they
-## don't catch the rim.
-@export var return_margin := 0.03
+## Returned tools land at least this far inside the tray's edge (on top of
+## their own width), so they don't catch the rim.
+@export var return_margin := 0.01
 ## Speed (m/s) of the random nudge the other tray tools get when a dropped
 ## or returned tool lands.
 @export var jumble_speed := 0.1

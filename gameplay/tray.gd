@@ -11,6 +11,9 @@ extends Node3D
 
 ## Random spots tried per tool when laying out; the most open one wins.
 @export var placement_tries := 40
+## Space kept between a laid-out tool and the tray's edge, on top of the
+## tool's own width.
+@export var edge_clearance := 0.005
 ## Where the tray goes when it slides away, relative to where it rests.
 @export var away_offset := Vector3(0.0, 0.0, 0.7)
 @export var slide_seconds := 0.6
@@ -75,8 +78,8 @@ func random_point() -> Vector3:
 	return _bounds().get_center()
 
 
-## Where to put the tool so it lies whole on the floor (both ends at least
-## margin inside the edge) as close as possible to point: a spot on the
+## Where to put the tool so it lies whole on the floor (its whole outline at
+## least margin inside the edge) as close as possible to point: a spot on the
 ## floor, and a heading near yaw.
 ## The heading turns in 15° steps, up to 90° either way, when that lets the
 ## tool sit closer; the smallest turn wins a tie. The result's origin is the
@@ -92,7 +95,7 @@ func nearest_placement(tool: SurgicalTool, point: Vector3, yaw: float, margin :=
 		var spot := start
 		for i in 50:
 			var footprint := _Footprint.new(spot, turn, bounds)
-			if contains(footprint.a, margin) and contains(footprint.b, margin):
+			if _fits(footprint, margin):
 				break
 			spot = spot.move_toward(Vector3(middle.x, spot.y, middle.z), 0.01)
 		var distance := Vector2(spot.x - point.x, spot.z - point.z).length()
@@ -159,9 +162,10 @@ func settle() -> void:
 
 
 ## Adds the tools spread over the floor at random angles, longest first. Each
-## goes at the most open of placement_tries random spots, with both of its ends
-## on the floor. If it still overlaps others (a crowded tray), it starts above
-## them and falls onto the pile.
+## goes at the most open of placement_tries random spots where it lies whole
+## on the floor (edge_clearance inside the edge). If none fits, it goes at the
+## nearest spot that does. If it still overlaps others (a crowded tray), it
+## starts above them and falls onto the pile.
 func fill(new_tools: Array[SurgicalTool]) -> void:
 	# A new tray: the blood moves too (the tools get their own new look as they're made).
 	ToolLook.reshuffle_tray($Body)
@@ -179,7 +183,7 @@ func fill(new_tools: Array[SurgicalTool]) -> void:
 		var best: _Footprint
 		for i in placement_tries:
 			var candidate := _Footprint.new(random_point(), randf() * TAU, bounds)
-			if not (contains(candidate.a) and contains(candidate.b)):
+			if not _fits(candidate, edge_clearance):
 				continue
 			candidate.clearance = INF
 			for other in placed:
@@ -187,7 +191,8 @@ func fill(new_tools: Array[SurgicalTool]) -> void:
 			if best == null or candidate.clearance > best.clearance:
 				best = candidate
 		if best == null:
-			best = _Footprint.new(random_point(), randf() * TAU, bounds)
+			var spot := nearest_placement(tool, random_point(), randf() * TAU, edge_clearance)
+			best = _Footprint.new(spot.origin, spot.basis.get_euler().y, bounds)
 		# Start just above the floor, or above everything it overlaps.
 		best.top = floor_height(best.center) + 0.01 + bounds.size.y
 		for other in placed:
@@ -227,6 +232,14 @@ class _Footprint:
 		var flat := closest[0] - closest[1]
 		flat.y = 0.0
 		return flat.length() - half_width - other.half_width
+
+
+## True if the footprint's whole outline is on the floor, at least margin
+## inside the edge. The middle is checked too, for trays made of several
+## shapes with a gap between them.
+func _fits(footprint: _Footprint, margin: float) -> bool:
+	var inset := footprint.half_width + margin
+	return contains(footprint.a, inset) and contains(footprint.b, inset) and contains(footprint.center, inset)
 
 
 static func _length(bounds: AABB) -> float:
