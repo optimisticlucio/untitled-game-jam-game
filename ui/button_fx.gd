@@ -1,11 +1,14 @@
 class_name ButtonFx
-## Extras for every Button in the game, installed once by the main menu (the game always starts
-## there): a soft glare that sweeps across a button when the pointer enters it, and text that
-## starts right after the icon on buttons that have both, so every label lines up at the same
-## place (centred, a long label would run into the icon).
+## Extras for every Button with text and an icon, installed once by the main menu (the game
+## always starts there): the text starts right after the icon, so every label lines up (centred, a
+## long label would run into the icon), and the icon makes a small hop when the pointer enters the
+## button.
 
-const GLARE := preload("res://ui/button_glare.gdshader")
-const GLARE_SECONDS := 0.55
+const HOP_HEIGHT := 8.0
+const HOP_UP_SECONDS := 0.11
+const HOP_DOWN_SECONDS := 0.32
+## A pointer resting on a button's edge can leave and enter again at once: no new hop this soon.
+const HOP_REST_MSEC := 700
 
 
 static func install(tree: SceneTree) -> void:
@@ -25,27 +28,47 @@ static func _on_node_added(node: Node) -> void:
 
 
 static func _set_up(button: Button) -> void:
-	if not is_instance_valid(button):
+	if not is_instance_valid(button) or button.icon == null or button.text.is_empty():
 		return
-	if button.icon and not button.text.is_empty():
-		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
-	var material := ShaderMaterial.new()
-	material.shader = GLARE
-	button.material = material
-	button.mouse_entered.connect(_glare.bind(button))
+	button.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	var icon := _detach_icon(button)
+	button.mouse_entered.connect(_hop.bind(button, icon))
 
 
-static func _glare(button: Button) -> void:
-	if button.disabled or not button.material is ShaderMaterial:
+## The real icon becomes a child the hop can move. The button keeps an invisible stand-in of the
+## same size, so it still lays its text out after the icon.
+static func _detach_icon(button: Button) -> TextureRect:
+	var style := button.get_theme_stylebox(&"normal")
+	var size := button.icon.get_size()
+	var width := minf(size.x, button.get_theme_constant(&"icon_max_width"))
+	var icon := TextureRect.new()
+	icon.name = "Icon"
+	icon.texture = button.icon
+	icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	icon.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	icon.anchor_bottom = 1.0
+	icon.offset_left = style.content_margin_left if style else 0.0
+	icon.offset_right = icon.offset_left + width
+	icon.offset_top = style.content_margin_top if style else 0.0
+	icon.offset_bottom = -(style.content_margin_bottom if style else 0.0)
+	var stand_in := ImageTexture.create_from_image(Image.create_empty(1, 1, false, Image.FORMAT_RGBA8))
+	stand_in.set_size_override(Vector2i(size))
+	button.icon = stand_in
+	button.add_child(icon)
+	return icon
+
+
+static func _hop(button: Button, icon: TextureRect) -> void:
+	if button.disabled or not is_instance_valid(icon):
 		return
-	# One sweep at a time: the pointer can enter again before the last one is done.
-	var running: Tween = button.get_meta(&"glare_tween", null)
-	if running and running.is_running():
+	var now := Time.get_ticks_msec()
+	if now - int(icon.get_meta(&"hopped_at", -HOP_REST_MSEC)) < HOP_REST_MSEC:
 		return
-	var material := button.material as ShaderMaterial
-	material.set_shader_parameter(&"size", button.size)
-	var tween := button.create_tween()
-	button.set_meta(&"glare_tween", tween)
-	tween.tween_method(func(v: float) -> void: material.set_shader_parameter(&"sweep", v), 0.0, 1.0, GLARE_SECONDS) \
-			.set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
-	tween.tween_callback(func() -> void: material.set_shader_parameter(&"sweep", -1.0))
+	icon.set_meta(&"hopped_at", now)
+	var rest := icon.position.y
+	var tween := icon.create_tween()
+	tween.tween_property(icon, "position:y", rest - HOP_HEIGHT, HOP_UP_SECONDS) \
+			.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	tween.tween_property(icon, "position:y", rest, HOP_DOWN_SECONDS) \
+			.set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
