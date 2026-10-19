@@ -18,6 +18,7 @@
 [ext_resource type="AudioStream" path="res://assets/sounds/gameplay/level_complete.wav" id="14_complete"]
 [ext_resource type="Script" path="res://gameplay/light_flicker.gd" id="flicker_script"]
 [ext_resource type="PackedScene" path="res://gameplay/surgeon.tscn" id="22_surgeon"]
+[ext_resource type="Texture2D" path="res://ui/art/level_background.png" id="23_room"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_main"]
 
@@ -25,7 +26,7 @@
 sky_material = SubResource("SkyMaterial_main")
 
 [sub_resource type="Environment" id="Environment_main"]
-background_mode = 2
+background_mode = 3
 sky = SubResource("Sky_main")
 ambient_light_source = 3
 reflected_light_source = 2
@@ -73,6 +74,20 @@ level = ExtResource("5_example")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_main")
 
+[node name="Room" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Picture" type="TextureRect" parent="Room"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("23_room")
+expand_mode = 1
+stretch_mode = 6
+
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.502136, 0.49469, -0.709325, 0, 0.820229, 0.572036, 0.864789, 0.28724, -0.411866, 0, 1, 0)
 light_color = Color(1, 0.97, 0.9, 1)
@@ -96,6 +111,7 @@ current = true
 [node name="Table" type="StaticBody3D" parent="."]
 
 [node name="Mesh" type="MeshInstance3D" parent="Table"]
+visible = false
 mesh = SubResource("Mesh_table")
 
 [node name="Shape" type="CollisionShape3D" parent="Table"]
