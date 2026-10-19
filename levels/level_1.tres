@@ -25,10 +25,10 @@ distractor_ids = Dictionary[StringName, int]({
 &"rubber_duck": 1,
 &"sock": 2
 })
-tool_size_percent = 140.0
+tool_size_percent = 120.0
 tutorial_ids = Array[StringName]([&"mayo_scissors", &"metzenbaum_scissors", &"vannas_scissors"])
 reshuffle_after = 4
-distractors_per_tray = 6
+distractors_per_tray = 4
 hint_delay_seconds = 4.0
 hint_idle_seconds = 2.0
 hint_duration_seconds = 1.0
