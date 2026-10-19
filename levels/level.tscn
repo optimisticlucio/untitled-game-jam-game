@@ -19,6 +19,8 @@
 [ext_resource type="Script" path="res://gameplay/light_flicker.gd" id="flicker_script"]
 [ext_resource type="PackedScene" path="res://gameplay/surgeon.tscn" id="22_surgeon"]
 [ext_resource type="Texture2D" path="res://ui/art/level_background.png" id="23_room"]
+[ext_resource type="Texture2D" path="res://ui/art/level_table.png" id="24_table"]
+[ext_resource type="Texture2D" path="res://ui/art/tray_shadow.png" id="25_tray_shadow"]
 
 [sub_resource type="ProceduralSkyMaterial" id="SkyMaterial_main"]
 
@@ -118,8 +120,22 @@ mesh = SubResource("Mesh_table")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
 shape = SubResource("Shape_table")
 
+[node name="Art" type="Sprite3D" parent="Table"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.00045, -0.001, 0.0432)
+pixel_size = 0.0009061
+texture_filter = 1
+texture = ExtResource("24_table")
+
 [node name="Tray" parent="." node_paths=PackedStringArray("camera") instance=ExtResource("4_tray")]
 camera = NodePath("../Camera3D")
+
+[node name="Shadow" type="Sprite3D" parent="Tray"]
+transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0.0155, -0.0005, 0.009)
+render_priority = 1
+modulate = Color(1, 1, 1, 0.32)
+pixel_size = 0.002
+texture_filter = 1
+texture = ExtResource("25_tray_shadow")
 
 [node name="Target" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00644, 0.05789, -0.27423)

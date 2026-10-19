@@ -8,12 +8,14 @@
 script = ExtResource("1_script")
 
 [node name="Sprite" type="AnimatedSprite3D" parent="."]
+render_priority = -1
 pixel_size = 0.0007367
 texture_filter = 1
 sprite_frames = ExtResource("2_frames")
 animation = &"idle"
 
 [node name="Front" type="AnimatedSprite3D" parent="."]
+render_priority = -1
 pixel_size = 0.0007367
 texture_filter = 1
 sprite_frames = ExtResource("3_front")

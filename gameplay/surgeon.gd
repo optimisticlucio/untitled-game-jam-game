@@ -11,7 +11,8 @@ extends Node3D
 ## tray hides his lower body. The level turns him to face the camera and puts Target/HandOffZone
 ## on his hand. He's drawn in two layers that play together: Sprite (all but the fingers) and
 ## Front (the fingers of his fist), drawn closer to the camera than a tool on his hand, so the
-## tool sits inside his fist.
+## tool sits inside his fist. Both draw before other see-through things (render_priority -1),
+## so the table art in front of him (Table/Art) always covers his lower body.
 
 ## Which loop he waits with: idle, or impatient finger snaps.
 @export var impatient := false:
