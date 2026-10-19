@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" path="res://assets/instruments/tray.tscn" id="2_lmxpd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_pcx6m"]
-size = Vector3(0.28, 0.04, 0.4)
+size = Vector3(0.34, 0.04, 0.4)
 
 [node name="Tray" type="Node3D" unique_id=1298520290]
 script = ExtResource("1_tray")
