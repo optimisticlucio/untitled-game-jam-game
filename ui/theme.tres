@@ -1,5 +1,9 @@
 [gd_resource type="Theme" format=3 uid="uid://crbae2nlsyykg"]
 
+[ext_resource type="Texture2D" path="res://ui/art/button.png" id="1_button"]
+[ext_resource type="Texture2D" path="res://ui/art/button_pressed.png" id="2_button_pressed"]
+[ext_resource type="FontFile" path="res://ui/fonts/Nunito-VariableFont_wght.ttf" id="3_nunito"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bar"]
 content_margin_left = 30.0
 content_margin_top = 14.0
@@ -63,71 +67,69 @@ corner_radius_bottom_right = 46
 corner_radius_bottom_left = 46
 corner_detail = 12
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_denks"]
-content_margin_left = 16.0
-content_margin_top = 16.0
-content_margin_right = 16.0
-content_margin_bottom = 16.0
-bg_color = Color(0.65, 0.87, 0.9, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.05, 0.05, 0.06, 1)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
-
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rqugq"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jf26r"]
-content_margin_left = 16.0
-content_margin_top = 16.0
-content_margin_right = 16.0
-content_margin_bottom = 16.0
-bg_color = Color(0.40500003, 0.779, 0.83, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.05, 0.05, 0.06, 1)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button"]
+content_margin_left = 38.0
+content_margin_top = 12.0
+content_margin_right = 30.0
+content_margin_bottom = 18.0
+texture = ExtResource("1_button")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6lx7k"]
-content_margin_left = 16.0
-content_margin_top = 16.0
-content_margin_right = 16.0
-content_margin_bottom = 16.0
-bg_color = Color(0.3, 0.74, 0.8, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.05, 0.05, 0.06, 1)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button_pressed"]
+content_margin_left = 38.0
+content_margin_top = 12.0
+content_margin_right = 30.0
+content_margin_bottom = 18.0
+texture = ExtResource("2_button_pressed")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iqtc0"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_button_disabled"]
+content_margin_left = 38.0
+content_margin_top = 12.0
+content_margin_right = 30.0
+content_margin_bottom = 18.0
+texture = ExtResource("1_button")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
+modulate_color = Color(0.7, 0.7, 0.7, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_button"]
 content_margin_left = 16.0
-content_margin_top = 16.0
+content_margin_top = 14.0
 content_margin_right = 16.0
-content_margin_bottom = 16.0
-bg_color = Color(0.24000001, 0.592, 0.64000005, 1)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.05, 0.05, 0.06, 1)
-corner_radius_top_left = 18
-corner_radius_top_right = 18
-corner_radius_bottom_right = 18
-corner_radius_bottom_left = 18
+content_margin_bottom = 18.0
+texture = ExtResource("1_button")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_icon_button_pressed"]
+content_margin_left = 16.0
+content_margin_top = 14.0
+content_margin_right = 16.0
+content_margin_bottom = 18.0
+texture = ExtResource("2_button_pressed")
+texture_margin_left = 30.0
+texture_margin_top = 30.0
+texture_margin_right = 30.0
+texture_margin_bottom = 30.0
+
+[sub_resource type="FontVariation" id="FontVariation_button"]
+base_font = ExtResource("3_nunito")
+variation_opentype = {
+2003265652: 900
+}
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7any1"]
 content_margin_left = 10.0
@@ -289,18 +291,21 @@ BubbleLabel/font_sizes/font_size = 38
 BubbleLabel/fonts/font = SubResource("FontVariation_bold")
 BubblePanel/base_type = &"PanelContainer"
 BubblePanel/styles/panel = SubResource("StyleBoxFlat_bubble")
-Button/colors/font_color = Color(0.05, 0.05, 0.06, 1)
-Button/colors/font_focus_color = Color(0.05, 0.05, 0.06, 1)
-Button/colors/font_hover_color = Color(0.05, 0.05, 0.06, 1)
-Button/colors/font_pressed_color = Color(0.05, 0.05, 0.06, 1)
+Button/colors/font_color = Color(0.0, 0.13, 0.13, 1)
+Button/colors/font_focus_color = Color(0.0, 0.13, 0.13, 1)
+Button/colors/font_hover_color = Color(0.0, 0.13, 0.13, 1)
+Button/colors/font_hover_pressed_color = Color(0.0, 0.13, 0.13, 1)
+Button/colors/font_pressed_color = Color(0.0, 0.13, 0.13, 1)
 Button/constants/h_separation = 18
 Button/constants/icon_max_width = 72
-Button/font_sizes/font_size = 48
-Button/styles/disabled = SubResource("StyleBoxFlat_denks")
+Button/font_sizes/font_size = 52
+Button/fonts/font = SubResource("FontVariation_button")
+Button/styles/disabled = SubResource("StyleBoxTexture_button_disabled")
 Button/styles/focus = SubResource("StyleBoxEmpty_rqugq")
-Button/styles/hover = SubResource("StyleBoxFlat_jf26r")
-Button/styles/normal = SubResource("StyleBoxFlat_6lx7k")
-Button/styles/pressed = SubResource("StyleBoxFlat_iqtc0")
+Button/styles/hover = SubResource("StyleBoxTexture_button")
+Button/styles/hover_pressed = SubResource("StyleBoxTexture_button_pressed")
+Button/styles/normal = SubResource("StyleBoxTexture_button")
+Button/styles/pressed = SubResource("StyleBoxTexture_button_pressed")
 CardPanel/base_type = &"PanelContainer"
 CardPanel/styles/panel = SubResource("StyleBoxFlat_7any1")
 ClockLabel/base_type = &"Label"
@@ -310,6 +315,11 @@ HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_3fgq6")
 HSlider/styles/slider = SubResource("StyleBoxFlat_y5ki2")
 HeaderLabel/base_type = &"Label"
 HeaderLabel/font_sizes/font_size = 52
+IconButton/base_type = &"Button"
+IconButton/styles/hover = SubResource("StyleBoxTexture_icon_button")
+IconButton/styles/hover_pressed = SubResource("StyleBoxTexture_icon_button_pressed")
+IconButton/styles/normal = SubResource("StyleBoxTexture_icon_button")
+IconButton/styles/pressed = SubResource("StyleBoxTexture_icon_button_pressed")
 Label/colors/font_color = Color(0.05, 0.05, 0.06, 1)
 RoundButton/base_type = &"Button"
 RoundButton/styles/focus = SubResource("StyleBoxEmpty_rqugq")

@@ -39,6 +39,7 @@ layout_mode = 2
 theme_override_constants/separation = 24
 
 [node name="BackButton" type="Button" parent="Margin/Column/TopBar" unique_id=1958467055]
+theme_type_variation = &"IconButton"
 unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 2
