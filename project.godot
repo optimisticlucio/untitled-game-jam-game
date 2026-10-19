@@ -22,6 +22,7 @@ boot_splash/fullsize=false
 
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 UiSounds="*res://ui/ui_sounds.tscn"
+ShaderWarmUp="*res://gameplay/shader_warm_up.gd"
 
 [display]
 
