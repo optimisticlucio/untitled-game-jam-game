@@ -16,6 +16,9 @@ const FRAMES := 3
 
 
 func _ready() -> void:
+	# Nothing compiles without a screen (headless dev scripts and tests).
+	if DisplayServer.get_name() == "headless":
+		return
 	var viewport := SubViewport.new()
 	viewport.size = Vector2i(90, 160)
 	viewport.own_world_3d = true
