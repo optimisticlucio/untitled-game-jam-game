@@ -23,6 +23,7 @@ var _entries: Array[Dictionary] = []
 func _ready() -> void:
 	(%BackButton as Button).pressed.connect(_on_back)
 	(%CloseDetailButton as Button).pressed.connect(_detail.hide)
+	(%ResetButton as Button).pressed.connect(_viewer.reset_view)
 	_tabs.tab_changed.connect(func(_tab: int) -> void:
 		get_node(^"/root/UiSounds/Tab").play()
 		_rebuild())
@@ -60,7 +61,7 @@ func _rebuild() -> void:
 			continue
 		var header := Label.new()
 		header.text = names[i]
-		header.theme_type_variation = &"HeaderLabel"
+		header.theme_type_variation = &"SectionTitle"
 		_list.add_child(header)
 		var grid := GridContainer.new()
 		grid.columns = 2

@@ -49,7 +49,7 @@ expand_icon = true
 
 [node name="Title" type="Label" parent="Margin/Column/TopBar" unique_id=1250298023]
 layout_mode = 2
-theme_type_variation = &"HeaderLabel"
+theme_type_variation = &"ScreenTitle"
 text = "Leaderboard"
 vertical_alignment = 1
 

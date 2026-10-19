@@ -49,7 +49,7 @@ expand_icon = true
 
 [node name="Title" type="Label" parent="Margin/Column/TopBar"]
 layout_mode = 2
-theme_type_variation = &"HeaderLabel"
+theme_type_variation = &"ScreenTitle"
 text = "Levels"
 vertical_alignment = 1
 
